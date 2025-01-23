@@ -63,33 +63,33 @@ namespace SAModManager.Controls.SADX
             mouseBtnAssign.SelectionChanged += mouseBtnAssign_SelectionChanged;
         }
 
-        //Temporary, TO DO: Implement proper texture filter list
-        private void SetTextureFilterSettings()
-        {
-            if (GameProfile.Graphics.EnableForcedTextureFilter == true)
-            {
-                comboTextureFilter.SelectedIndex = 0;
-                comboTextureFilter.SelectedItem = 0;
-            }
-            else
-            {
-                comboTextureFilter.SelectedIndex = 1;
-                comboTextureFilter.SelectedItem = 1;
-            }
-        }
+		#region Graphics Tab
+		//Temporary, TO DO: Implement proper texture filter list
+		private void SetTextureFilterSettings()
+		{
+			if (GameProfile.Graphics.EnableForcedTextureFilter == true)
+			{
+				comboTextureFilter.SelectedIndex = 0;
+				comboTextureFilter.SelectedItem = 0;
+			}
+			else
+			{
+				comboTextureFilter.SelectedIndex = 1;
+				comboTextureFilter.SelectedItem = 1;
+			}
+		}
 
-        private void SetTextureFilterList()
-        {
-            comboTextureFilter.Items.Clear();
+		private void SetTextureFilterList()
+		{
+			comboTextureFilter.Items.Clear();
 
-            comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Enabled"));
-            comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Disabled"));
+			comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Enabled"));
+			comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Disabled"));
 
-            SetTextureFilterSettings();
-        }
+			SetTextureFilterSettings();
+		}
 
-        #region Graphics Tab
-        private void ResolutionChanged(object sender, RoutedEventArgs e)
+		private void ResolutionChanged(object sender, RoutedEventArgs e)
         {
             NumberBox box = sender as NumberBox;
 
@@ -187,6 +187,44 @@ namespace SAModManager.Controls.SADX
             }
         }
 
+		public static void UpdateD3D8Paths()
+		{
+			OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
+			d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
+		}
+
+		private void comboTextureFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (comboTextureFilter.SelectedIndex == 0)
+			{
+				GameProfile.Graphics.EnableForcedTextureFilter = true;
+			}
+			else if (comboTextureFilter.SelectedIndex == 1)
+			{
+				GameProfile.Graphics.EnableForcedTextureFilter = false;
+			}
+		}
+
+		private void comboRenderBackend_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (GameProfile is null)
+				return;
+
+			switch ((GraphicsSettings.RenderBackend)GameProfile.Graphics.RenderBackendSelection)
+			{
+				case GraphicsSettings.RenderBackend.Direct3D9:
+					// Handle setup for D3D9 usage.
+					break;
+				case GraphicsSettings.RenderBackend.Direct3D11:
+					// Handle setup for D3D11 usage.
+					break;
+				case GraphicsSettings.RenderBackend.Direct3D8:
+				default:
+					// Perform any cleanup for other backends to allow the game to use the base D3D8 implementation.
+					break;
+			}
+		}
+
 		/*
         private void CheckOldD3D9Dll()
         {
@@ -277,8 +315,79 @@ namespace SAModManager.Controls.SADX
                 DisplayInputGroup(1);
         }
 
-        #region App Launcher
-        public static async Task UpdateAppLauncher()
+		public void SavePatches(ref object input)
+		{
+			GameSettings settings = input as GameSettings;
+
+			if (listPatches is null)
+				return;
+
+			settings.EnabledGamePatches.Clear();
+
+			foreach (PatchesData patch in listPatches.Items)
+				if (patch.IsChecked == true)
+					settings.EnabledGamePatches.Add(patch.InternalName);
+		}
+
+		private void SetItemFromPad(int action)
+		{
+			switch (action)
+			{
+				case 0:
+					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseStart;
+					break;
+				case 1:
+					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseAttack;
+					break;
+				case 2:
+					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseJump;
+					break;
+				case 3:
+					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseAction;
+					break;
+				case 4:
+					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseFlute;
+					break;
+			}
+		}
+
+		private void SetItemToPad(int value)
+		{
+			int action = mouseAction.SelectedIndex;
+			switch (action)
+			{
+				case 0:
+					GameProfile.Controller.VanillaMouseStart = value;
+					break;
+				case 1:
+					GameProfile.Controller.VanillaMouseAttack = value;
+					break;
+				case 2:
+					GameProfile.Controller.VanillaMouseJump = value;
+					break;
+				case 3:
+					GameProfile.Controller.VanillaMouseAction = value;
+					break;
+				case 4:
+					GameProfile.Controller.VanillaMouseFlute = value;
+					break;
+			}
+		}
+
+		private void mouseAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = sender as ComboBox;
+			SetItemFromPad(comboBox.SelectedIndex);
+		}
+
+		private void mouseBtnAssign_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ComboBox comboBox = sender as ComboBox;
+			SetItemToPad(comboBox.SelectedIndex);
+		}
+
+		#region App Launcher
+		public static async Task UpdateAppLauncher()
         {
             string fullName = "AppLauncher.7z";
             string destName = App.CurrentGame.gameDirectory;
@@ -536,71 +645,6 @@ namespace SAModManager.Controls.SADX
         #endregion
         #endregion
 
-        public static void UpdateD3D8Paths()
-        {
-            OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
-            d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
-        }
-
-        public void SavePatches(ref object input)
-        {
-            GameSettings settings = input as GameSettings;
-
-            if (listPatches is null)
-                return;
-
-            settings.EnabledGamePatches.Clear();
-
-            foreach (PatchesData patch in listPatches.Items)
-                if (patch.IsChecked == true)
-                    settings.EnabledGamePatches.Add(patch.InternalName);
-        }
-
-		private void SetItemFromPad(int action)
-		{
-			switch (action)
-			{
-				case 0:
-					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseStart;
-					break;
-				case 1:
-					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseAttack;
-					break;
-				case 2:
-					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseJump;
-					break;
-				case 3:
-					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseAction;
-					break;
-				case 4:
-					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseFlute;
-					break;
-			}
-		}
-
-		private void SetItemToPad(int value)
-		{
-			int action = mouseAction.SelectedIndex;
-			switch (action)
-			{
-				case 0:
-					GameProfile.Controller.VanillaMouseStart = value;
-					break;
-				case 1:
-					GameProfile.Controller.VanillaMouseAttack = value;
-					break;
-				case 2:
-					GameProfile.Controller.VanillaMouseJump = value;
-					break;
-				case 3:
-					GameProfile.Controller.VanillaMouseAction = value;
-					break;
-				case 4:
-					GameProfile.Controller.VanillaMouseFlute = value;
-					break;
-			}
-		}
-
 		#region Private Functions
 		private void SetupBindings()
 		{
@@ -838,49 +882,5 @@ namespace SAModManager.Controls.SADX
 			});
 		}
         #endregion
-
-        private void comboTextureFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (comboTextureFilter.SelectedIndex == 0)
-            {
-                GameProfile.Graphics.EnableForcedTextureFilter = true;
-            }
-            else if (comboTextureFilter.SelectedIndex == 1)
-            {
-                GameProfile.Graphics.EnableForcedTextureFilter = false;
-            }
-        }
-
-        private void mouseAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox comboBox = sender as ComboBox;
-            SetItemFromPad(comboBox.SelectedIndex);
-        }
-
-		private void mouseBtnAssign_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			ComboBox comboBox = sender as ComboBox;
-			SetItemToPad(comboBox.SelectedIndex);
-		}
-
-		private void comboRenderBackend_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (GameProfile is null)
-				return;
-
-			switch ((GraphicsSettings.RenderBackend)GameProfile.Graphics.RenderBackendSelection)
-			{
-				case GraphicsSettings.RenderBackend.Direct3D9:
-					// Handle setup for D3D9 usage.
-					break;
-				case GraphicsSettings.RenderBackend.Direct3D11:
-					// Handle setup for D3D11 usage.
-					break;
-				case GraphicsSettings.RenderBackend.Direct3D8:
-				default:
-					// Perform any cleanup for other backends to allow the game to use the base D3D8 implementation.
-					break;
-			}
-		}
 	}
 }
