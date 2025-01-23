@@ -247,12 +247,12 @@
 												<ColumnDefinition Width="5"/>
 												<ColumnDefinition Width="*"/>
 											</Grid.ColumnDefinitions>
-											
-											<Label Content="Rendering Backend" Grid.Column="0"/>
+
+											<Label Content="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend}" Grid.Column="0"/>
 											<ComboBox x:Name="comboRenderBackend" Grid.Column="2" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="comboRenderBackend_SelectionChanged">
-												<ComboBoxItem Content="Direct3D 8 (Original)"/>
-												<ComboBoxItem Content="Direct3D 9 (d3d8to9)"/>
-												<ComboBoxItem Content="Direct3D 11 (d3d8to11)"/>
+												<ComboBoxItem Content="Direct3D 8" ToolTip="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip}"/>
+												<ComboBoxItem Content="Direct3D 9" ToolTip="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D9.ToolTip}"/>
+												<ComboBoxItem Content="Direct3D 11" ToolTip="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D11.ToolTip}"/>
 											</ComboBox>
 										</Grid>
 
