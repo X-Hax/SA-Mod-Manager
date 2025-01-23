@@ -35,6 +35,13 @@ namespace SAModManager.Configuration.SADX
 			CustomWindow
 		}
 
+		public enum RenderBackend
+		{
+			Direct3D8 = 0,
+			Direct3D9 = 1,
+			Direct3D11 = 2
+		}
+
 		/// <summary>
 		/// Index for the screen the game will boot on.
 		/// </summary>
@@ -197,8 +204,12 @@ namespace SAModManager.Configuration.SADX
 		public bool EnableScreenScaling { get; set; } = true;     // SADXLoaderInfo.StretchFullscreen
 		#endregion
 
-		[DefaultValue(0)]
-		public int RenderBackend { get; set; } = 0;
+		/// <summary>
+		/// Selected RenderBackend for use with SADX.
+		/// </summary>
+		[DefaultValue((int)RenderBackend.Direct3D8)]
+		public int RenderBackendSelection { get; set; } = (int)RenderBackend.Direct3D8;
+
 		/// <summary>
 		/// Converts from original settings file.
 		/// </summary>
