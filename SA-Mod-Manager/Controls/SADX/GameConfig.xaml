@@ -148,20 +148,13 @@
 
                     <!--Graphics Other Section-->
                     <GroupBox x:Name="grpGraphicsVisuals" Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Other}" Grid.Row="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="10"/>
+						<Grid Margin="5">
+							<Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="10"/>
-                            </Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
 
-                            <Grid Grid.Column="1" Grid.Row="1">
+                            <Grid Grid.Row="0" Margin="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="164"/>
                                     <ColumnDefinition Width="*"/>
@@ -171,7 +164,6 @@
 
                                 <Grid Grid.Column="0">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
@@ -187,7 +179,6 @@
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
                                     <ComboBox x:Name="comboFramerate" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0">
@@ -199,17 +190,13 @@
                                         <ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Fog.Auto}"/>
                                         <ComboBoxItem Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation}"/>
                                     </ComboBox>
-                                    <ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" SelectedIndex="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectionChanged="comboTextureFilter_SelectionChanged">
+									<ComboBox x:Name="comboTextureFilter"  Grid.Column="1" Grid.Row="2" SelectedIndex="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectionChanged="comboTextureFilter_SelectionChanged">
 
-                                    </ComboBox>
-                                    <ComboBox x:Name="comboUIFilter" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" SelectedIndex="0" IsEnabled="False" Visibility="Hidden">
-
-                                    </ComboBox>
-                                </Grid>
+									</ComboBox>
+								</Grid>
 
                                 <Grid Grid.Column="2">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
@@ -222,7 +209,6 @@
 
                                 <Grid Grid.Column="3" HorizontalAlignment="Stretch">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
@@ -246,25 +232,42 @@
                                 </Grid>
                             </Grid>
 
-                            <Grid Grid.Column="1" Grid.Row="2">
+                            <Grid Grid.Row="1" Margin="5">
                                 <GroupBox Header="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements}">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="5"/>
-                                            <RowDefinition Height="30"/>
-                                            <RowDefinition Height="5"/>
-                                            <RowDefinition Height="30"/>
-                                            <RowDefinition Height="5"/>
-                                        </Grid.RowDefinitions>
+                                    <Grid Margin="5">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="5"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
 
-                                        <CheckBox x:Name="checkMipmapping" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap}" Grid.Column="0" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap}"/>
-                                        <CheckBox x:Name="checkUIScale" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale}" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale}"/>
-                                        <CheckBox x:Name="checkD3D9" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9}" Grid.Column="0" Grid.Row="3" Margin="5,5,5,5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9}" Click="checkD3D9_Click"/>
-                                    </Grid>
+										<Grid Grid.Column="0">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="5"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											
+											<Label Content="Rendering Backend" Grid.Column="0"/>
+											<ComboBox x:Name="comboRenderBackend" Grid.Column="2" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="comboRenderBackend_SelectionChanged">
+												<ComboBoxItem Content="Direct3D 8 (Original)"/>
+												<ComboBoxItem Content="Direct3D 9 (d3d8to9)"/>
+												<ComboBoxItem Content="Direct3D 11 (d3d8to11)"/>
+											</ComboBox>
+										</Grid>
+
+										<Grid Grid.Column="2">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="5"/>
+												<ColumnDefinition Width="Auto"/>
+											</Grid.ColumnDefinitions>
+											<CheckBox x:Name="checkMipmapping" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap}" Grid.Column="0" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap}"/>
+											<CheckBox x:Name="checkUIScale" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale}" Grid.Column="2" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale}"/>
+										</Grid>
+
+
+									</Grid>
                                 </GroupBox>
                             </Grid>
                         </Grid>

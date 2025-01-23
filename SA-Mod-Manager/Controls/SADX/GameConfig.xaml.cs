@@ -55,7 +55,7 @@ namespace SAModManager.Controls.SADX
         {
             SetupBindings();
             SetPatches();
-            CheckOldD3D9Dll();
+            //CheckOldD3D9Dll();
             SetTextureFilterList();
             InitMouseList();
 
@@ -187,6 +187,7 @@ namespace SAModManager.Controls.SADX
             }
         }
 
+		/*
         private void CheckOldD3D9Dll()
         {
 
@@ -201,16 +202,15 @@ namespace SAModManager.Controls.SADX
 
         }
 
-
         private void checkD3D9_Click(object sender, RoutedEventArgs e)
         {
             if (checkD3D9.IsChecked == true)
             {
-                GameProfile.Graphics.RenderBackend = 1;
+                GameProfile.Graphics.RenderBackendSelection = GraphicsSettings.RenderBackend.Direct3D9;
             }
             else if (checkD3D9.IsChecked == false)
             {
-                GameProfile.Graphics.RenderBackend = 0;
+                GameProfile.Graphics.RenderBackendSelection = GraphicsSettings.RenderBackend.Direct3D8;
 
                 if (File.Exists(OldD3d8to9GamePath))
                     File.Delete(OldD3d8to9GamePath);
@@ -218,10 +218,11 @@ namespace SAModManager.Controls.SADX
                 
 
         }
-        #endregion
+		*/
+		#endregion
 
-        #region Input Tab
-        private void InitMouseList()
+		#region Input Tab
+		private void InitMouseList()
         {
             List<string> mouseActionList = new()
             {
@@ -742,11 +743,6 @@ namespace SAModManager.Controls.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay,
 			}); ;
-			comboUIFilter.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ModeUIFiltering")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
 			checkMipmapping.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableForcedMipmapping")
 			{
 				Source = GameProfile.Graphics,
@@ -757,11 +753,11 @@ namespace SAModManager.Controls.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-            checkD3D9.SetBinding(CheckBox.IsCheckedProperty, new Binding("RenderBackend")
-             {
-                Source = GameProfile.Graphics,
-                Mode = BindingMode.TwoWay
-            });
+			comboRenderBackend.SetBinding(ComboBox.SelectedIndexProperty, new Binding("RenderBackendSelection")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.TwoWay
+			});
 
 			// Input Settings
 			radBetterInput.SetBinding(RadioButton.IsCheckedProperty, new Binding("EnabledInputMod")
@@ -866,5 +862,25 @@ namespace SAModManager.Controls.SADX
 			ComboBox comboBox = sender as ComboBox;
 			SetItemToPad(comboBox.SelectedIndex);
 		}
-    }
+
+		private void comboRenderBackend_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (GameProfile is null)
+				return;
+
+			switch ((GraphicsSettings.RenderBackend)GameProfile.Graphics.RenderBackendSelection)
+			{
+				case GraphicsSettings.RenderBackend.Direct3D9:
+					// Handle setup for D3D9 usage.
+					break;
+				case GraphicsSettings.RenderBackend.Direct3D11:
+					// Handle setup for D3D11 usage.
+					break;
+				case GraphicsSettings.RenderBackend.Direct3D8:
+				default:
+					// Perform any cleanup for other backends to allow the game to use the base D3D8 implementation.
+					break;
+			}
+		}
+	}
 }
