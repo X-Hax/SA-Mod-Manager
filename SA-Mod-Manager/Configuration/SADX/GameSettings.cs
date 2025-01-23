@@ -35,7 +35,7 @@ namespace SAModManager.Configuration.SADX
 			CustomWindow
 		}
 
-		public enum RenderBackend
+		public enum RenderBackendOptions
 		{
 			Direct3D8 = 0,
 			Direct3D9 = 1,
@@ -207,8 +207,8 @@ namespace SAModManager.Configuration.SADX
 		/// <summary>
 		/// Selected RenderBackend for use with SADX.
 		/// </summary>
-		[DefaultValue((int)RenderBackend.Direct3D8)]
-		public int RenderBackendSelection { get; set; } = (int)RenderBackend.Direct3D8;
+		[DefaultValue((int)RenderBackendOptions.Direct3D8)]
+		public int RenderBackend { get; set; } = (int)RenderBackendOptions.Direct3D8;
 
 		/// <summary>
 		/// Converts from original settings file.

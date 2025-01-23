@@ -210,15 +210,15 @@ namespace SAModManager.Controls.SADX
 			if (GameProfile is null)
 				return;
 
-			switch ((GraphicsSettings.RenderBackend)GameProfile.Graphics.RenderBackendSelection)
+			switch ((GraphicsSettings.RenderBackendOptions)GameProfile.Graphics.RenderBackend)
 			{
-				case GraphicsSettings.RenderBackend.Direct3D9:
+				case GraphicsSettings.RenderBackendOptions.Direct3D9:
 					// Handle setup for D3D9 usage.
 					break;
-				case GraphicsSettings.RenderBackend.Direct3D11:
+				case GraphicsSettings.RenderBackendOptions.Direct3D11:
 					// Handle setup for D3D11 usage.
 					break;
-				case GraphicsSettings.RenderBackend.Direct3D8:
+				case GraphicsSettings.RenderBackendOptions.Direct3D8:
 				default:
 					// Perform any cleanup for other backends to allow the game to use the base D3D8 implementation.
 					break;
