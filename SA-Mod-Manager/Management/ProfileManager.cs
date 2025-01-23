@@ -163,8 +163,8 @@ namespace SAModManager.Management
 			{
 				if (entry.Name == oldname)
 				{
-					string oldFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, oldname + ".json");
-					string newFilePath = Path.Combine(App.CurrentGame.ProfilesDirectory, newname + ".json");
+					string oldFilePath = Path.Combine(ProfilesDirectory, oldname + ".json");
+					string newFilePath = Path.Combine(ProfilesDirectory, newname + ".json");
 
 					entry.Name = newname;
 					entry.Filename = newname + ".json";
@@ -184,7 +184,7 @@ namespace SAModManager.Management
             {
                 if (entry.Name == name)
 				{
-					string filePath = Path.Combine(App.CurrentGame.ProfilesDirectory, entry.Filename);
+					string filePath = Path.Combine(ProfilesDirectory, entry.Filename);
                     if (File.Exists(filePath))
                     {
 						try
