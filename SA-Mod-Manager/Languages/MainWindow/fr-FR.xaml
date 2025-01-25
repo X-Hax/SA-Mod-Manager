@@ -155,7 +155,7 @@
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Sets the texture filter type for all model textures.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Sets the texture filtering type for all GUI related textures.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Définit le niveau de détail avec la distance d'affichage.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">Définit la méthode de remplissage de l'image des bordures lorsque vous jouer avec l'option écran large avec un rapport hauteur/largeur 4:3 verrouillé.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill" xml:space="preserve">Sets the scaling mode for backgrounds&#x0a;Stretch: The backgrounds will be stretched without maintaining the aspect ratio.&#x0a;Fit: The backgrounds will be displayed with borders.&#x0a;Fill: The backgrounds will be cropped and zoomed in to display without borders.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Définit la méthode de remplissage lorsque le jeu lance un FMV.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Génération de MipMaps pour toutes les textures qui n'en ont pas.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Permet l'utilisation de D3D8to9 Shim, permettant au jeu d'utiliser les fonctionnalités de D3D9. Requis pour certains mods.</system:String>

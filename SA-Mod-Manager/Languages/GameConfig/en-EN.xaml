@@ -69,8 +69,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill">Background Fill Mode:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Stretch [Default]</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit">Fit</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Fill</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">FMV Fill Mode:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Fill</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">FMV Fill Mode:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.TexFilter">Texture Filtering:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.UIFilter">GUI Filtering</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Enhancements</system:String>
