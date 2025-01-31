@@ -436,6 +436,21 @@ namespace SAModManager
             }
         }
 
+        public static bool IsGameListEmpty()
+        {
+            bool supported = false;
+            foreach (var game in GetSupportedGames())
+            {
+                if (App.GamesList.Contains(game) == true)
+                {
+                    supported = true;
+                    break;
+                }
+            }
+
+            return supported == false || App.GamesList.Count == 0;
+        }
+
         public static void AddMissingGamesList(Game game)
         {
 			GameEntry entry = new(game);
@@ -508,7 +523,9 @@ namespace SAModManager
                     Logger.Log("Checking for: " + path);
                     if (File.Exists(path) && !App.GamesList.Contains(game))
                     {
+                        Logger.Log("Found Game locally!");
                         game.gameDirectory = path;
+                        App.GamesList.Add(game);
                         AddMissingGamesList(game);
                     }
                 }
@@ -524,7 +541,7 @@ namespace SAModManager
                         Logger.Log("Checking for: " + gameInstallPath);
                         if (Directory.Exists(gameInstallPath) && !App.GamesList.Contains(game))
                         {
-                            Logger.Log("Found Game!");
+                            Logger.Log("Found Game through Steam!");
                             game.gameDirectory = gameInstallPath;
                             App.GamesList.Add(game);
                             AddMissingGamesList(game);
@@ -534,7 +551,7 @@ namespace SAModManager
                 }
 
 
-                if (App.GamesList.Count <= 0)
+                if (App.GamesList.Count <= 0 || GamesInstall.IsGameListEmpty())
                 {
                     App.GamesList.Add(GamesInstall.Unknown);
                 }

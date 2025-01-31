@@ -1779,7 +1779,7 @@ namespace SAModManager
                 {
                     if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
                     {
-                        if (App.Current.MainWindow is not null && App.GamesList.Count > 0)
+                        if (App.Current.MainWindow is not null && GamesInstall.IsGameListEmpty() == false)
                             ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
                     }
                 }
@@ -2030,7 +2030,7 @@ namespace SAModManager
 
             //if game path hasn't been set, give up the process of loading mods.
 
-            if (App.GamesList.Count == 0 || App.CurrentGame == GamesInstall.Unknown || Directory.Exists(App.CurrentGame.gameDirectory) == false)
+            if (GamesInstall.IsGameListEmpty() || App.CurrentGame == GamesInstall.Unknown || Directory.Exists(App.CurrentGame.gameDirectory) == false)
             {
                 UpdateMainButtonsState();
                 return;

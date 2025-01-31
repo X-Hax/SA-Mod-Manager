@@ -46,7 +46,11 @@ namespace SAModManager.Management
 		/// <returns>Returns True when directory exists or has been created otherwise returns False.</returns>
 		private static bool CheckProfileDirectory()
 		{
-			if (!Directory.Exists(ProfilesDirectory))
+            //profile shouldn't be created if no game are found
+            if (GamesInstall.IsGameListEmpty())
+				return false;
+
+			if (!Directory.Exists(ProfilesDirectory)) 
 			{
 				try
 				{
@@ -60,6 +64,7 @@ namespace SAModManager.Management
 					return false;
 				}
 			}
+
 			return true;
 		}
 
