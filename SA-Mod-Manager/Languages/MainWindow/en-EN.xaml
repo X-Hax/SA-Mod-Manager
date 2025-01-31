@@ -38,10 +38,15 @@
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Made by</system:String>
 	<!--#endregion-->
 
-	<!--#region Manager Config Tab Strings-->
+
+    <!--Game-->
+    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <!--#endregion-->
+
+    <!--#region Manager Config Tab Strings-->
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Game Settings</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Themes:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Theme:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Update Channel:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Language:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profile:</system:String>
@@ -55,14 +60,14 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Uninstall Mod Loader</system:String>
 
 	<!--Updates-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Updates</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Update Settings</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Check for Mod Manager Updates on Startup</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Check for Mod Loader Updates on Startup</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Check for Mod Updates on Startup</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Check For Updates</system:String>
 
 	<!--Debug Features-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Advanced Options</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Manager Settings</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Keep Mod Manager Open after launching game</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Enable Developer Options</system:String>
@@ -70,7 +75,7 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Print Debug in Game Window</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Log Debug Info to File</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Create Crash Dumps</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Perform Game Health Check</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Check Game Health</system:String>
 
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">About</system:String>
@@ -81,6 +86,7 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Mod Loader Source Code</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Report a Bug (English only)</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Open SA Docs (English only)</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.AdvancedOptions">Advanced Options</system:String>
 	<!--#endregion-->
 	
 	<!--#region Tooltips-->
@@ -136,7 +142,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Sets the texture filter type for all model textures.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Sets the texture filtering type for all GUI related textures.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Sets the detail level for the draw distance.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">Sets the fill method for the borders image when playing in widescreen with a locked 4:3 render aspect ratio.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill" xml:space="preserve">Sets the scaling mode for backgrounds&#x0a;Stretch: The backgrounds will be stretched without maintaining the aspect ratio.&#x0a;Fit: The backgrounds will be displayed with borders.&#x0a;Fill: The backgrounds will be cropped and zoomed in to display without borders.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Sets the fill method when the game is performing FMV playback.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Generated MipMaps for all textures that do not have them.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Enables use of the D3D8to9 Shim, allowing the game to make use of D3D9 features. Required for some mods.</system:String>

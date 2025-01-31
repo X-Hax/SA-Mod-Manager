@@ -36,7 +36,11 @@
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Criado por</system:String>
 	<!--#endregion-->
 
-	<!--#region Manager Config Tab Strings-->
+    <!--Game-->
+    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <!--#endregion-->
+
+    <!--#region Manager Config Tab Strings-->
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Opções</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Temas:</system:String>
@@ -128,7 +132,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Define o tipo de Filtro de Textura para todas as texturas do modelo.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Define o tipo de Filtro de GUI para todas as texturas relacionadas com o GUI.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Define o nível de detalhe para a distância de renderização.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">Define o método de preenchimento para as bordas quando se joga em widescreen com uma proporção bloqueada em 4:3.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill" xml:space="preserve">Sets the scaling mode for backgrounds&#x0a;Stretch: The backgrounds will be stretched without maintaining the aspect ratio.&#x0a;Fit: The backgrounds will be displayed with borders.&#x0a;Fill: The backgrounds will be cropped and zoomed in to display without borders.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Define o método de preenchimentoquando o jogo apresenta um playback em FMV.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Gera Mipmaps para todas as texturas que não as tenham.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Ativa o uso de D3D8to9 Shim, premitindo assim que o jogo use as funcionalidades D3D9. Necessário para alguns mods.</system:String>

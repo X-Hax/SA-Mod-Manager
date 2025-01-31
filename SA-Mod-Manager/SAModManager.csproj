@@ -45,8 +45,10 @@
 		<None Remove="Icons\Manager\SA2Sonic.ico" />
 		<None Remove="Icons\Manager\SA2Tails.ico" />
 		<None Remove="Icons\SADXModManager_.png" />
+		<None Remove="Resources\Games\plus.png" />
 		<None Remove="Resources\Games\sa1.png" />
 		<None Remove="Resources\Games\sa2.png" />
+		<None Remove="Resources\SA2Keyboard.cfg" />
 		<None Remove="Resources\SA2ModLoader.7z" />
 		<None Remove="Resources\SADXModLoader.7z" />
 		<None Remove="Updater\ModDownloadDialog.xaml.cs~RF2e7deabf.TMP" />
@@ -60,8 +62,10 @@
 	<ItemGroup>
 		<EmbeddedResource Include="Codes\OpCodeSyntaxLight.xshd" />
 		<EmbeddedResource Include="Codes\OpCodeSyntaxDark.xshd" />
+		<EmbeddedResource Include="Resources\Games\plus.png" />
 		<EmbeddedResource Include="Resources\Games\sa1.png" />
 		<EmbeddedResource Include="Resources\Games\sa2.png" />
+		<EmbeddedResource Include="Resources\SA2Keyboard.cfg" />
 		<EmbeddedResource Include="Resources\SA2ModLoader.7z" />
 		<EmbeddedResource Include="Resources\SADXModLoader.7z" />
 	</ItemGroup>
@@ -85,7 +89,7 @@
 		<PackageReference Include="PropertyChanged.Fody" Version="4.1.0">
 			<PrivateAssets>all</PrivateAssets>
 			</PackageReference>
-		<PackageReference Include="SharpCompress" Version="0.38.0" />
+		<PackageReference Include="SharpCompress" Version="0.39.0" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />

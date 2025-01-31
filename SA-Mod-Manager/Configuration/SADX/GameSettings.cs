@@ -9,6 +9,7 @@ using System.CodeDom.Compiler;
 using System;
 using System.Text.Json.Serialization;
 using static SAModManager.Configuration.SA2.GameSettings;
+using SAModManager.Management;
 
 namespace SAModManager.Configuration.SADX
 {
@@ -32,6 +33,13 @@ namespace SAModManager.Configuration.SADX
 			Fullscreen,
 			Borderless,
 			CustomWindow
+		}
+
+		public enum RenderBackendOptions
+		{
+			Direct3D8 = 0,
+			Direct3D9 = 1,
+			Direct3D11 = 2
 		}
 
 		/// <summary>
@@ -196,8 +204,12 @@ namespace SAModManager.Configuration.SADX
 		public bool EnableScreenScaling { get; set; } = true;     // SADXLoaderInfo.StretchFullscreen
 		#endregion
 
-		[DefaultValue(0)]
-		public int RenderBackend { get; set; } = 0;
+		/// <summary>
+		/// Selected RenderBackend for use with SADX.
+		/// </summary>
+		[DefaultValue((int)RenderBackendOptions.Direct3D8)]
+		public int RenderBackend { get; set; } = (int)RenderBackendOptions.Direct3D8;
+
 		/// <summary>
 		/// Converts from original settings file.
 		/// </summary>
@@ -930,16 +942,10 @@ namespace SAModManager.Configuration.SADX
 				profileName += ".json";
 
 			// TODO: Fix this function
-			string path = Path.Combine(App.CurrentGame.ProfilesDirectory, profileName);
+			string path = Path.Combine(ProfileManager.GetProfilesDirectory(), profileName);
 			try
 			{
-				if (!Directory.Exists(App.CurrentGame.ProfilesDirectory))
-				{
-					App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
-					Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);	
-				}
-
-				if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+				if (Directory.Exists(ProfileManager.GetProfilesDirectory()))
 				{
 					if (profileName == "Default" || profileName == "Default.json")
 					{

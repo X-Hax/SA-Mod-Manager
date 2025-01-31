@@ -69,8 +69,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill">Background Fill Mode:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Stretch [Default]</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit">Fit</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Fill</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">FMV Fill Mode:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Fill</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">FMV Fill Mode:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.TexFilter">Texture Filtering:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.UIFilter">GUI Filtering</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Enhancements</system:String>
@@ -81,6 +81,11 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Download DXVK</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Using the button below allows you to download DXVK. This program can improve performance and stability with SA2. It will only download the program, it will not install it.</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Once you download the archive, you only need to extract d3d9.dll from the archive and place it in the game folder where sonic2app is.</system:String>
+
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend">Renderer Backend:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip">Sets the rendering backend to use the default in SADX (2004), Direct3D 8.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D9.ToolTip">Sets the rendering backend to use Direct3D 9 via the d3d8to9 shim.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D11.ToolTip">Sets the rendering backend to use Direct3D 11 via the d3d8to11 shim.</system:String>
     <!--#endregion-->
     
     <!--Options Tab Strings-->
