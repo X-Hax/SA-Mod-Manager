@@ -25,9 +25,10 @@ namespace SAModManager.Controls.SA2
         private static string patchesPath = null;
         #endregion
 
-        public GameConfig(ref object gameSettings)
+        public GameConfig(ref object gameSettings, ref bool suppressEvent_)
         {
             InitializeComponent();
+            suppressEvent = suppressEvent_;
             GameProfile = (GameSettings)gameSettings;
             if (App.CurrentGame?.modDirectory != null && Directory.Exists(App.CurrentGame.modDirectory))
             {

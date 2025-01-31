@@ -33,10 +33,12 @@ namespace SAModManager.Controls.SADX
 		private static string patchesPath = null;
 		#endregion
 
-		public GameConfig(ref object gameSettings)
+		public GameConfig(ref object gameSettings, ref bool suppressEvent_)
 		{
+		
 			InitializeComponent();
-			GameProfile = (GameSettings)gameSettings;
+            suppressEvent = suppressEvent_;
+            GameProfile = (GameSettings)gameSettings;
 			UpdateAppLauncherBtn();
             if (Directory.Exists(App.CurrentGame.modDirectory))
             {
@@ -169,8 +171,6 @@ namespace SAModManager.Controls.SADX
 						txtCustomResX.Value = GraphicsManager.ResolutionPresets[index].Width;
 					break;
 			}
-
-			suppressEvent = false;
 		}
 
         private void chkMaintainRatio_Click(object sender, RoutedEventArgs e)
@@ -797,7 +797,7 @@ namespace SAModManager.Controls.SADX
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
 			});
-			comboRenderBackend.SetBinding(ComboBox.SelectedIndexProperty, new Binding("RenderBackendSelection")
+			comboRenderBackend.SetBinding(ComboBox.SelectedIndexProperty, new Binding("RenderBackend")
 			{
 				Source = GameProfile.Graphics,
 				Mode = BindingMode.TwoWay
@@ -880,7 +880,10 @@ namespace SAModManager.Controls.SADX
 				Source = GameProfile,
 				Mode = BindingMode.TwoWay
 			});
-		}
+
+			comboRenderBackend = comboRenderBackend;
+
+        }
         #endregion
 	}
 }
