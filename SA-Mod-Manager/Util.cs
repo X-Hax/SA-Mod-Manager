@@ -41,7 +41,6 @@ namespace SAModManager
             "SADXModManager.exe",
         };
 
-
         public static List<string> BASSFiles = new()
         {
             "libogg.dll",
@@ -178,7 +177,6 @@ namespace SAModManager
             }
         }
 
-
         public static async Task MoveFile(string origin, string dest, bool overwrite = false)
         {
             try
@@ -205,7 +203,51 @@ namespace SAModManager
             }
         }
 
+		public static void CopyAllFiles(string sourceDirectory, string destinationDirectory, bool overwrite = true)
+		{
+			if (Directory.Exists(sourceDirectory))
+			{
+				Directory.CreateDirectory(destinationDirectory);
+				DirectoryInfo sDir = new DirectoryInfo(sourceDirectory);
+				DirectoryInfo dDir = new DirectoryInfo(destinationDirectory);
 
+				foreach (FileInfo fileInfo in sDir.GetFiles())
+				{
+					string destName = Path.Combine(dDir.FullName, fileInfo.Name);
+					fileInfo.CopyTo(destName, true);
+				}
+
+				foreach (DirectoryInfo subDir in sDir.GetDirectories())
+				{
+					CopyAllFiles(subDir.FullName, Path.Combine(destinationDirectory, subDir.Name), overwrite);
+				}
+			}
+		}
+
+        public static bool ExtractEmbeddedDLL(byte[] resource, string resourceName, string outputDirectory)
+        {
+            string outputFilePath = null;
+            try
+            {
+                Util.CreateSafeDirectory(outputDirectory);
+                outputFilePath = Path.Combine(outputDirectory, resourceName + ".dll");
+
+                // Get the resource stream from Properties.Resources
+                using Stream resourceStream = new MemoryStream(resource);
+                using (FileStream fileStream = new(outputFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    // Asynchronously copy the stream to the output file
+                    resourceStream.CopyTo(fileStream);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception during DLL extraction: {ex}");
+                return false;
+            }
+
+            return true;
+        }
 
 
         private static string FindExePath(string exeName)
@@ -223,7 +265,6 @@ namespace SAModManager
 
             return key?.GetValue("Path") as string;
         }
-
 
         public static async Task Exec7zipInstall()
         {
@@ -493,7 +534,6 @@ namespace SAModManager
             return false;
         }
 
-
         public static async Task Extract(string zipPath, string destFolder, bool overwrite = false)
         {
             try
@@ -694,7 +734,7 @@ namespace SAModManager
             if (App.isLinux && Directory.Exists(App.extLibPath) == false) //force portable mode for new users on Linux since it tends to work better.
             {
                 App.ConfigFolder = Path.Combine(App.StartDirectory, "SAManager");
-                App.extLibPath = Path.Combine(App.ConfigFolder, "extlib");
+                App.extLibPath = Path.Combine(App.CurrentGame.modDirectory, ".modloader", "extlib");
                 App.crashFolder = Path.Combine(App.ConfigFolder, "CrashDump");
             }
         }

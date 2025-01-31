@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using SAModManager.UI;
 using System.Collections.ObjectModel;
+using SAModManager.Management;
 using System.Text.Json.Serialization;
 
 namespace SAModManager.Profile
@@ -22,7 +23,7 @@ namespace SAModManager.Profile
         public string Filename { get; set; } = string.Empty;
 
 		[JsonIgnore]
-		public string Filepath { get { return Path.Combine(App.CurrentGame.modDirectory, ".profiles", Filename); } }
+		public string Filepath { get { return Path.Combine(ProfileManager.GetProfilesDirectory(), ".profiles", Filename); } }
 
         public ProfileEntry(string name, string filename)
         {
@@ -96,16 +97,15 @@ namespace SAModManager.Profile
         {
             try
             {
-                if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+                if (Directory.Exists(ProfileManager.GetProfilesDirectory()))
                 {
                     string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
                     File.WriteAllText(path, jsonContent);
                 }
                 else
                 {
-                    App.CurrentGame.ProfilesDirectory = Path.Combine(App.ConfigFolder, App.CurrentGame.gameAbbreviation);
-                    Util.CreateSafeDirectory(App.CurrentGame.ProfilesDirectory);
-                    if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
+                    Util.CreateSafeDirectory(ProfileManager.GetProfilesDirectory());
+                    if (Directory.Exists(ProfileManager.GetProfilesDirectory()))
                     {
 
                         string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
@@ -126,7 +126,7 @@ namespace SAModManager.Profile
         {
             try
             {
-                if (!string.IsNullOrEmpty(App.CurrentGame.ProfilesDirectory) && !string.IsNullOrWhiteSpace(App.CurrentGame.ProfilesDirectory))
+                if (!string.IsNullOrEmpty(ProfileManager.GetProfilesDirectory()) && !string.IsNullOrWhiteSpace(ProfileManager.GetProfilesDirectory()))
                 {
                     List<ProfileEntry> list = [];
                     int count = 0;
@@ -134,7 +134,7 @@ namespace SAModManager.Profile
                     {
                         if (entry is not null)
                         {
-                            if (!File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, entry.Filename)))
+                            if (!File.Exists(Path.Combine(ProfileManager.GetProfilesDirectory(), entry.Filename)))
                             {
                                 list.Add(entry);
                             }

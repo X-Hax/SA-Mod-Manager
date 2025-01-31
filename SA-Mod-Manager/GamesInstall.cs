@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using SAModManager.UI;
 using Newtonsoft.Json;
 using System.Net.Http;
+using SharpCompress;
 
 namespace SAModManager
 {
@@ -31,15 +32,21 @@ namespace SAModManager
         /// </summary>
         public string exeName { get; set; }
 
-        /// <summary>
-        /// Current game's main directory.
-        /// </summary>
-        public string gameDirectory;
+		/// <summary>
+		/// Current game's main directory.
+		/// </summary>
+		public string gameDirectory { get; set; } = string.Empty;
 
         /// <summary>
         /// Current game's mods directory.
         /// </summary>
-        public string modDirectory;
+        public string modDirectory 
+		{
+			get 
+			{
+				return Path.Combine(gameDirectory, "mods");
+			}
+		}
 
         /// <summary>
         /// Profiles Directory where Manager, Game Profiles, and other settings are stored.
@@ -60,9 +67,10 @@ namespace SAModManager
         /// List of the game's expected configuration files. Is a List due to SA2.
         /// </summary>
         public List<string> GameConfigFile { get; set; }
-        public SetGame id = SetGame.None;
+        public GameEntry.GameType id = GameEntry.GameType.Unsupported;
         public string gameAbbreviation { get; set; }
         public string oneClickName { get; set; }
+
     }
 
     public enum Format
@@ -106,7 +114,6 @@ namespace SAModManager
 
     public static class GamesInstall
     {
-
         public static async Task InstallDLL_Loader(Game game, bool isupdate = false)
         {
             if (game is null || !File.Exists(Path.Combine(game?.gameDirectory, game?.exeName)))
@@ -202,6 +209,35 @@ namespace SAModManager
             }
         }
 
+        public static int GetMultipleGamesInstallCount(Game newGame, string newGamePath)
+        {
+            int count = 0;
+            foreach (var oldGame in App.GamesList)
+            {
+                if (oldGame.gameName.Equals(newGame.gameName, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    if (oldGame.gameDirectory != newGamePath)
+                        count++;
+                }
+            }
+
+            return count;
+        }
+
+        public static bool IsMultipleGamesInstall(Game newGame, string newGamePath)
+        {
+            foreach (var oldGame in App.GamesList)
+            {
+                if (oldGame.gameName.Equals(newGame.gameName, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    if (oldGame.gameDirectory != newGamePath)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         public static async Task<bool> UpdateLoader(Game game, string dlLink, bool update = true)
         {
             if (game is null)
@@ -255,8 +291,11 @@ namespace SAModManager
                 if (success)
                 {
                     List<string> excludeFile = ["extlib"];
-                    await Util.ExtractWExcludeFile(pathFinal, game.modDirectory, excludeFile);
-                    await Util.ExtractSpecificFile(pathFinal, "extlib", App.ConfigFolder);
+                    await Util.Extract(pathFinal, game.modDirectory, true);
+                    string ExtLibPath = Path.GetFullPath(Path.Combine(game.modDirectory, "extlib"));
+                    if (Directory.Exists(ExtLibPath)) 
+                        Directory.Move(ExtLibPath, App.extLibPath);
+      
                     if (update)
                         File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
 
@@ -273,8 +312,16 @@ namespace SAModManager
             return false;
         }
 
+        public static Game Unknown = new()
+        {
+            gameName = "No Game"
+        };
 
-        public static Game Unknown = new();
+        public static Game AddGame = new()
+        {
+            gameName = Lang.GetString("Manager.Buttons.AddGame"),
+            gameImage = App.GetResourceUri("Games.plus.png")
+        };
 
         public static Game SonicAdventure = new()
         {
@@ -283,7 +330,7 @@ namespace SAModManager
             exeList = ["sonic.exe", "Sonic Adventure DX.exe"],
             exeName = "sonic.exe",
             defaultIniProfile = "SADXModLoader.ini",
-            id = SetGame.SADX,
+            id = GameEntry.GameType.SADX,
             gameAbbreviation = "SADX",
             oneClickName = "sadxmm",
 
@@ -320,7 +367,7 @@ namespace SAModManager
             gameImage = App.GetResourceUri("Games.sa2.png"),
             exeName = "sonic2app.exe",
             defaultIniProfile = "SA2ModLoader.ini",
-            id = SetGame.SA2,
+            id = GameEntry.GameType.SA2,
             gameAbbreviation = "SA2",
             oneClickName = "sa2mm",
 
@@ -353,13 +400,19 @@ namespace SAModManager
             },
         };
 
+        private static readonly List<Game> _supportedGames = new List<Game>
+        {
+            SonicAdventure,
+            SonicAdventure2
+        };
+
         public static IEnumerable<Game> GetSupportedGames()
         {
             yield return SonicAdventure;
             yield return SonicAdventure2;
         }
 
-        public static Game GetGamePerID(SetGame gameID)
+        public static Game GetGamePerID(GameEntry.GameType gameID)
         {
             foreach (var game in GetSupportedGames())
             {
@@ -372,24 +425,41 @@ namespace SAModManager
 
         public static void LoadMissingGamesList()
         {
-            foreach (var id in App.ManagerSettings?.gamesInstalled)
+            foreach (GameEntry entry in App.ManagerSettings.GameEntries)
             {
-                var game = GetGamePerID((SetGame)id);
-                if (id > 0 && App.GamesList.Contains(game) == false && game != null)
+                var game = GetGamePerID(entry.Type);
+                if (entry.Type > 0 && App.GamesList.Contains(game) == false && game != null)
                 {
+                    game.gameDirectory = entry.Directory;
                     App.GamesList.Add(game);
                 }
             }
         }
 
+        public static bool IsGameListEmpty()
+        {
+            bool supported = false;
+            foreach (var game in GetSupportedGames())
+            {
+                if (App.GamesList.Contains(game) == true)
+                {
+                    supported = true;
+                    break;
+                }
+            }
+
+            return supported == false || App.GamesList.Count == 0;
+        }
+
         public static void AddMissingGamesList(Game game)
         {
-            if (App.ManagerSettings?.gamesInstalled.Contains((uint)game.id) == false)
-                App.ManagerSettings?.gamesInstalled.Add((uint)game.id);
+			GameEntry entry = new(game);
+            if (App.ManagerSettings?.GameEntries.Contains(entry) == false)
+                App.ManagerSettings?.GameEntries.Add(entry);
         }
 
 
-        public static SetGame SetGameInstallManual(string GamePath)
+        public static GameEntry.GameType SetGameInstallManual(string GamePath)
         {
             foreach (var game in GamesInstall.GetSupportedGames())
             {
@@ -405,10 +475,10 @@ namespace SAModManager
                 }
             }
 
-            return SetGame.None;
+            return GameEntry.GameType.Unsupported;
         }
 
-        public static SetGame SetGameInstall(string GamePath, Game game, bool skipMSG = false)
+        public static GameEntry.GameType SetGameInstall(string GamePath, Game game, bool skipMSG = false)
         {
 
             string path = Path.Combine(GamePath, game.exeName);
@@ -434,11 +504,15 @@ namespace SAModManager
             }
 
 
-            return SetGame.None;
+            return GameEntry.GameType.Unsupported;
         }
 
         public static void AddGamesInstall()
         {
+
+            GamesInstall.LoadMissingGamesList();
+
+
             Logger.Log("\nAuto Game Detection starts now...");
             Logger.Log("Now looking for games in the same folder as the Manager...");
             try
@@ -447,8 +521,10 @@ namespace SAModManager
                 {
                     string path = Path.Combine(App.StartDirectory, game.exeName);
                     Logger.Log("Checking for: " + path);
-                    if (File.Exists(path))
+                    if (File.Exists(path) && !App.GamesList.Contains(game))
                     {
+                        Logger.Log("Found Game locally!");
+                        game.gameDirectory = path;
                         App.GamesList.Add(game);
                         AddMissingGamesList(game);
                     }
@@ -465,7 +541,8 @@ namespace SAModManager
                         Logger.Log("Checking for: " + gameInstallPath);
                         if (Directory.Exists(gameInstallPath) && !App.GamesList.Contains(game))
                         {
-                            Logger.Log("Found Game!");
+                            Logger.Log("Found Game through Steam!");
+                            game.gameDirectory = gameInstallPath;
                             App.GamesList.Add(game);
                             AddMissingGamesList(game);
                         }
@@ -473,7 +550,11 @@ namespace SAModManager
                     }
                 }
 
-                GamesInstall.LoadMissingGamesList();
+
+                if (App.GamesList.Count <= 0 || GamesInstall.IsGameListEmpty())
+                {
+                    App.GamesList.Add(GamesInstall.Unknown);
+                }
 
 
             }
@@ -512,12 +593,10 @@ namespace SAModManager
 
                 if (string.IsNullOrEmpty(gameDir) == false)
                 {
-                    App.ManagerSettings.CurrentSetGame = (int)game.id;
-                    if (App.CurrentGame.id != SetGame.None)
+                    //App.ManagerSettings.CurrentSetGame = (int)game.id;
+                    if (App.CurrentGame.id != GameEntry.GameType.Unsupported)
                     {
-                        ((MainWindow)App.Current.MainWindow).tempPath = gameDir;
                         App.CurrentGame.gameDirectory = gameDir;
-                        ((MainWindow)App.Current.MainWindow).textGameDir.Text = gameDir;
                     }
                 }
                 else
@@ -527,12 +606,10 @@ namespace SAModManager
                         path = Path.Combine(pathValue, "steamapps", "common", game.gameName);
                         if (Directory.Exists(path))
                         {
-                            App.ManagerSettings.CurrentSetGame = (int)game.id;
-                            if (App.CurrentGame.id != SetGame.None)
+                            //App.ManagerSettings.CurrentSetGame = (int)game.id;
+                            if (App.CurrentGame.id != GameEntry.GameType.Unsupported)
                             {
-                                ((MainWindow)App.Current.MainWindow).tempPath = path;
                                 App.CurrentGame.gameDirectory = path;
-                                ((MainWindow)App.Current.MainWindow).textGameDir.Text = path;
                             }
                         }
                     }
@@ -688,14 +765,13 @@ namespace SAModManager
             return success;
         }
 
-
         private static bool FindAndSetGameInPaths(string pathValue, Game game, bool skipMSG = false)
         {
             if (Directory.Exists(pathValue))
             {
                 var setGame = GamesInstall.SetGameInstall(pathValue, game, skipMSG);
 
-                if (setGame != SetGame.None)
+                if (setGame != GameEntry.GameType.Unsupported)
                 {
                     ((MainWindow)App.Current.MainWindow).tempPath = pathValue;
                     App.CurrentGame.gameDirectory = pathValue;

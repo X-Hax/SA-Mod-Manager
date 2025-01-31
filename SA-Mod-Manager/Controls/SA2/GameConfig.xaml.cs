@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using SAModManager.Configuration.SA2;
+using SAModManager.Management;
 
 namespace SAModManager.Controls.SA2
 {
@@ -397,7 +398,13 @@ namespace SAModManager.Controls.SA2
 				Source = GameProfile.TestSpawn,
 				Mode = BindingMode.TwoWay
 			});
-        }
+
+			DebugConfig.SetBinding(DebugOptions.SettingsProperty, new Binding("DebugSettings")
+			{
+				Source = GameProfile,
+				Mode = BindingMode.TwoWay
+			});
+		}
 		#endregion
 
 		private void DownloadDXVK_Click(object sender, RoutedEventArgs e)

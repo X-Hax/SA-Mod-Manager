@@ -470,10 +470,10 @@ namespace SAModManager
             {
                 switch (App.CurrentGame.id)
                 {
-                    case SetGame.SADX:
+                    case GameEntry.GameType.SADX:
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "system/SoundData/bgm/wma"));
                         break;
-                    case SetGame.SA2:
+                    case GameEntry.GameType.SA2:
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "gd_PC/ADX"));
                         break;
                 }
@@ -483,10 +483,10 @@ namespace SAModManager
             {
                 switch (App.CurrentGame.id)
                 {
-                    case SetGame.SADX:
+                    case GameEntry.GameType.SADX:
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "system/SoundData/SE"));
                         break;
-                    case SetGame.SA2:
+                    case GameEntry.GameType.SA2:
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "gd_PC/MPB"));
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "gd_PC/MLT"));
                         break;
@@ -496,11 +496,11 @@ namespace SAModManager
             {
                 switch (App.CurrentGame.id)
                 {
-                    case SetGame.SADX:
+                    case GameEntry.GameType.SADX:
                         Util.CreateSafeDirectory(Path.Combine(moddir, "textures"));
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "ReplaceTex"));
                         break;
-                    case SetGame.SA2:
+                    case GameEntry.GameType.SA2:
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "gd_PC/PRS"));
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "ReplaceTex"));
                         break;
@@ -511,10 +511,10 @@ namespace SAModManager
             {
                 switch (App.CurrentGame.id)
                 {
-                    case SetGame.SADX:
+                    case GameEntry.GameType.SADX:
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "system"));
                         break;
-                    case SetGame.SA2:
+                    case GameEntry.GameType.SA2:
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "gd_PC"));
                         break;
                 }
@@ -636,8 +636,8 @@ namespace SAModManager
 
         private void HandleSaveRedirection(string modDirectory)
         {
-            bool isSADX = App.CurrentGame?.id == Configuration.SetGame.SADX;
-            bool isSA2 = App.CurrentGame?.id == Configuration.SetGame.SA2;
+            bool isSADX = App.CurrentGame?.id == GameEntry.GameType.SADX;
+            bool isSA2 = App.CurrentGame?.id == GameEntry.GameType.SA2;
             string save = "SAVEDATA";
 
             if (isSA2)

@@ -38,7 +38,11 @@
 	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Koodi autor</system:String>
 	<!--#endregion-->
 
-	<!--#region Manager Config Tab Strings-->
+    <!--Game-->
+    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <!--#endregion-->
+
+    <!--#region Manager Config Tab Strings-->
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Seadused</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Teemasid:</system:String>
@@ -137,7 +141,7 @@
  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Luba tekstuuride filtreerimine kõigi mudelite jaoks.</system:String>
   	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Lubage kõigi liidese tekstuuride tekstuuride filtreerimine.</system:String>
   	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Konfigureerige joonistuskauguse üksikasjade tase.</system:String>
-  	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">Määrake laiekraanil mängides tausta täitmise režiimiks servad, kuid fikseeritud renderdussuhtega 4:3.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill" xml:space="preserve">Sets the scaling mode for backgrounds&#x0a;Stretch: The backgrounds will be stretched without maintaining the aspect ratio.&#x0a;Fit: The backgrounds will be displayed with borders.&#x0a;Fill: The backgrounds will be cropped and zoomed in to display without borders.</system:String>
   	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Video täitmisrežiimi määramine.</system:String>
   	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Looge kõigi tekstuuride jaoks mipkaardid, isegi kui neid pole vaja.</system:String>
   	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Lubab D3D8to9 tarkvarakihi, mis võimaldab mängul D3D9 renderdusfunktsioone kasutada. Mõne modifikatsiooni töötamiseks on vajalik.</system:String>

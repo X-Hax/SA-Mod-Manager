@@ -26,6 +26,7 @@
         <ResourceDictionary Source="Updater/en-EN.xaml"/>
         <ResourceDictionary Source="MainWindow/UpdateStatus/en-EN.xaml"/>
 		<ResourceDictionary Source="ExceptionHandler/en-EN.xaml"/>
+		<ResourceDictionary Source="AdvancedSettingsWindow/en-EN.xaml"/>
 	</ResourceDictionary.MergedDictionaries>
     
     <!--Region Common UI-->

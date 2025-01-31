@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using SAModManager.UI;
+using SAModManager.Management;
 
 namespace SAModManager.Profile
 {
@@ -63,7 +64,7 @@ namespace SAModManager.Profile
 
             if (string.IsNullOrWhiteSpace(ProfileNameTextbox.Text) == false)
             {
-                if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileFilename)))
+                if (File.Exists(Path.Combine(ProfileManager.GetProfilesDirectory(), profileFilename)))
                 {
                     new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                     return;
@@ -71,7 +72,7 @@ namespace SAModManager.Profile
 
                 switch (App.CurrentGame.id)
                 {
-                    case SetGame.SADX:
+                    case GameEntry.GameType.SADX:
                         Configuration.SADX.GameSettings sadxSettings = new()
                         {
                             GamePath = App.CurrentGame.gameDirectory,
@@ -83,7 +84,7 @@ namespace SAModManager.Profile
                         }
                         ProfileManager.AddNewProfile(profileName, sadxSettings);
                         break;
-                    case SetGame.SA2:
+                    case GameEntry.GameType.SA2:
                         Configuration.SA2.GameSettings sa2Settings = new()
                         {
                             GamePath = App.CurrentGame.gameDirectory,
@@ -108,7 +109,7 @@ namespace SAModManager.Profile
 
             if (profileName != string.Empty)
             {
-                if (File.Exists(Path.Combine(App.CurrentGame.ProfilesDirectory, profileName + ".json")))
+                if (File.Exists(Path.Combine(ProfileManager.GetProfilesDirectory(), profileName + ".json")))
                 {
                     new MessageWindow(Lang.GetString("ManagerProfile.Errors.ProfileExists.Title"), Lang.GetString("ManagerProfile.Errors.ProfileExists"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                     return;

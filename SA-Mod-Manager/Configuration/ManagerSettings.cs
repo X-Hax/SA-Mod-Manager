@@ -8,20 +8,17 @@ using SAModManager.Configuration.SA2;
 using SAModManager.Configuration.SADX;
 using System.Collections.Generic;
 using System.Security.RightsManagement;
+using System.Text;
 
 namespace SAModManager.Configuration
 {
     public enum ManagerSettingsVersions
     {
-        v0 = 0,
-        v1 = 1,
-    }
+        v0 = 0,	// V0: Pre-Release
+        v1 = 1,	// V1: Initial Release
+		v2 = 2,	// V2: Migrated to GameEntry system for managing game selection setup.
 
-    public enum SetGame
-    {
-        None = 0,
-        SADX = 1,
-        SA2 = 2,
+		MAX,
     }
 
     public class UpdateSettings
@@ -106,20 +103,89 @@ namespace SAModManager.Configuration
         }
     }
 
+	public class AdvancedSettings
+	{
+		
+
+		public AdvancedSettings() { }
+	}
+
+	public class GameEntry
+	{
+		public enum GameType
+		{
+			Unsupported = 0,
+			SADX = 1,
+			SA2 = 2,
+		}
+
+		/// <summary>
+		/// Name of the <see cref="GameEntry"/>.
+		/// </summary>
+		public string Name { get; set; }
+
+		/// <summary>
+		/// Installation directory of the <see cref="GameEntry"/>.
+		/// </summary>
+		public string Directory { get; set; }
+
+		/// <summary>
+		/// Executable name for the <see cref="GameEntry"/>
+		/// </summary>
+		public string Executable { get; set; }
+
+		/// <summary>
+		/// <see cref="GameType"/> for the <see cref="GameEntry"/>.
+		/// </summary>
+		public GameType Type { get; set; }
+
+		public GameEntry() { }
+
+		public GameEntry(Game game)
+		{
+			Name = game.gameName;
+			Directory = game.gameDirectory;
+			Executable = game.exeName;
+			Type = game.id;
+		}
+
+		public void Create(string executablePath)
+		{
+			Executable = Path.GetFileName(executablePath);
+			Directory = Path.GetDirectoryName(executablePath);
+
+			switch (Executable)
+			{
+				default:
+					Name = Path.GetFileNameWithoutExtension(Executable);
+					Type = GameType.Unsupported;
+					break;
+				case "sonic.exe":
+					Name = "Sonic Adventure DX";
+					Type = GameType.SADX;
+					break;
+				case "sonic2app.exe":
+				case "sonic2app_decrypted.exe":
+					Name = "Sonic Adventure 2";
+					Type = GameType.SA2;
+					break;
+			}
+		}
+	}
+
     public class ManagerSettings
     {
         /// <summary>
         /// Versioning for the Manager Settings file.
         /// </summary>
-        [IniAlwaysInclude]
-        [DefaultValue((int)ManagerSettingsVersions.v1)]
-        public int SettingsVersion { get; set; } = (int)ManagerSettingsVersions.v1;
+        [DefaultValue((int)ManagerSettingsVersions.MAX-1)]
+        public int SettingsVersion { get; set; } = (int)(ManagerSettingsVersions.MAX-1);
 
         /// <summary>
         /// Last Loaded Game
         /// </summary>
-        [DefaultValue((int)SetGame.None)]
-        public int CurrentSetGame { get; set; } = (int)SetGame.None;
+        [DefaultValue(-1)]
+        public int CurrentSetGame { get; set; } = -1;
 
         /// <summary>
         /// The set Theme for the Manager.
@@ -155,8 +221,16 @@ namespace SAModManager.Configuration
         /// </summary>
         [IniAlwaysInclude]
         public UpdateSettings UpdateSettings { get; set; } = new();
-        //store game id installed 
-        public List<uint> gamesInstalled { get; set; } = new();
+
+		/// <summary>
+		/// Advanced Settings for the Manager.
+		/// </summary>
+		//public AdvancedSettings AdvancedSettings { get; set; } = new();
+
+		/// <summary>
+		/// List of installed games.
+		/// </summary>
+		public List<GameEntry> GameEntries { get; set; } = new();
 
         public double managerWidth { get; set; }
         public double managerHeight { get; set; }
@@ -176,7 +250,18 @@ namespace SAModManager.Configuration
                 {
                     string jsonContent = File.ReadAllText(path);
 
-                    return JsonSerializer.Deserialize<ManagerSettings>(jsonContent);
+					ManagerSettings settings = JsonSerializer.Deserialize<ManagerSettings>(jsonContent);
+
+					// Switch case to bump settings version. Allows for manual adjustment if needed for any version bumps.
+					switch (settings.SettingsVersion)
+					{
+						default:
+							if (settings.SettingsVersion < (int)(ManagerSettingsVersions.MAX - 1))
+								settings.SettingsVersion = (int)(ManagerSettingsVersions.MAX - 1);
+							break;
+					}
+
+                    return settings;
                 }
                 else
                 {

@@ -1,0 +1,52 @@
+﻿<Window x:Class="SAModManager.UI.AdvancedSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SAModManager.UI" 
+        mc:Ignorable="d" Style="{DynamicResource SAWindow}" xmlns:p="clr-namespace:SAModManager.Properties"
+        Title="{DynamicResource Advancedwindow.Title}" Height="450" Width="600">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="150"/>
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Border Grid.Column="0" BorderBrush="{DynamicResource Borders.Brushes.Border}" BorderThickness="2" CornerRadius="2" Margin="5">
+				<ScrollViewer>
+					<Grid Margin="5">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<CheckBox x:Name="chkPortableMode" Click="chkPortableMode_Click" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=IsPortable, Mode=TwoWay}" Content="{DynamicResource AdvancedWindow.Option.PortableMode}" Tag="{DynamicResource AdvancedWindow.Option.PortableMode.Description}" MouseEnter="CheckBox_MouseEnter" MouseLeave="CheckBox_MouseLeave"/>
+					</Grid>
+				</ScrollViewer>
+			</Border>
+			<Grid Grid.Column="1">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<TextBlock Grid.Row="0" Text="{DynamicResource CommonStrings.Description}" Margin="5"/>
+				<TextBlock x:Name="SettingDescription" Grid.Row="1" Margin="10"/>
+			</Grid>
+		</Grid>
+
+		<GroupBox Grid.Row="1" Margin="5" Header="Manage User Settings">
+			<Grid Margin="5">
+				<UniformGrid Rows="2" Columns="2">
+					<Button x:Name="btnBackupSettings" Content="{DynamicResource Advancedwindow.Buttons.BackupSettings}" Margin="5" ToolTip="{DynamicResource Advancedwindow.Buttons.BackupSettings.ToolTip}"/>
+					<Button x:Name="btnImportSettings" Content="{DynamicResource AdvancedWindow.Buttons.ImportSettings}" Margin="5" ToolTip="{DynamicResource AdvancedWindow.Buttons.ImportSettings.ToolTip}"/>
+					<Button x:Name="btnDeleteSettings" Content="{DynamicResource AdvancedWindow.Buttons.DeleteSettings}" Margin="5" ToolTip="{DynamicResource AdvancedWindow.Buttons.DeleteSettings.ToolTip}"/>
+					<Button x:Name="btnOpenSettings" Content="{DynamicResource AdvancedWindow.Buttons.OpenSettings}" Margin="5" ToolTip="{DynamicResource AdvancedWindow.Buttons.OpenSettings.ToolTip}"/>
+				</UniformGrid>
+			</Grid>
+		</GroupBox>
+		
+    </Grid>
+</Window>

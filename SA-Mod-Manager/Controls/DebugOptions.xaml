@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="SAModManager.Controls.DebugOptions"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SAModManager.Controls"
+             mc:Ignorable="d" x:Name="DebugSettingsControl" Loaded="DebugSettingsControl_Loaded"
+             d:DesignHeight="100" d:DesignWidth="500">
+	<GroupBox Header="Debug Settings">
+		<Grid Margin="10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<CheckBox x:Name="checkEnableLogConsole" Grid.Row="0" Grid.Column="0" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console}" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.ConsoleWindow}"/>
+			<CheckBox x:Name="checkEnableLogScreen" Grid.Row="0" Grid.Column="1" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug}" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.PrintDebug}" />
+			<CheckBox x:Name="checkEnableLogFile" Grid.Row="1" Grid.Column="0" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug}" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.LogDebug}" />
+			<CheckBox x:Name="checkEnableCrashDump" Grid.Row="1" Grid.Column="1" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps}" Margin="5" VerticalAlignment="Center" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.CrashDumps}" />
+		</Grid>
+	</GroupBox>
+</UserControl>

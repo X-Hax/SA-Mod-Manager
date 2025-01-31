@@ -38,6 +38,10 @@
     <system:String x:Key="Manager.Tabs.Codes.MadeBy">제작:</system:String>
     <!--#endregion-->
 
+    <!--Game-->
+    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <!--#endregion-->
+
     <!--#region Manager Config Tab Strings-->
     <!--Options-->
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">옵션</system:String>
@@ -132,7 +136,7 @@
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">모든 모델 텍스쳐에 대한 텍스쳐 타입을 설정합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">모든 GUI 관련 텍스쳐에 대한 텍스쳐 필터링 타입을 설정합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">당기는 거리에 대한 디테일 레벨을 설정합니다.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill">고정된 4:3 렌더 비율로 와이드스크린에서 재생할 때 테두리 이미지의 채우기 방법을 설정합니다.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill" xml:space="preserve">Sets the scaling mode for backgrounds&#x0a;Stretch: The backgrounds will be stretched without maintaining the aspect ratio.&#x0a;Fit: The backgrounds will be displayed with borders.&#x0a;Fill: The backgrounds will be cropped and zoomed in to display without borders.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">게임이 FMV 재생할 때 채우기 방법을 설정합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">미니맵이 없는 모든 텍스쳐에 대해 미니맵을 생성합니다.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">D3D8to9 Shim 사용하여 게임에서 D3D9 기능을 활성화합니다. 이 기능을 키려면 일부 모드가 필요합니다.</system:String>
