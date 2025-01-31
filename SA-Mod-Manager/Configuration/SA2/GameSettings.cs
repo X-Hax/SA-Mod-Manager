@@ -442,8 +442,6 @@ namespace SAModManager.Configuration.SA2
 
             Graphics.ToConfigs(ref config);
 
-
-
             if (Directory.Exists(GamePath))
             {
                 string keyboardPath = Path.GetFullPath(Path.Combine(GamePath, App.CurrentGame.GameConfigFile[0]));
