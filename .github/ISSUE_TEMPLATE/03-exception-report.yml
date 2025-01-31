@@ -11,7 +11,7 @@ body:
     - label: I have checked and verified there are no similar reports.
       required: true
 - type: textarea
-  id: report
+  id: body
   attributes:
     label: Exception Report
     description: Please paste your Exception Report here. Include any additional crash related files here.
