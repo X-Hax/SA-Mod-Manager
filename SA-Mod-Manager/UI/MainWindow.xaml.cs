@@ -1086,7 +1086,7 @@ namespace SAModManager
                 UIHelper.ToggleImgButton(ref btnBrowseGameDir, false);
                 UIHelper.ToggleImgButton(ref btnProfileSettings, false);
                 App.CancelUpdate = true;
-                Save();
+        
                 var game = GamesInstall.GetGamePerID(setGame);
                 bool isMultipleInstall = App.GamesList.Contains(game) && GamesInstall.IsMultipleGamesInstall(game, path);
  
@@ -1118,7 +1118,7 @@ namespace SAModManager
                 UIHelper.ToggleImgButton(ref btnBrowseGameDir, true);
                 App.GamesList.Add(GamesInstall.AddGame);
                 suppressEvent = false;
-                Refresh();
+                Save();
                 return true;
             }
         }
@@ -1441,12 +1441,12 @@ namespace SAModManager
             {
                 case GameEntry.GameType.SADX:
                     EnableUI(true);
-                    stackPanel.Children.Add(new Controls.SADX.GameConfig(ref GameProfile));
+                    stackPanel.Children.Add(new Controls.SADX.GameConfig(ref GameProfile, ref suppressEvent));
                     tsPanel.Children.Add(new Controls.SADX.TestSpawn(ref GameProfile));
                     break;
                 case GameEntry.GameType.SA2:
                     EnableUI(true);
-                    stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile));
+                    stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile, ref suppressEvent));
                     tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile));
                     break;
                 case GameEntry.GameType.Unsupported:
