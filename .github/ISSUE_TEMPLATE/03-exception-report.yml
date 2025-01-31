@@ -14,7 +14,7 @@ body:
   id: ex-report
   attributes:
     label: Exception Report
-    description: Please paste your Exception Report here. Include any additional crash related files here.
+    description: Please share your Exception Report is here. You can include any additional crash related files here.
   validations:
     required: true
 - type: textarea

@@ -167,9 +167,8 @@ namespace SAModManager.UI
 				Clipboard.SetText(SettingsReport());
 
 			string url = "https://github.com/X-Hax/SA-Mod-Manager/issues/new";
-			url += $"?title=[Error+Report]:";  // Add Title
-			url += $"&labels=exception+report"; // Add Label
-			url += $"&body={Uri.EscapeDataString(ExceptionReport(true, true))}"; // Add Body
+			url += $"?template=03-exception-report.yml";  // Add template
+			url += $"&ex-report={Uri.EscapeDataString(ExceptionReport(true, true))}"; // Add Body
 
             var ps = new ProcessStartInfo(url)
             {
