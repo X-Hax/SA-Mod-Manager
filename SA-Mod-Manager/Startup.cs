@@ -1,4 +1,5 @@
-﻿using SAModManager.Management;
+﻿using Microsoft.Win32;
+using SAModManager.Management;
 using SAModManager.UI;
 using SAModManager.Updater;
 using System;
@@ -13,18 +14,31 @@ namespace SAModManager
 {
     public class Startup
     {
-        static private readonly List<string> VCPaths = new()
-        {
-            Path.Combine(Environment.SystemDirectory, "vcruntime140.dll"),
-            Path.Combine(Environment.SystemDirectory, "msvcr120.dll"),
-        };
 
-        static private readonly List<string> VCURLs = new()
+        static bool IsVCRedistInstalled()
         {
-            "https://aka.ms/vs/17/release/vc_redist.x86.exe",
-            "https://aka.ms/highdpimfc2013x86enu",
-        };
+            try
+            {
+                string regKeyPath = @"SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\x86";
 
+                using RegistryKey key = Registry.LocalMachine.OpenSubKey(regKeyPath);
+                if (key != null)
+                {
+                    object installedValue = key.GetValue("Installed");
+                    if (installedValue is int installed && installed == 1)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            catch { }
+
+            return true;
+        }
+
+        static private readonly string VCURLs = "https://aka.ms/vs/17/release/vc_redist.x86.exe";
 
         private static async Task SetLanguageFirstBoot()
         {
@@ -65,54 +79,50 @@ namespace SAModManager
             }
 
 
-			SettingsManager.SaveSettings();
+            SettingsManager.SaveSettings();
             await Task.Delay(20);
         }
 
         private static async Task VC_DependenciesCheck()
         {
-            if (Environment.OSVersion.Platform >= PlatformID.Unix)
-                return;
 
-            for (int i = 0; i < VCPaths.Count; i++)
+            if (!IsVCRedistInstalled())
             {
-                if (!File.Exists(VCPaths[i]))
+                var dialog = new MessageWindow(Lang.GetString("MessageWindow.Errors.VCMissing.Title"), Lang.GetString("MessageWindow.Errors.VCMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
+                dialog.ShowDialog();
+
+                if (dialog.isYes)
                 {
-                    var dialog = new MessageWindow(Lang.GetString("MessageWindow.Errors.VCMissing.Title"), Lang.GetString("MessageWindow.Errors.VCMissing"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
-                    dialog.ShowDialog();
+                    Uri uri = new(VCURLs + "\r\n");
+                    var info = new List<DownloadInfo>
+                        {
+                            new("Visual C++", "vc_redist.x86.exe", null, uri, DownloadDialog.DLType.Download)
+                        };
 
-                    if (dialog.isYes)
+                    var DL = new DownloadDialog(info);
+
+                    DL.DownloadFailed += (ex) =>
                     {
-                        Uri uri = new(VCURLs[i] + "\r\n");
-                        var info = new List<DownloadInfo>
+                        DL.DisplayDownloadFailedMSG(ex, "vc_redist.x86.exe");
+                    };
+
+                    DL.StartDL();
+
+                    if (DL.errorCount <= 0)
+                    {
+                        // Asynchronous operation using async/await
+                        await Process.Start(new ProcessStartInfo(Path.Combine(App.tempFolder, "vc_redist.x86.exe"), "/Q /install /quiet /norestart")
                         {
-                            new DownloadInfo("Visual C++", "vc_redist.x86.exe", null, uri, DownloadDialog.DLType.Update)
-                        };
+                            UseShellExecute = true,
+                            Verb = "runas"
+                        }).WaitForExitAsync();
+                    };
 
-                        var DL = new DownloadDialog(info);
-
-                        DL.DownloadFailed += (ex) =>
-                        {
-                            DL.DisplayDownloadFailedMSG(ex, "vc_redist.x86.exe");
-                        };
-
-                        DL.StartDL();
-
-                        if (DL.errorCount <= 0)
-                        {
-                            // Asynchronous operation using async/await
-                            await Process.Start(new ProcessStartInfo(Path.Combine(App.tempFolder, "vc_redist.x86.exe"), "/Q /install /quiet /norestart")
-                            {
-                                UseShellExecute = true,
-                                Verb = "runas"
-                            }).WaitForExitAsync();
-                        };
-
-                        return;
-                    }
-
+                    return;
                 }
+
             }
+        
         }
 
         private static async Task InitConfigFolder()
@@ -128,7 +138,7 @@ namespace SAModManager
                 }
 
             }
-            catch {}
+            catch { }
 
         }
 
