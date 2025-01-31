@@ -48,6 +48,7 @@
 		<None Remove="Resources\Games\plus.png" />
 		<None Remove="Resources\Games\sa1.png" />
 		<None Remove="Resources\Games\sa2.png" />
+		<None Remove="Resources\SA2Keyboard.cfg" />
 		<None Remove="Resources\SA2ModLoader.7z" />
 		<None Remove="Resources\SADXModLoader.7z" />
 		<None Remove="Updater\ModDownloadDialog.xaml.cs~RF2e7deabf.TMP" />
@@ -64,6 +65,7 @@
 		<EmbeddedResource Include="Resources\Games\plus.png" />
 		<EmbeddedResource Include="Resources\Games\sa1.png" />
 		<EmbeddedResource Include="Resources\Games\sa2.png" />
+		<EmbeddedResource Include="Resources\SA2Keyboard.cfg" />
 		<EmbeddedResource Include="Resources\SA2ModLoader.7z" />
 		<EmbeddedResource Include="Resources\SADXModLoader.7z" />
 	</ItemGroup>

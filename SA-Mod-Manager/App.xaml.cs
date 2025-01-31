@@ -648,6 +648,22 @@ namespace SAModManager
             }
         }
 
+        public static void ExtractResource(string resourceName, string outputPath)
+        {
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            string fullResourceName = assembly.GetName().Name + ".Resources." + resourceName;
+            using Stream stream = assembly.GetManifestResourceStream(fullResourceName);
+            if (stream == null)
+            {
+                Console.WriteLine($"Resource not found: {fullResourceName}");
+                return;
+            }
+
+            using FileStream fileStream = File.Create(outputPath);
+            stream.CopyTo(fileStream);
+        }
+
         public static Uri GetResourceUri(string resourceName)
         {
             // Get the assembly where the resource is located
