@@ -1,0 +1,35 @@
+name: "Exception Report"
+description: "Report a crash from the Mod Manager. DO NOT report game crashes."
+title: "[Exception Report]: "
+labels: ["exception report", "bug"]
+body:
+- type: checkboxes
+  attributes:
+    label: Report Verification
+    description: Before submitting your Exception Report, please check the Issues on the repo for any similar reports. If you find one, please add your report to that issue.
+    options:
+    - label: I have checked and verified there are no similar reports.
+      required: true
+- type: textarea
+  attributes:
+    label: Exception Report
+    description: Please paste your Exception Report here. Include any additional crash related files here.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Reproduction Steps
+    description: Please provide the steps you were taking when the bug occurred.
+    value: |
+      1. 
+      2. 
+      3. 
+      ...
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Additional Information
+    description: Please provide any additional information you believe may pertain to this bug. You can provide screenshots, videos, and any potential logs by clicking this area to highlight it, then dragging the file(s) in.
+  validations:
+    required: false

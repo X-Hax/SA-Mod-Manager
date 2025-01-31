@@ -1235,7 +1235,7 @@ namespace SAModManager
         private void OpenManagerIssue()
         {
             string url = "https://github.com/X-Hax/SA-Mod-Manager/issues/new";
-            url += "?template=bug_report.md";   // Add Template
+            url += "?template=01-bug-report.yml";   // Add Configuration.
 
             var ps = new ProcessStartInfo(url)
             {
