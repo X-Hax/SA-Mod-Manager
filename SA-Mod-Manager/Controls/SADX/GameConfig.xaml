@@ -252,7 +252,7 @@
 											<ComboBox x:Name="comboRenderBackend" Grid.Column="2" VerticalAlignment="Center" SelectedIndex="0">
 												<ComboBoxItem Content="Direct3D 8" ToolTip="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip}"/>
 												<ComboBoxItem Content="Direct3D 9" ToolTip="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D9.ToolTip}"/>
-                                                <ComboBoxItem Content="Direct3D 11 (Unfunctional)" ToolTip="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D11.ToolTip}"/>
+                                                <ComboBoxItem Content="Direct3D 11 (Experimental)" ToolTip="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D11.ToolTip}"/>
 											</ComboBox>
 										</Grid>
 
