@@ -137,21 +137,29 @@ namespace SAModManager
 
         }
 
-        public static void UpdateDependenciesLocation()
+        public static void UpdateDependenciesLocation(string oldD3D8Path)
         {
             if (Directory.Exists(App.extLibPath) == false && Directory.Exists(App.oldExtLibPath))
             {
-                Util.CreateSafeDirectory(App.extLibPath);
-
-                foreach (string dirPath in Directory.GetDirectories(App.oldExtLibPath, "*", SearchOption.AllDirectories))
+                try
                 {
-                    Util.CreateSafeDirectory(dirPath.Replace(App.oldExtLibPath, App.extLibPath));
-                }
+                    Util.CreateSafeDirectory(App.extLibPath);
 
-                foreach (string newPath in Directory.GetFiles(App.oldExtLibPath, "*.*", SearchOption.AllDirectories))
-                {
-                    File.Copy(newPath, newPath.Replace(App.oldExtLibPath, App.extLibPath), true);
+                    foreach (string dirPath in Directory.GetDirectories(App.oldExtLibPath, "*", SearchOption.AllDirectories))
+                    {
+                        Util.CreateSafeDirectory(dirPath.Replace(App.oldExtLibPath, App.extLibPath));
+                    }
+
+                    foreach (string newPath in Directory.GetFiles(App.oldExtLibPath, "*.*", SearchOption.AllDirectories))
+                    {
+                        File.Copy(newPath, newPath.Replace(App.oldExtLibPath, App.extLibPath), true);
+                    }
+
+
+                    if (App.CurrentGame.id == GameEntry.GameType.SADX && File.Exists(oldD3D8Path))
+                        File.Delete(oldD3D8Path);
                 }
+                catch { }
             }
         }
 

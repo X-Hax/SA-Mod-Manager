@@ -1472,7 +1472,7 @@ namespace SAModManager
                 if (App.CurrentGame?.id == GameEntry.GameType.SADX)
                     Controls.SADX.GameConfig.UpdateD3D8Paths();
 
-                App.UpdateDependenciesLocation();
+                App.UpdateDependenciesLocation(Controls.SADX.GameConfig.OldD3d8to9GamePath);
 
             }
             else

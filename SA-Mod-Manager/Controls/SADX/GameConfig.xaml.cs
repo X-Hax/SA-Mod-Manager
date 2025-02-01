@@ -27,7 +27,7 @@ namespace SAModManager.Controls.SADX
         public GameSettings GameProfile;
 
 		bool suppressEvent = false;
-		private static string OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
+		public static string OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
 		private static string d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
 		private readonly double LowOpacityBtn = 0.7;
 		private static string patchesPath = null;
@@ -193,6 +193,7 @@ namespace SAModManager.Controls.SADX
 			d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
 		}
 
+
 		private void comboTextureFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (comboTextureFilter.SelectedIndex == 0)
@@ -205,25 +206,6 @@ namespace SAModManager.Controls.SADX
 			}
 		}
 
-		private void comboRenderBackend_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (GameProfile is null)
-				return;
-
-			switch ((GraphicsSettings.RenderBackendOptions)GameProfile.Graphics.RenderBackend)
-			{
-				case GraphicsSettings.RenderBackendOptions.Direct3D9:
-					// Handle setup for D3D9 usage.
-					break;
-				case GraphicsSettings.RenderBackendOptions.Direct3D11:
-					// Handle setup for D3D11 usage.
-					break;
-				case GraphicsSettings.RenderBackendOptions.Direct3D8:
-				default:
-					// Perform any cleanup for other backends to allow the game to use the base D3D8 implementation.
-					break;
-			}
-		}
 
 		/*
         private void CheckOldD3D9Dll()
@@ -880,9 +862,6 @@ namespace SAModManager.Controls.SADX
 				Source = GameProfile,
 				Mode = BindingMode.TwoWay
 			});
-
-			comboRenderBackend = comboRenderBackend;
-
         }
         #endregion
 	}
