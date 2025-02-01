@@ -174,13 +174,9 @@
     <system:String x:Key="MessageWindow.Information.Exception.Message">Желаете скопировать настройки менеджера и профилей в отсчёт?&#x0a;&#x0a;Это необязательно, но может помочь в решении проблемы.</system:String>
 
     <system:String x:Key="MessageWindow.Information.BugReport.Title">Отчёт об ошибке</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message1">Вы собираетесь отправить отчёт об ошибке. Пожалуйста, убедитесь в следующем:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2">У вас обновлён менеджер.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message3">У вас обновлён загрузчик.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message4">Все моды обновлены.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message5">Если вы убедились в вышеуказанном, следуйте приведенным ниже инструкциям для отправки в правильный репозиторий:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message6">При возникновении проблем с программой, которую вы используете в данный момент, пожалуйста, воспользуйтесь кнопкой "Mod Manager".</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message7">При возникновении проблем с игрой, таких как зависания, сбои и т.д., пожалуйста, воспользуйтесь кнопкой "Mod Loader".</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1" xml:space="preserve">You are about to submit a bug report for the Mod Manager.&#x0a;&#x0a;This is NOT for troubleshooting issues with the games or mods.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2" xml:space="preserve">&#x0a;Please ensure the following:&#x0a;- Your Manager is up to date.&#x0a;- You can provide screenshots or videos.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3" xml:space="preserve">&#x0a;Are you sure you want to continue?</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>

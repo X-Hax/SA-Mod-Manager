@@ -168,13 +168,9 @@
     <system:String x:Key="MessageWindow.Information.Exception.Message">Чи хочете скопіювати налаштування Менеджеру та Профілю щоб додати їх до повідомлення?&#x0a;&#x0a;Це не обов'язково, але це може допомогти у вирішенні проблем.</system:String>
 
     <system:String x:Key="MessageWindow.Information.BugReport.Title">Повідомити Глюк</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message1">Ви зараз відправите Повідомлення про Помилку, будь ласка впевністься:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Ваш Менеджер останньої версії.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Ваш Завантажувач останньої версії.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message4">Всі моди останньої версії.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message5">Якщо ви перевірили все вище, тоді, будь ласка, слідуйте за напрямами нижче щоб відправити помилку правильно:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Якщо є будь яка проблема саме з програмою, використайте кнопку Менеджера Модів.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Якщо є будь яка проблема саме з грою, як от зависи, аварії, тощо, використайте кнопку Завантажувача Модів.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1" xml:space="preserve">You are about to submit a bug report for the Mod Manager.&#x0a;&#x0a;This is NOT for troubleshooting issues with the games or mods.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2" xml:space="preserve">&#x0a;Please ensure the following:&#x0a;- Your Manager is up to date.&#x0a;- You can provide screenshots or videos.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3" xml:space="preserve">&#x0a;Are you sure you want to continue?</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>

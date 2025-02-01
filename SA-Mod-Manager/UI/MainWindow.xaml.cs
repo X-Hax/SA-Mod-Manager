@@ -1250,24 +1250,16 @@ namespace SAModManager
         {
             var msg = new StringBuilder();
             msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message1"));
-            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message2")}");
-            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message3")}");
-            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message4")}");
-            msg.AppendLine();
-            msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message5"));
-            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message6")}");
-            msg.AppendLine($" - {Lang.GetString("MessageWindow.Information.BugReport.Message7")}");
+            msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message2"));
+            msg.AppendLine(Lang.GetString("MessageWindow.Information.BugReport.Message3"));
 
-            MessageWindow message = new(Lang.GetString("MessageWindow.Information.BugReport.Title"), msg.ToString(), "Mod Manager", "Mod Loader",
+            MessageWindow message = new(Lang.GetString("MessageWindow.Information.BugReport.Title"), msg.ToString(), Lang.GetString("CommonStrings.Yes"), Lang.GetString("CommonStrings.No"),
                 icon: MessageWindow.Icons.Information);
 
             message.ShowDialog();
 
             if (message.isOK)
                 OpenManagerIssue();
-
-            if (message.isCancelled)
-                OpenLoaderIssue();
         }
 
         private void comboThemes_Loaded(object sender, RoutedEventArgs e)

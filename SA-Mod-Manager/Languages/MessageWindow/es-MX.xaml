@@ -170,13 +170,10 @@
     <system:String x:Key="MessageWindow.Information.Exception.Message">¿Quieres copiar la configuración de tu Gestor y del Perfil en el portapapeles para incluirla en tu informe?&#x0a;&#x0a;No es necesario, pero puede ayudar a resolver problemas.</system:String>
 
     <system:String x:Key="MessageWindow.Information.BugReport.Title">Reportar error</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message1">Estás por reportar un error, asegúrate de que:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Tu Gestor esté actualizado.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Tu Cargador de mods esté actualizado.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message4">Todos los mods estén actualizados.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message5">Si ya comprobaste todo lo anterior, sigue las siguientes instrucciones para enviarlo al repositorio correcto:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Si tienes algún problema con el programa que utilizas actualmente, utiliza el botón Gestor de mods.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Para cualquier problema con el juego, como congelaciones, bloqueos, etc., utiliza el botón Cargador de mods.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1" xml:space="preserve">You are about to submit a bug report for the Mod Manager.&#x0a;&#x0a;This is NOT for troubleshooting issues with the games or mods.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2" xml:space="preserve">&#x0a;Please ensure the following:&#x0a;- Your Manager is up to date.&#x0a;- You can provide screenshots or videos.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3" xml:space="preserve">&#x0a;Are you sure you want to continue?</system:String>
+    <!--#endregion-->
     <!--#endregion-->
 
 </ResourceDictionary>

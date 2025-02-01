@@ -83,12 +83,9 @@
     <system:String x:Key="MessageWindow.Information.Exception.Message">Souhaitez-vous copier vos paramètres et profil du Mod Manager dans votre presse-papiers pour les inclure dans votre rapport ?&#x0a;&#x0a;Ce n'est pas nécessaire, mais cela peut aider à résoudre des problèmes.</system:String>
 
     <system:String x:Key="MessageWindow.Information.BugReport.Title">Rapportez une erreur</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message1">Vous êtes sur le point de soumettre un rapport de bug, veuillez vous assurer que:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Votre Manager est à jour.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Votre Mod Loader est à jour.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message4">Tous les mods sont à jour.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message5">Si vous avez vérifié ce qui précède, veuillez suivre les instructions ci-dessous :</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message6">En cas de problème avec le programme que vous utilisez actuellement, veuillez utiliser le bouton 'Mod Manager'.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message7">En cas de problème avec le jeu, tel que des blocages, des plantages, etc... utiliser le bouton 'Mod Loader'.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1" xml:space="preserve">You are about to submit a bug report for the Mod Manager.&#x0a;&#x0a;This is NOT for troubleshooting issues with the games or mods.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2" xml:space="preserve">&#x0a;Please ensure the following:&#x0a;- Your Manager is up to date.&#x0a;- You can provide screenshots or videos.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3" xml:space="preserve">&#x0a;Are you sure you want to continue?</system:String>
+    <!--#endregion-->
     <!--#endregion-->
 </ResourceDictionary>

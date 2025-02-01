@@ -172,13 +172,10 @@
  <system:String x:Key="MessageWindow.Information.Exception.Message">Kas soovite kopeerida halduri ja profiili sätted pöördloendusse?&#x0a;&#x0a;See on valikuline, kuid võib aidata probleemi lahendada .</system:String >
 
  <system:String x:Key="MessageWindow.Information.BugReport.Title">Veaaruanne</system:String>
- <system:String x:Key="MessageWindow.Information.BugReport.Message1">Olete esitamas veateadet. Kontrollige järgmist:</system:String>
- <system:String x:Key="MessageWindow.Information.BugReport.Message2">Teie haldurit on värskendatud.</system:String>
- <system:String x:Key="MessageWindow.Information.BugReport.Message3">Teie alglaadurit on värskendatud.</system:String>
- <system:String x:Key="MessageWindow.Information.BugReport.Message4">Kõik modifikatsioonid on värskendatud.</system:String>
- <system:String x:Key="MessageWindow.Information.BugReport.Message5">Kui olete ülaltooduga veendunud, järgige õigesse hoidlasse suunamiseks allolevaid juhiseid:</system:String>
- <system:String x:Key="MessageWindow.Information.BugReport.Message6">Kui teil tekib praegu kasutatava programmiga probleeme, kasutage nuppu "Mod Manager".</system:String>
- <system:String x:Key="MessageWindow.Information.BugReport.Message7">Kui teil tekib mänguga probleeme (nt hangumist, kokkujooksmist jne), kasutage nuppu "Mod Loader".</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1" xml:space="preserve">You are about to submit a bug report for the Mod Manager.&#x0a;&#x0a;This is NOT for troubleshooting issues with the games or mods.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2" xml:space="preserve">&#x0a;Please ensure the following:&#x0a;- Your Manager is up to date.&#x0a;- You can provide screenshots or videos.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3" xml:space="preserve">&#x0a;Are you sure you want to continue?</system:String>
+    <!--#endregion-->
     <!--#endregion-->
 
 </ResourceDictionary>

@@ -170,13 +170,10 @@
     <system:String x:Key="MessageWindow.Information.Exception.Message">¿Quieres copiar en tu portapapeles una copia de tu configuración del Manager y Perfil para mandarlas junto a tu reporte de error?&#x0a;&#x0a;Esto no es necesario, pero podría ayudar a resolver tu problema.</system:String>
 
     <system:String x:Key="MessageWindow.Information.BugReport.Title">Reportar Error</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message1">Estás a punto de reportar un error. Por favor, asegúrate de que:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2">Tu Manager está actualizado.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message3">Tu Mod Loader está actualizado.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message4">Todos tus Mods están actualizado.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message5">Si has verificado correctamente todo lo de arriba; Por favor, sigue las instrucciones de abajo para mandar tu reporte de error al repositorio correcto:</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message6">Para cualquier problema con el programa que estás actualmente usando; Por favor, utiliza el botón del Mod Manager.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message7">Para cualquier problema con el juego (tales como bloqueos); Por favor, utiliza el botón del Mod Loader.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1" xml:space="preserve">You are about to submit a bug report for the Mod Manager.&#x0a;&#x0a;This is NOT for troubleshooting issues with the games or mods.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2" xml:space="preserve">&#x0a;Please ensure the following:&#x0a;- Your Manager is up to date.&#x0a;- You can provide screenshots or videos.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3" xml:space="preserve">&#x0a;Are you sure you want to continue?</system:String>
+    <!--#endregion-->
     <!--#endregion-->
 
 </ResourceDictionary>
