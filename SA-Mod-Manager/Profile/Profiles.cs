@@ -23,7 +23,7 @@ namespace SAModManager.Profile
         public string Filename { get; set; } = string.Empty;
 
 		[JsonIgnore]
-		public string Filepath { get { return Path.Combine(ProfileManager.GetProfilesDirectory(), ".profiles", Filename); } }
+		public string Filepath { get { return Path.Combine(ProfileManager.GetProfilesDirectory(), Filename); } }
 
         public ProfileEntry(string name, string filename)
         {
