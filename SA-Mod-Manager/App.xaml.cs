@@ -137,7 +137,7 @@ namespace SAModManager
 
         }
 
-        public static void UpdateDependenciesLocation(string oldD3D8Path)
+        public static void UpdateDependenciesLocation()
         {
             if (Directory.Exists(App.extLibPath) == false && Directory.Exists(App.oldExtLibPath))
             {
@@ -154,10 +154,6 @@ namespace SAModManager
                     {
                         File.Copy(newPath, newPath.Replace(App.oldExtLibPath, App.extLibPath), true);
                     }
-
-
-                    if (App.CurrentGame.id == GameEntry.GameType.SADX && File.Exists(oldD3D8Path))
-                        File.Delete(oldD3D8Path);
                 }
                 catch { }
             }

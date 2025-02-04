@@ -26,7 +26,7 @@ namespace SAModManager.Controls.SADX
         #region Variables
         public GameSettings GameProfile;
 
-		bool suppressEvent = false;
+        bool suppressEvent = false;
 		public static string OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
 		private static string d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
 		private readonly double LowOpacityBtn = 0.7;
@@ -49,6 +49,7 @@ namespace SAModManager.Controls.SADX
 
                 SetPatches();
             }
+
             Loaded += GameConfig_Loaded;
         }
 
@@ -57,9 +58,14 @@ namespace SAModManager.Controls.SADX
         {
             SetupBindings();
             SetPatches();
-            //CheckOldD3D9Dll();
             SetTextureFilterList();
             InitMouseList();
+
+            if (App.CurrentGame.id == GameEntry.GameType.SADX && File.Exists(OldD3d8to9GamePath))
+            {
+                File.Delete(OldD3d8to9GamePath);
+				SetD3D9();
+            }
 
             mouseAction.SelectionChanged += mouseAction_SelectionChanged;
             mouseBtnAssign.SelectionChanged += mouseBtnAssign_SelectionChanged;
@@ -191,7 +197,12 @@ namespace SAModManager.Controls.SADX
 		{
 			OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
 			d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
-		}
+        }
+
+		public void SetD3D9()
+		{
+			comboRenderBackend.SelectedIndex = 1;
+        }
 
 
 		private void comboTextureFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)

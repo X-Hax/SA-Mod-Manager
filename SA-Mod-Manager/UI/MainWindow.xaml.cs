@@ -1469,10 +1469,9 @@ namespace SAModManager
 
                 App.extLibPath = Path.Combine(App.CurrentGame.modDirectory, ".modloader", "extlib");
 
-                if (App.CurrentGame?.id == GameEntry.GameType.SADX)
-                    Controls.SADX.GameConfig.UpdateD3D8Paths();
-
-                App.UpdateDependenciesLocation(Controls.SADX.GameConfig.OldD3d8to9GamePath);
+               Controls.SADX.GameConfig.UpdateD3D8Paths();
+      
+                App.UpdateDependenciesLocation();
 
             }
             else
