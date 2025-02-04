@@ -391,7 +391,7 @@ namespace SAModManager.Management
 				return;
 			}
 
-			Logger.Log($"Is Portable Mode: {SettingsManager.IsPortableMode}");
+			Logger.Log($"Is Portable Mode: {SettingsManager.IsPortableMode()}");
 			Logger.Log($"Old Profile Directory: {App.CurrentGame.ProfilesDirectory}");
 			Logger.Log($"New Profile Directory: {ProfilesDirectory}");
 
