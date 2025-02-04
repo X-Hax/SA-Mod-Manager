@@ -380,23 +380,40 @@ namespace SAModManager.Management
 		/// </summary>
 		public static void ValidateProfileFolder()
 		{
+			Logger.Log("===");
+			Logger.Log("Validating Profiles...");
+
+			Logger.Log($"Current Game: {App.CurrentGame.id}");
 			if (App.CurrentGame?.id == GameEntry.GameType.Unsupported)
+			{
+				Logger.Log("Unknown or invalid game ID, nothing to validate!");
+				Logger.Log("===");
 				return;
+			}
+
+			Logger.Log($"Is Portable Mode: {SettingsManager.IsPortableMode()}");
+			Logger.Log($"Old Profile Directory: {App.CurrentGame.ProfilesDirectory}");
+			Logger.Log($"New Profile Directory: {ProfilesDirectory}");
 
 			if (!Directory.Exists(ProfilesDirectory) && ProfilesDirectory.Length > 0)
 			{
+				Logger.Log("New Profile Directory does not exist. Path is populated.");
 				// As we are validating the new folder, we are also going with the simplest solution.
 				// If the new profiles folder exists, assume everything was migrated. Normal users shouldn't have any problems with this.
 
-				DirectoryInfo newProfiles = new DirectoryInfo(ProfilesDirectory);
-				newProfiles.Create();
+				Logger.Log($"Creating new Profile directory.");
+				Util.CreateSafeDirectory(ProfilesDirectory);
+				Logger.Log("New Profiles directory created.");
 
-				DirectoryInfo oldProfiles = new DirectoryInfo(App.CurrentGame.ProfilesDirectory);
-				if (oldProfiles.Exists)
+				Logger.Log($"Checking if Old Profiles exist.");
+				if (Directory.Exists(App.CurrentGame.ProfilesDirectory))
 				{
-					Util.CopyAllFiles(oldProfiles.FullName, newProfiles.FullName);
+					Logger.Log("Old Profile Directory exists. Migrating Profiles.");
+					Util.CopyAllFiles(App.CurrentGame.ProfilesDirectory, ProfilesDirectory);
 				}
 			}
+
+			Logger.Log("===");
 		}
     }
 }
