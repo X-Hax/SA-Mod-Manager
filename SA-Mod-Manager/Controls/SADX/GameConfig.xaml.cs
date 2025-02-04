@@ -63,8 +63,19 @@ namespace SAModManager.Controls.SADX
 
             if (App.CurrentGame.id == GameEntry.GameType.SADX && File.Exists(OldD3d8to9GamePath))
             {
-                File.Delete(OldD3d8to9GamePath);
-				SetD3D9();
+				if (File.Exists(App.CurrentGame.loader.mlverPath))
+				{
+					string currentTagName = File.ReadAllText(App.CurrentGame.loader.mlverPath);
+
+                    if (uint.TryParse(currentTagName, out uint currentID))
+					{
+						if (currentID >= 633)
+						{
+                            File.Delete(OldD3d8to9GamePath);
+                            SetD3D9();
+                        }
+					}
+                }
             }
 
             mouseAction.SelectionChanged += mouseAction_SelectionChanged;
