@@ -137,6 +137,17 @@ namespace SAModManager
 
         }
 
+        //todo delete on next update
+        public static void RemoveExeFromPath()
+        {
+            if (Util.IsStringValid(App.CurrentGame?.gameDirectory))
+            {
+                if (App.CurrentGame.gameDirectory.Contains(".exe"))
+                {
+                    App.CurrentGame.gameDirectory = Path.GetDirectoryName(App.CurrentGame.gameDirectory);
+                }
+            }
+        }
         public static void UpdateDependenciesLocation()
         {
             if (Directory.Exists(App.extLibPath) == false && Directory.Exists(App.oldExtLibPath))

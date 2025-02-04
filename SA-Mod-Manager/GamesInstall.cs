@@ -524,7 +524,7 @@ namespace SAModManager
                     if (File.Exists(path) && !App.GamesList.Contains(game))
                     {
                         Logger.Log("Found Game locally!");
-                        game.gameDirectory = path;
+                        game.gameDirectory = App.StartDirectory;
                         App.GamesList.Add(game);
                         AddMissingGamesList(game);
                     }

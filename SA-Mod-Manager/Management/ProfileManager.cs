@@ -50,7 +50,9 @@ namespace SAModManager.Management
             if (GamesInstall.IsGameListEmpty())
 				return false;
 
-			if (!Directory.Exists(ProfilesDirectory)) 
+            App.RemoveExeFromPath();
+
+            if (!Directory.Exists(ProfilesDirectory)) 
 			{
 				try
 				{
@@ -391,7 +393,9 @@ namespace SAModManager.Management
 				return;
 			}
 
-			Logger.Log($"Is Portable Mode: {SettingsManager.IsPortableMode()}");
+			App.RemoveExeFromPath();
+
+            Logger.Log($"Is Portable Mode: {SettingsManager.IsPortableMode()}");
 			Logger.Log($"Old Profile Directory: {App.CurrentGame.ProfilesDirectory}");
 			Logger.Log($"New Profile Directory: {ProfilesDirectory}");
 
