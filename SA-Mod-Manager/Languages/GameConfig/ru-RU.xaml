@@ -29,8 +29,8 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Размер окна:</system:String>
 	
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Нативное разрешение</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">1/2x от нативного</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">2x от нативного</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">х1/2 от нативного</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">х2 от нативного</system:String>
 	
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Настройки</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">Принудительно вкл. 4:3</system:String>
@@ -72,6 +72,11 @@
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">Скачать DXVK</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Нажмите кнопку ниже, чтобы скачать DXVK. Библиотека повышает производительность и стабильность SA2. Установка производится вручную.</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">После загрузки архива, вам необходимо извлечь d3d9.dll и поместить этот файл в папку с игрой, где располагается sonic2app.exe.</system:String>
+	
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend">Режим рендеринга:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip">Включить стандартный режим рендеринга игры (Direct3D 8).</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D9.ToolTip">Включить режим рендеринга Direct3D 9 через оболочку d3d8to9.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D11.ToolTip">Включить режим рендеринга Direct3D 11 через оболочку d3d8to11.</system:String>
     <!--#endregion-->
 
     <!--Options Tab Strings-->

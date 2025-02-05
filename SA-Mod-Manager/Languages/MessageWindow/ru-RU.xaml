@@ -174,9 +174,9 @@
     <system:String x:Key="MessageWindow.Information.Exception.Message">Желаете скопировать настройки менеджера и профилей в отсчёт?&#x0a;&#x0a;Это необязательно, но может помочь в решении проблемы.</system:String>
 
     <system:String x:Key="MessageWindow.Information.BugReport.Title">Отчёт об ошибке</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message1" xml:space="preserve">You are about to submit a bug report for the Mod Manager.&#x0a;&#x0a;This is NOT for troubleshooting issues with the games or mods.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2" xml:space="preserve">&#x0a;Please ensure the following:&#x0a;- Your Manager is up to date.&#x0a;- You can provide screenshots or videos.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message3" xml:space="preserve">&#x0a;Are you sure you want to continue?</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1" xml:space="preserve">Вы собираетесь отправить отчёт об ошибке в Менеджере модов.&#x0a;&#x0a;Он НЕ предназначен для решения проблем с играми или модами.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2" xml:space="preserve">&#x0a;Убедитесь, что:&#x0a;- Менеджер обновлён до последней версии;&#x0a;- Вы сможете предоставить скриншот или запись видео.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3" xml:space="preserve">&#x0a;Желаете продолжить?</system:String>
     <!--#endregion-->
 
 </ResourceDictionary>
