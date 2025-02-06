@@ -50,7 +50,7 @@ namespace SAModManager
 
 		public static string ManagerConfigFile = Path.Combine(ConfigFolder, "Manager.json");
 		public static ManagerSettings ManagerSettings { get; set; }
-		public static Profiles Profiles { get; set; }
+		public static Profiles Profiles { get; set; } = new Profiles();
 
 		private static readonly Mutex mutex = new(true, pipeName);
 		public static Updater.UriQueue UriQueue;

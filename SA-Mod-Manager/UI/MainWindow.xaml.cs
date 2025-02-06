@@ -75,7 +75,6 @@ namespace SAModManager
             InitializeComponent();
             UpdateDLLData();
             GraphicsManager.SetupGraphics();
-			ProfileManager.ValidateProfileFolder();
 
             try
             {
@@ -108,13 +107,13 @@ namespace SAModManager
 
             ViewModel.Games = App.GamesList;
             DataContext = ViewModel;
-
-            Load();
-            SetBindings(); //theme is set here
+            
             suppressEvent = true;
             App.GamesList.Add(GamesInstall.AddGame);
             ComboGameSelection.SelectedItem = App.CurrentGame;
-            suppressEvent = false;
+			Load();
+			SetBindings(); //theme is set here
+			suppressEvent = false;
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
                 var oneClick = new OneClickInstall(updatePath);
@@ -177,9 +176,8 @@ namespace SAModManager
             App.isVanillaTransition = false;
             UIHelper.ToggleButton(ref btnCheckUpdates, true);
 
- 
-            // Save Manager Settings
-            Save();
+			// Save Manager Settings
+			Save();
             suppressEvent = false;
 
         }
@@ -1768,7 +1766,7 @@ namespace SAModManager
             {
                 if (ComboGameSelection?.SelectedItem == null)
                 {
-                    if (App.GamesList is not null && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
+                    if (GamesInstall.IsGameListEmpty() && (App.CurrentGame.loader is null || Directory.Exists(App.CurrentGame.gameDirectory) == false))
                     {
                         if (App.Current.MainWindow is not null && GamesInstall.IsGameListEmpty() == false)
                             ((MainWindow)App.Current.MainWindow).ComboGameSelection_SetNewItem(App.GamesList[0]);
@@ -1779,12 +1777,12 @@ namespace SAModManager
             if (newSetup || App.isFirstBoot)
                 ProfileManager.CreateProfiles();
 
-            ProfileManager.SetProfile();
-
             if (App.CurrentGame.id != GameEntry.GameType.Unsupported)
             {
-                // Set the existing profiles to the ones from the loaded Manager Settings.
-                LoadGameSettings(newSetup);
+				// Set the existing profiles to the ones from the loaded Manager Settings.
+				ProfileManager.ValidateProfileFolder();
+				ProfileManager.SetProfile();
+				LoadGameSettings(newSetup);
                 UpdateManagerIcons();
                 UpdateManagerInfo();
                 if (!App.isVanillaTransition)
@@ -2337,12 +2335,15 @@ namespace SAModManager
 				Source = App.ManagerSettings,
 				Mode = BindingMode.TwoWay
 			});
-            comboProfile.ItemsSource = App.Profiles.ProfilesList;
-            comboProfile.DisplayMemberPath = "Name";
-            comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
-            {
-                Source = App.Profiles
-            });
+			if (App.Profiles.ProfilesList is not null)
+			{
+				comboProfile.ItemsSource = App.Profiles.ProfilesList;
+				comboProfile.DisplayMemberPath = "Name";
+				comboProfile.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ProfileIndex")
+				{
+					Source = App.Profiles
+				});
+			}
             comboLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("Language")
             {
                 Source = App.ManagerSettings
