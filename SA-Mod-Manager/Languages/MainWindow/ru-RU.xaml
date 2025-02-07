@@ -39,13 +39,13 @@
 	<!--#endregion-->
 
     <!--Game-->
-    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <system:String x:Key="Manager.Buttons.AddGame">Добавить игру...</system:String>
     <!--#endregion-->
 
     <!--#region Manager Config Tab Strings-->
 	<!--Options-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Настройки</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Темы:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Тема:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Канал обновления:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Язык:</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Профиль:</system:String>
@@ -140,7 +140,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Включить фильтрацию текстур для всех моделей.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Включить фильтрацию текстур для всех текстур интерфейса.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Настроить уровень детализации для дальности отрисовки.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill" xml:space="preserve">Sets the scaling mode for backgrounds&#x0a;Stretch: The backgrounds will be stretched without maintaining the aspect ratio.&#x0a;Fit: The backgrounds will be displayed with borders.&#x0a;Fill: The backgrounds will be cropped and zoomed in to display without borders.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill" xml:space="preserve">Выставить режим масштабирования для фонов.&#x0a;Растянуть: фоны будут растягиваться без сохранения пропорций.&#x0a;Подогнать по ширине: фоны будут отображаться с чёрными полосами по бокам.&#x0a;Заполнение: фоны будут обрезаны и отмасштабированы для отображения без полос по бокам.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Установить режим заполнения видеороликов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Генерация мипмапов для всех текстур, даже если они не требуются.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Включает программную прослойку D3D8to9, позволяющую игре задействовать особенности D3D9-рендеринга. Требуется для работы некоторых модов.</system:String>
