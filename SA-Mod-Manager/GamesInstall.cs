@@ -11,6 +11,9 @@ using SAModManager.UI;
 using Newtonsoft.Json;
 using System.Net.Http;
 using SharpCompress;
+using SAModManager.Management;
+using SAModManager.Profile;
+using SAModManager.Configuration.SADX;
 
 namespace SAModManager
 {
@@ -32,21 +35,21 @@ namespace SAModManager
         /// </summary>
         public string exeName { get; set; }
 
-		/// <summary>
-		/// Current game's main directory.
-		/// </summary>
-		public string gameDirectory { get; set; } = string.Empty;
+        /// <summary>
+        /// Current game's main directory.
+        /// </summary>
+        public string gameDirectory { get; set; } = string.Empty;
 
         /// <summary>
         /// Current game's mods directory.
         /// </summary>
-        public string modDirectory 
-		{
-			get 
-			{
-				return Path.Combine(gameDirectory, "mods");
-			}
-		}
+        public string modDirectory
+        {
+            get
+            {
+                return Path.Combine(gameDirectory, "mods");
+            }
+        }
 
         /// <summary>
         /// Profiles Directory where Manager, Game Profiles, and other settings are stored.
@@ -162,7 +165,7 @@ namespace SAModManager
 
                         }
                     }
-     
+
                 }
                 else
                 {
@@ -293,9 +296,9 @@ namespace SAModManager
                     List<string> excludeFile = ["extlib"];
                     await Util.Extract(pathFinal, game.modDirectory, true);
                     string ExtLibPath = Path.GetFullPath(Path.Combine(game.modDirectory, "extlib"));
-                    if (Directory.Exists(ExtLibPath)) 
+                    if (Directory.Exists(ExtLibPath))
                         Directory.Move(ExtLibPath, App.extLibPath);
-      
+
                     if (update)
                         File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
 
@@ -453,7 +456,7 @@ namespace SAModManager
 
         public static void AddMissingGamesList(Game game)
         {
-			GameEntry entry = new(game);
+            GameEntry entry = new(game);
             if (App.ManagerSettings?.GameEntries.Contains(entry) == false)
                 App.ManagerSettings?.GameEntries.Add(entry);
         }
@@ -546,16 +549,60 @@ namespace SAModManager
                             App.GamesList.Add(game);
                             AddMissingGamesList(game);
                         }
+                    }
+                }
+
+                //if we still don't have any game, look for legacy game profile if a game path exists
+                if (App.GamesList.Count <= 0 || GamesInstall.IsGameListEmpty())
+                {
+                    if (App.CurrentGame == GamesInstall.Unknown)
+                    {
+                        foreach (var game in GamesInstall.GetSupportedGames())
+                        {
+                            if (App.GamesList.Contains(game))
+                                continue;
+
+                            string sadxProfile = Path.GetFullPath(Path.Combine(App.ConfigFolder, game.gameAbbreviation, "Default.json"));
+                            if (File.Exists(sadxProfile))
+                            {
+                                switch (game.id)
+                                {
+                                    case GameEntry.GameType.SADX:
+                                        Configuration.SADX.GameSettings sadxSettings = Configuration.SADX.GameSettings.Deserialize(sadxProfile);
+
+                                        string gamePath = Path.GetFullPath(Path.Combine(sadxSettings.GamePath, game.exeName));
+                                        if (File.Exists(gamePath))
+                                        {
+                                            game.gameDirectory = sadxSettings.GamePath;
+                                            App.GamesList.Add(game);
+                                            AddMissingGamesList(game);
+                                        }
+                                        break;
+                                    case GameEntry.GameType.SA2:
+                                        Configuration.SA2.GameSettings sa2Settings = Configuration.SA2.GameSettings.Deserialize(sadxProfile);
+
+
+                                        string gamePath2 = Path.GetFullPath(Path.Combine(sa2Settings.GamePath, game.exeName));
+                                        if (File.Exists(gamePath2))
+                                        {
+                                            game.gameDirectory = sa2Settings.GamePath;
+                                            App.GamesList.Add(game);
+                                            AddMissingGamesList(game);
+                                        }
+                                        break;
+
+
+                                }
+
+
+                            }
+                        }
 
                     }
                 }
 
-
                 if (App.GamesList.Count <= 0 || GamesInstall.IsGameListEmpty())
-                {
                     App.GamesList.Add(GamesInstall.Unknown);
-                }
-
 
             }
             catch { }

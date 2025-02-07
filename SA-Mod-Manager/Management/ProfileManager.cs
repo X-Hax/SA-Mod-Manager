@@ -375,6 +375,11 @@ namespace SAModManager.Management
             App.Profiles.ValidateProfiles();
         }
 
+		public static bool NewProfileFolderIsNull()
+		{
+			return !Directory.Exists(ProfilesDirectory) && ProfilesDirectory.Length > 0;
+
+        }
 		/// <summary>
 		/// Post 1.3.2, profiles have been restored to the game mod folder over being in the user settings. 
 		/// 
@@ -399,7 +404,7 @@ namespace SAModManager.Management
 			Logger.Log($"Old Profile Directory: {App.CurrentGame.ProfilesDirectory}");
 			Logger.Log($"New Profile Directory: {ProfilesDirectory}");
 
-			if (!Directory.Exists(ProfilesDirectory) && ProfilesDirectory.Length > 0)
+			if (NewProfileFolderIsNull() == true)
 			{
 				Logger.Log("New Profile Directory does not exist. Path is populated.");
 				// As we are validating the new folder, we are also going with the simplest solution.

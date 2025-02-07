@@ -30,6 +30,7 @@ using SAModManager.ModsCommon;
 using System.DirectoryServices.ActiveDirectory;
 using System.Collections.ObjectModel;
 using SAModManager.Management;
+using PropertyChanged;
 
 namespace SAModManager
 {
@@ -68,7 +69,15 @@ namespace SAModManager
         public Dictionary<string, SAModInfo> mods = null;
         public List<string> EnabledMods = new();
         public List<string> EnabledCodes = new();
+
         #endregion
+
+        private void InitComboGame()
+        {
+            suppressEvent = true;
+            App.GamesList.Add(GamesInstall.AddGame);
+            ComboGameSelection.SelectionChanged += ComboGameSelection_SelectionChanged;
+        }
 
         public MainWindow()
         {
@@ -89,6 +98,8 @@ namespace SAModManager
                 }
             }
             catch { }
+
+            InitComboGame();
         }
 
         #region Form: Functions
@@ -105,15 +116,17 @@ namespace SAModManager
                 new SplashScreenDialog().ShowDialog();
             }
 
+
             ViewModel.Games = App.GamesList;
             DataContext = ViewModel;
             
-            suppressEvent = true;
-            App.GamesList.Add(GamesInstall.AddGame);
-            ComboGameSelection.SelectedItem = App.CurrentGame;
+ 
+
 			Load();
 			SetBindings(); //theme is set here
-			suppressEvent = false;
+   
+
+
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
                 var oneClick = new OneClickInstall(updatePath);
@@ -176,10 +189,10 @@ namespace SAModManager
             App.isVanillaTransition = false;
             UIHelper.ToggleButton(ref btnCheckUpdates, true);
 
-			// Save Manager Settings
-			Save();
-            suppressEvent = false;
 
+            // Save Manager Settings
+            Save();
+            suppressEvent = false;
         }
 
         private void MainForm_FormClosing(object sender, EventArgs e)
@@ -1607,6 +1620,7 @@ namespace SAModManager
 
         private void LoadSADXSettings(string profilePath, bool newSetup = false)
         {
+
             Configuration.SADX.GameSettings sadxSettings = File.Exists(profilePath) ? Configuration.SADX.GameSettings.Deserialize(profilePath) : new();
             GameProfile = sadxSettings;
 
@@ -2878,7 +2892,7 @@ namespace SAModManager
 
         private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (suppressEvent)
+            if (suppressEvent || sender == null && e == null)
             {
                 Game entry = ComboGameSelection.SelectedItem as Game;
 

@@ -551,7 +551,7 @@
                     </StackPanel>
                 </Button>
 
-                <ComboBox x:Name="ComboGameSelection" ItemsSource="{Binding Games}" Grid.Row="1" Grid.Column="5" SelectionChanged="ComboGameSelection_SelectionChanged">
+                <ComboBox x:Name="ComboGameSelection" ItemsSource="{Binding Games}" Grid.Row="1" Grid.Column="5">
                     <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
