@@ -69,14 +69,18 @@ namespace SAModManager
         public Dictionary<string, SAModInfo> mods = null;
         public List<string> EnabledMods = new();
         public List<string> EnabledCodes = new();
+        private bool GarbageComboBox = false;
 
         #endregion
 
+        //end my life
         private void InitComboGame()
         {
             suppressEvent = true;
+            GarbageComboBox = true;
             App.GamesList.Add(GamesInstall.AddGame);
             ComboGameSelection.SelectionChanged += ComboGameSelection_SelectionChanged;
+  
         }
 
         public MainWindow()
@@ -108,7 +112,7 @@ namespace SAModManager
             this.Resources.MergedDictionaries.Clear(); //this is very important to get Theme and Language swap to work on MainWindow
 
             StatusTimer = new Timer((state) => UpdateManagerStatusText(string.Empty));
-            GamesInstall.AddGamesInstall();
+
             SetModManagerVersion();
 
             if (App.isFirstBoot)
@@ -116,16 +120,14 @@ namespace SAModManager
                 new SplashScreenDialog().ShowDialog();
             }
 
+            GamesInstall.AddGamesInstall();
 
             ViewModel.Games = App.GamesList;
             DataContext = ViewModel;
-            
- 
 
-			Load();
+            Load();
 			SetBindings(); //theme is set here
-   
-
+            ComboGameSelection.SelectedItem = App.CurrentGame;
 
             if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
             {
@@ -188,7 +190,6 @@ namespace SAModManager
             }
             App.isVanillaTransition = false;
             UIHelper.ToggleButton(ref btnCheckUpdates, true);
-
 
             // Save Manager Settings
             Save();
@@ -2892,14 +2893,19 @@ namespace SAModManager
 
         private async void ComboGameSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (suppressEvent || sender == null && e == null)
+            if (suppressEvent)
+                return;
+
+            if (GarbageComboBox)
             {
                 Game entry = ComboGameSelection.SelectedItem as Game;
 
                 if (entry == GamesInstall.AddGame)
+                {
                     ComboGameSelection.SelectedItem = App.CurrentGame;
-
-                return;
+                    GarbageComboBox = false;
+                    return;
+                }
             }
              
             if (ComboGameSelection != null && ComboGameSelection.SelectedItem != App.CurrentGame)
