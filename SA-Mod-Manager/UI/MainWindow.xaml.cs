@@ -198,7 +198,8 @@ namespace SAModManager
             Save();
             Refresh();
 
-            if (ModDependency.CheckDependencies(EnabledMods, mods))
+    
+            if (App.CurrentGame.id == GameEntry.GameType.Unsupported || ModDependency.CheckDependencies(EnabledMods, mods))
                 return;
 
             StartGame();
@@ -1101,9 +1102,10 @@ namespace SAModManager
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
                 suppressEvent = true;
 
-                ComboGameSelection.SelectedItem = game;
-                if (DoGameSwap((Game)ComboGameSelection.SelectedItem, path))
+         
+                if (DoGameSwap((Game)game, path))
                 {
+                    ComboGameSelection.SelectedValue = App.CurrentGame;
                     await ForceInstallLoader();
                     SetBindings();
                 }
@@ -1148,7 +1150,7 @@ namespace SAModManager
                 return;
             }
 
-            if (App.CurrentGame.loader.installed)
+            if (App.CurrentGame.id != GameEntry.GameType.Unsupported && App.CurrentGame.loader.installed)
             {
                 await App.PerformUpdateLoaderCheck();
 
@@ -1282,7 +1284,7 @@ namespace SAModManager
 
         private void btnProfileSettings_Click(object sender, RoutedEventArgs e)
         {
-            if (!App.CurrentGame.loader.installed)
+            if (App.CurrentGame == GamesInstall.Unknown || !App.CurrentGame.loader.installed)
                 return;
 
             ProfileDialog dialog = new();
