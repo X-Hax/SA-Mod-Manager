@@ -71,7 +71,16 @@ namespace SAModManager.Management
 				if (game.id != GameEntry.GameType.Unsupported)
 					App.ManagerSettings.GameEntries.Add(new GameEntry(game));
 			}
-			App.ManagerSettings.Serialize(SettingsFile);
+
+			foreach (var game in App.ManagerSettings.GameEntries)
+			{
+				if (game.Type == App.CurrentGame.id)
+				{
+                    App.ManagerSettings.CurrentSetGame = App.ManagerSettings.GameEntries.IndexOf(game);
+                }
+			}
+
+            App.ManagerSettings.Serialize(SettingsFile);
 		}
 
 		public static GameEntry GetCurrentGame()

@@ -510,6 +510,12 @@ namespace SAModManager
             return GameEntry.GameType.Unsupported;
         }
 
+        private static void AddGameToList(Game game)
+        {
+            App.GamesList.Add(game);
+            AddMissingGamesList(game);
+        }
+
         public static void AddGamesInstall()
         {
 
@@ -528,8 +534,7 @@ namespace SAModManager
                     {
                         Logger.Log("Found Game locally!");
                         game.gameDirectory = App.StartDirectory;
-                        App.GamesList.Add(game);
-                        AddMissingGamesList(game);
+                        AddGameToList(game);
                     }
                 }
 
@@ -546,8 +551,7 @@ namespace SAModManager
                         {
                             Logger.Log("Found Game through Steam!");
                             game.gameDirectory = gameInstallPath;
-                            App.GamesList.Add(game);
-                            AddMissingGamesList(game);
+                            AddGameToList(game);
                         }
                     }
                 }
@@ -574,8 +578,7 @@ namespace SAModManager
                                         if (File.Exists(gamePath))
                                         {
                                             game.gameDirectory = sadxSettings.GamePath;
-                                            App.GamesList.Add(game);
-                                            AddMissingGamesList(game);
+                                            AddGameToList(game);
                                         }
                                         break;
                                     case GameEntry.GameType.SA2:
@@ -586,8 +589,7 @@ namespace SAModManager
                                         if (File.Exists(gamePath2))
                                         {
                                             game.gameDirectory = sa2Settings.GamePath;
-                                            App.GamesList.Add(game);
-                                            AddMissingGamesList(game);
+                                            AddGameToList(game);
                                         }
                                         break;
 
@@ -601,8 +603,7 @@ namespace SAModManager
                     }
                 }
 
-                if (App.GamesList.Count <= 0 || GamesInstall.IsGameListEmpty())
-                    App.GamesList.Add(GamesInstall.Unknown);
+
 
             }
             catch { }

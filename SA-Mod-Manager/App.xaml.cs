@@ -65,8 +65,8 @@ namespace SAModManager
 		public static List<string> UpdateChannels { get; set; } = ["Release", "Development"];
 		public static string CurrentChannel { get; set; } = string.IsNullOrEmpty(RepoCommit) ? UpdateChannels[0] : UpdateChannels[1];
 
-		public static Game CurrentGame = new();
-		public static ObservableCollection<Game> GamesList = new();
+		public static Game CurrentGame = GamesInstall.Unknown;
+		public static List<Game> GamesList = new();
 
         [STAThread]
         /// <summary>
@@ -114,13 +114,6 @@ namespace SAModManager
             LoadManagerConfig();
             await SAModManager.Startup.StartupCheck();
 
-            await InitUriAsync(args, alreadyRunning);
-
-            if (alreadyRunning)
-            {
-                Current.Shutdown();
-                return;
-            }
 
 #if !DEBUG
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
@@ -130,6 +123,23 @@ namespace SAModManager
 #endif
 
             ShutdownMode = ShutdownMode.OnMainWindowClose;
+
+            GamesInstall.AddGamesInstall();
+
+            if (App.GamesList.Count <= 0 || GamesInstall.IsGameListEmpty())
+            {
+                App.GamesList.Add(GamesInstall.Unknown);
+                App.CurrentGame = App.GamesList[0];
+            }
+
+
+            await InitUriAsync(args, alreadyRunning);
+
+            if (alreadyRunning)
+            {
+                Current.Shutdown();
+                return;
+            }
 
             MainWindow = new MainWindow();
             base.OnStartup(e);
