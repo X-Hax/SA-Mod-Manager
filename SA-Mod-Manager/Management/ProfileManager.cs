@@ -26,7 +26,7 @@ namespace SAModManager.Management
 				if (App.CurrentGame.modDirectory == null)
 					return string.Empty;
 				else
-					return Path.Combine(App.CurrentGame.modDirectory, ".modloader", "profiles"); 
+					return Path.Combine(App.CurrentGame.modLoaderDirectory, "profiles"); 
 			}
 		}
 

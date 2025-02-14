@@ -30,9 +30,9 @@ namespace SAModManager.Controls.SA2
             InitializeComponent();
             suppressEvent = suppressEvent_;
             GameProfile = (GameSettings)gameSettings;
-            if (App.CurrentGame?.modDirectory != null && Directory.Exists(App.CurrentGame.modDirectory))
+            if (App.CurrentGame?.modDirectory != null && Directory.Exists(App.CurrentGame.modLoaderDirectory))
             {
-                string pathDest = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
+                string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
                 if (File.Exists(pathDest))
                     patchesPath = pathDest;
                 SetPatches();

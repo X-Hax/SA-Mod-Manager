@@ -113,7 +113,7 @@ namespace SAModManager
             Load();
             SetBindings(); //theme is set here
 
-            if (string.IsNullOrEmpty(App.CurrentGame?.modDirectory) == false)
+            if (Util.IsStringValid(App.CurrentGame?.modDirectory))
             {
                 var oneClick = new OneClickInstall(updatePath);
                 await oneClick.UriInit();
@@ -1451,19 +1451,21 @@ namespace SAModManager
             {
 
                 //App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");
-                App.CurrentGame.loader.mlverPath = Path.Combine(App.CurrentGame.modDirectory, App.CurrentGame.loader.mlverfile);
+                App.CurrentGame.loader.mlverPath = Path.Combine(App.CurrentGame.modLoaderDirectory, App.CurrentGame.loader.mlverfile);
                 App.CurrentGame.loader.IniPath = Path.Combine(App.CurrentGame.gameDirectory, Path.Combine("mods", App.CurrentGame.defaultIniProfile));
                 App.CurrentGame.loader.dataDllOriginPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.loader.originPath.defaultDataDllOriginPath);
-                App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.gameDirectory, Path.Combine(App.CurrentGame.modDirectory, App.CurrentGame.loader.name + ".dll"));
+                App.CurrentGame.loader.loaderdllpath = Path.Combine(App.CurrentGame.modLoaderDirectory, App.CurrentGame.loader.name + ".dll");
+
+                var dllPath = App.CurrentGame.loader.loaderdllpath;
                 App.CurrentGame.loader.dataDllPath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.loader.originPath.defaultDataDllPath);
 
                 updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, ".updates"));
-                codelstpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, "Codes.lst"));
-                codexmlpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, "Codes.xml"));
-                codedatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, "Codes.dat"));
-                patchdatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, "Patches.dat"));
+                codelstpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modLoaderDirectory, "Codes.lst"));
+                codexmlpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modLoaderDirectory, "Codes.xml"));
+                codedatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modLoaderDirectory, "Codes.dat"));
+                patchdatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.dat"));
 
-                App.extLibPath = Path.Combine(App.CurrentGame.modDirectory, ".modloader", "extlib");
+                App.extLibPath = Path.Combine(App.CurrentGame.modLoaderDirectory, "extlib");
 
                 Controls.SADX.GameConfig.UpdateD3D8Paths();
 

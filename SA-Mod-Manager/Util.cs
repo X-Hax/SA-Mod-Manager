@@ -734,7 +734,7 @@ namespace SAModManager
             if (App.isLinux && Directory.Exists(App.extLibPath) == false) //force portable mode for new users on Linux since it tends to work better.
             {
                 App.ConfigFolder = Path.Combine(App.StartDirectory, "SAManager");
-                App.extLibPath = Path.Combine(App.CurrentGame.modDirectory, ".modloader", "extlib");
+                App.extLibPath = Path.Combine(App.CurrentGame.modLoaderDirectory, "extlib");
                 App.crashFolder = Path.Combine(App.ConfigFolder, "CrashDump");
             }
         }

@@ -40,10 +40,10 @@ namespace SAModManager.Controls.SADX
             suppressEvent = suppressEvent_;
             GameProfile = (GameSettings)gameSettings;
 			UpdateAppLauncherBtn();
-            if (Directory.Exists(App.CurrentGame.modDirectory))
+            if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
             {
 
-                string pathDest = Path.Combine(App.CurrentGame.modDirectory, "Patches.json");
+                string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
                 if (File.Exists(pathDest))
                     patchesPath = pathDest;
 

@@ -51,6 +51,14 @@ namespace SAModManager
             }
         }
 
+        public string modLoaderDirectory
+        {
+            get
+            {
+                return Path.Combine(gameDirectory, "mods", ".modloader");
+            }
+        }
+
         /// <summary>
         /// Profiles Directory where Manager, Game Profiles, and other settings are stored.
         /// </summary>
@@ -123,9 +131,9 @@ namespace SAModManager
                 return;
 
 
-            Util.CreateSafeDirectory(game.modDirectory);
+            Util.CreateSafeDirectory(game.modLoaderDirectory);
 
-            string loaderPath = Path.Combine(game.modDirectory, game.loader.name + ".dll");
+            string loaderPath = Path.Combine(game.modLoaderDirectory, game.loader.name + ".dll");
 
             try
             {
@@ -178,8 +186,8 @@ namespace SAModManager
                     var offline = new OfflineInstall(game.loader.name);
                     offline.Show();
                     await Task.Delay(700);
-                    Util.ExtractEmbedded7z(game.loader.name + ".7z", game.modDirectory);
-                    bool success = File.Exists(Path.Combine(game.modDirectory, game.loader.name + ".dll"));
+                    Util.ExtractEmbedded7z(game.loader.name + ".7z", game.modLoaderDirectory);
+                    bool success = File.Exists(Path.Combine(game.modLoaderDirectory, game.loader.name + ".dll"));
                     offline.CheckSuccess(success);
 
                     await Task.Delay(500);
@@ -250,10 +258,10 @@ namespace SAModManager
             {
                 string fileName = game.loader.name + ".7z";
                 Uri uri = new(dlLink);
-                string pathFinal = Path.Combine(game.modDirectory, fileName);
+                string pathFinal = Path.Combine(game.modLoaderDirectory, fileName);
                 var loaderInfo = new List<DownloadInfo>
                 {
-                     new(game.loader.name, fileName, game.modDirectory, uri, update ? DownloadDialog.DLType.Update : DownloadDialog.DLType.Install)
+                     new(game.loader.name, fileName, game.modLoaderDirectory, uri, update ? DownloadDialog.DLType.Update : DownloadDialog.DLType.Install)
                 };
 
                 var dl = new DownloadDialog(loaderInfo);
@@ -293,11 +301,7 @@ namespace SAModManager
                 dl.StartDL();
                 if (success)
                 {
-                    List<string> excludeFile = ["extlib"];
-                    await Util.Extract(pathFinal, game.modDirectory, true);
-                    string ExtLibPath = Path.GetFullPath(Path.Combine(game.modDirectory, "extlib"));
-                    if (Directory.Exists(ExtLibPath))
-                        Directory.Move(ExtLibPath, App.extLibPath);
+                    await Util.Extract(pathFinal, App.CurrentGame.modLoaderDirectory, true);
 
                     if (update)
                         File.Copy(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, true);
