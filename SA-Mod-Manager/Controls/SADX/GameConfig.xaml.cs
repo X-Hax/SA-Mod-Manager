@@ -404,6 +404,7 @@ namespace SAModManager.Controls.SADX
             {
                 try
                 {
+                    await Util.Extract(fullPath, destName, true);
                     string SDL2Game = Path.Combine(App.CurrentGame.gameDirectory, "SDL2.dll");
                     if (File.Exists(SDL2Game))
                     {
