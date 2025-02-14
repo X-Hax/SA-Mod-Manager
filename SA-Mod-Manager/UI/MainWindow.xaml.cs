@@ -1888,9 +1888,11 @@ namespace SAModManager
                     modNotFound += mod + "\n";
                     EnabledMods.Remove(mod);
                 }
-
-                SAModInfo inf = value;
-                LoadCodesFromMods(inf, mod);
+                else
+                {
+                    SAModInfo inf = value;
+                    LoadCodesFromMods(inf, mod);
+                }
             }
 
             switch (App.CurrentGame.id)
