@@ -49,7 +49,6 @@ namespace SAModManager
         string codexmlpath = string.Empty;
         string codedatpath = string.Empty;
         string patchdatpath = string.Empty;
-        private static bool gameMissingFlag = false;
 
         // Shared Variables
         CodeList mainCodes = null;
@@ -109,7 +108,7 @@ namespace SAModManager
                 new SplashScreenDialog().ShowDialog();
             }
 
-    
+
             Load();
             SetBindings(); //theme is set here
 
@@ -152,6 +151,7 @@ namespace SAModManager
                             {
                                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
                                 await App.PerformUpdateLoaderCheck();
+                                Refresh();
                             }
 
                             if (App.CurrentGame.id == GameEntry.GameType.SADX)
@@ -198,7 +198,7 @@ namespace SAModManager
             Save();
             Refresh();
 
-    
+
             if (App.CurrentGame.id == GameEntry.GameType.Unsupported || ModDependency.CheckDependencies(EnabledMods, mods))
                 return;
 
@@ -1102,7 +1102,7 @@ namespace SAModManager
                 UIHelper.ToggleButton(ref btnOpenGameDir, true);
                 suppressEvent = true;
 
-         
+
                 if (DoGameSwap((Game)game, path))
                 {
                     ComboGameSelection.SelectedValue = App.CurrentGame;
@@ -1188,6 +1188,7 @@ namespace SAModManager
             await HandleLoaderInstall();
             UpdateButtonsState();
             btnBrowseGameDir.IsEnabled = true;
+            Refresh();
             Save();
         }
 
@@ -1310,7 +1311,7 @@ namespace SAModManager
             {
                 LoadGameSettings();
                 SetBindings();
-                SetGameUI();  
+                SetGameUI();
                 Refresh();
                 Save();
             }
@@ -1478,6 +1479,7 @@ namespace SAModManager
             }
 
             App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath) && File.Exists(App.CurrentGame.loader.loaderdllpath);
+            MigrateLoaderDLL();
             UpdateButtonsState();
         }
 
@@ -2035,7 +2037,7 @@ namespace SAModManager
             }
 
             LoadCodes();
-           // DataContext = ViewModel;
+            // DataContext = ViewModel;
             ConfigureModBtn_UpdateState();
         }
 
@@ -2430,7 +2432,7 @@ namespace SAModManager
                 ComboGameSelection.SelectedValue = App.GamesList.FirstOrDefault();
                 return;
             }
-       
+
 
             InitCodes();
             LoadModList();
@@ -2610,6 +2612,25 @@ namespace SAModManager
             }
         }
 
+        //todo delete next update
+        private void MigrateLoaderDLL()
+        {
+            try
+            {
+                string oldLoaderPath = Path.Combine(App.CurrentGame.modDirectory, App.CurrentGame.loader.name + ".dll");
+                if (App.CurrentGame.loader.installed == false && File.Exists(App.CurrentGame.loader.dataDllOriginPath) && File.Exists(oldLoaderPath))
+                {
+                    if (!File.Exists(App.CurrentGame.loader.loaderdllpath))
+                    {
+                        //this will fire the mod loader update and it will download the rest
+                        File.Copy(oldLoaderPath, App.CurrentGame.loader.loaderdllpath);
+                    }
+       
+                }
+            }
+            catch { }
+        }
+
         private async Task InstallLoader()
         {
             bool dataDllOrigExist = File.Exists(App.CurrentGame.loader.dataDllOriginPath);
@@ -2723,6 +2744,7 @@ namespace SAModManager
             App.CurrentGame.loader.installed = !App.CurrentGame.loader.installed;
             UIHelper.EnableButton(ref btnInstallLoader);
             UpdateBtnInstallLoader_State();
+
         }
 
         #endregion
@@ -2890,7 +2912,7 @@ namespace SAModManager
                 suppressEvent = false;
                 return;
             }
-               
+
             Game entry = ComboGameSelection.SelectedItem as Game;
 
             if (entry == GamesInstall.AddGame)
