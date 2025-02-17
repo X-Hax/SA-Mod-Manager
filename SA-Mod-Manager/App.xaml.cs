@@ -434,7 +434,7 @@ namespace SAModManager
                 string changelog = await GitHub.GetGitChangeLog(update.Item2);
 
                 if (!Util.IsStringValid(changelog)) //update found but no changelog (?)
-                    return false;
+                    changelog = "Error, no Changelog found";
 
                 var manager = new InfoManagerUpdate(changelog, update.Item4);
                 manager.ShowDialog();

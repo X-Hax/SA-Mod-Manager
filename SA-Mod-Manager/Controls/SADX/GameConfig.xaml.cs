@@ -33,6 +33,19 @@ namespace SAModManager.Controls.SADX
 		private static string patchesPath = null;
 		#endregion
 
+
+		private void InitPatches()
+		{
+            if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
+            {
+                string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
+                if (File.Exists(pathDest))
+                    patchesPath = pathDest;
+
+                SetPatches();
+            }
+        }
+
 		public GameConfig(ref object gameSettings, ref bool suppressEvent_)
 		{
 		
@@ -40,15 +53,7 @@ namespace SAModManager.Controls.SADX
             suppressEvent = suppressEvent_;
             GameProfile = (GameSettings)gameSettings;
 			UpdateAppLauncherBtn();
-            if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
-            {
-
-                string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
-                if (File.Exists(pathDest))
-                    patchesPath = pathDest;
-
-                SetPatches();
-            }
+			InitPatches();
 
             Loaded += GameConfig_Loaded;
         }
@@ -57,7 +62,7 @@ namespace SAModManager.Controls.SADX
         private void GameConfig_Loaded(object sender, RoutedEventArgs e)
         {
             SetupBindings();
-            SetPatches();
+			InitPatches();
             SetTextureFilterList();
             InitMouseList();
 
