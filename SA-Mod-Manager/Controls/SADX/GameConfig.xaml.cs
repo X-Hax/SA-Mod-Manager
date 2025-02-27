@@ -27,15 +27,15 @@ namespace SAModManager.Controls.SADX
         public GameSettings GameProfile;
 
         bool suppressEvent = false;
-		public static string OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
-		private static string d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
-		private readonly double LowOpacityBtn = 0.7;
-		private static string patchesPath = null;
-		#endregion
+        public static string OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
+        private static string d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
+        private readonly double LowOpacityBtn = 0.7;
+        private static string patchesPath = null;
+        #endregion
 
 
-		private void InitPatches()
-		{
+        private void InitPatches()
+        {
             if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
             {
                 string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
@@ -46,14 +46,14 @@ namespace SAModManager.Controls.SADX
             }
         }
 
-		public GameConfig(ref object gameSettings, ref bool suppressEvent_)
-		{
-		
-			InitializeComponent();
+        public GameConfig(ref object gameSettings, ref bool suppressEvent_)
+        {
+
+            InitializeComponent();
             suppressEvent = suppressEvent_;
             GameProfile = (GameSettings)gameSettings;
-			UpdateAppLauncherBtn();
-			InitPatches();
+            UpdateAppLauncherBtn();
+            InitPatches();
 
             Loaded += GameConfig_Loaded;
         }
@@ -62,7 +62,7 @@ namespace SAModManager.Controls.SADX
         private void GameConfig_Loaded(object sender, RoutedEventArgs e)
         {
             SetupBindings();
-			InitPatches();
+            InitPatches();
             SetTextureFilterList();
             InitMouseList();
 
@@ -75,33 +75,33 @@ namespace SAModManager.Controls.SADX
             mouseBtnAssign.SelectionChanged += mouseBtnAssign_SelectionChanged;
         }
 
-		#region Graphics Tab
-		//Temporary, TO DO: Implement proper texture filter list
-		private void SetTextureFilterSettings()
-		{
-			if (GameProfile.Graphics.EnableForcedTextureFilter == true)
-			{
-				comboTextureFilter.SelectedIndex = 0;
-				comboTextureFilter.SelectedItem = 0;
-			}
-			else
-			{
-				comboTextureFilter.SelectedIndex = 1;
-				comboTextureFilter.SelectedItem = 1;
-			}
-		}
+        #region Graphics Tab
+        //Temporary, TO DO: Implement proper texture filter list
+        private void SetTextureFilterSettings()
+        {
+            if (GameProfile.Graphics.EnableForcedTextureFilter == true)
+            {
+                comboTextureFilter.SelectedIndex = 0;
+                comboTextureFilter.SelectedItem = 0;
+            }
+            else
+            {
+                comboTextureFilter.SelectedIndex = 1;
+                comboTextureFilter.SelectedItem = 1;
+            }
+        }
 
-		private void SetTextureFilterList()
-		{
-			comboTextureFilter.Items.Clear();
+        private void SetTextureFilterList()
+        {
+            comboTextureFilter.Items.Clear();
 
-			comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Enabled"));
-			comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Disabled"));
+            comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Enabled"));
+            comboTextureFilter.Items.Add(Lang.GetString("CommonStrings.Disabled"));
 
-			SetTextureFilterSettings();
-		}
+            SetTextureFilterSettings();
+        }
 
-		private void ResolutionChanged(object sender, RoutedEventArgs e)
+        private void ResolutionChanged(object sender, RoutedEventArgs e)
         {
             NumberBox box = sender as NumberBox;
 
@@ -133,62 +133,62 @@ namespace SAModManager.Controls.SADX
                 comboDisplay.SelectedIndex = -1;
         }
 
-		private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-			if (GraphicsManager.Screens.Count > 1)
-				GraphicsManager.UpdateResolutionPresets(comboScreen.SelectedIndex);
-		}
+            if (GraphicsManager.Screens.Count > 1)
+                GraphicsManager.UpdateResolutionPresets(comboScreen.SelectedIndex);
+        }
 
-		private void chkRatio_Click(object sender, RoutedEventArgs e)
-		{
-			if (chkRatio.IsChecked == true)
-			{
-				txtResX.IsEnabled = false;
-				decimal resYDecimal = txtResY.Value;
-				decimal roundedValue = Math.Round(resYDecimal * (decimal)GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
-				txtResX.Value = roundedValue;
-			}
-			else if (!suppressEvent)
-			{
-				txtResX.IsEnabled = true;
-			}
-		}
+        private void chkRatio_Click(object sender, RoutedEventArgs e)
+        {
+            if (chkRatio.IsChecked == true)
+            {
+                txtResX.IsEnabled = false;
+                decimal resYDecimal = txtResY.Value;
+                decimal roundedValue = Math.Round(resYDecimal * (decimal)GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
+                txtResX.Value = roundedValue;
+            }
+            else if (!suppressEvent)
+            {
+                txtResX.IsEnabled = true;
+            }
+        }
 
-		private void DisplaySize_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			ComboBox box = (ComboBox)sender;
+        private void DisplaySize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox box = (ComboBox)sender;
 
-			if (box.SelectedIndex == -1)
-				return;
+            if (box.SelectedIndex == -1)
+                return;
 
-			int index = box.SelectedIndex;
+            int index = box.SelectedIndex;
 
-			suppressEvent = true;
+            suppressEvent = true;
 
-			switch (box.Name)
-			{
-				case "comboDisplay":
-					txtResY.Value = GraphicsManager.ResolutionPresets[index].Height;
+            switch (box.Name)
+            {
+                case "comboDisplay":
+                    txtResY.Value = GraphicsManager.ResolutionPresets[index].Height;
 
-					if (chkRatio.IsChecked == false)
-						txtResX.Value = GraphicsManager.ResolutionPresets[index].Width;
-					break;
+                    if (chkRatio.IsChecked == false)
+                        txtResX.Value = GraphicsManager.ResolutionPresets[index].Width;
+                    break;
 
-				case "comboCustomWindow":
-					txtCustomResY.Value = GraphicsManager.ResolutionPresets[index].Height;
+                case "comboCustomWindow":
+                    txtCustomResY.Value = GraphicsManager.ResolutionPresets[index].Height;
 
-					if (chkRatio.IsChecked == false)
-						txtCustomResX.Value = GraphicsManager.ResolutionPresets[index].Width;
-					break;
-			}
-		}
+                    if (chkRatio.IsChecked == false)
+                        txtCustomResX.Value = GraphicsManager.ResolutionPresets[index].Width;
+                    break;
+            }
+        }
 
         private void chkMaintainRatio_Click(object sender, RoutedEventArgs e)
         {
             if (chkMaintainRatio.IsChecked == true)
             {
                 txtCustomResX.IsEnabled = false;
-				decimal ratio = txtResX.Value / txtResY.Value;
+                decimal ratio = txtResX.Value / txtResY.Value;
                 txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
             }
             else if (!suppressEvent)
@@ -197,32 +197,32 @@ namespace SAModManager.Controls.SADX
             }
         }
 
-		public static void UpdateD3D8Paths()
-		{
-			OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
-			d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
+        public static void UpdateD3D8Paths()
+        {
+            OldD3d8to9GamePath = Path.Combine(App.CurrentGame.gameDirectory, "d3d8.dll");
+            d3d8to9Path = Path.Combine(App.extLibPath, "d3d8m.dll");
         }
 
-		public void SetD3D9()
-		{
-			comboRenderBackend.SelectedIndex = 1;
+        public void SetD3D9()
+        {
+            comboRenderBackend.SelectedIndex = 1;
         }
 
 
-		private void comboTextureFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (comboTextureFilter.SelectedIndex == 0)
-			{
-				GameProfile.Graphics.EnableForcedTextureFilter = true;
-			}
-			else if (comboTextureFilter.SelectedIndex == 1)
-			{
-				GameProfile.Graphics.EnableForcedTextureFilter = false;
-			}
-		}
+        private void comboTextureFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (comboTextureFilter.SelectedIndex == 0)
+            {
+                GameProfile.Graphics.EnableForcedTextureFilter = true;
+            }
+            else if (comboTextureFilter.SelectedIndex == 1)
+            {
+                GameProfile.Graphics.EnableForcedTextureFilter = false;
+            }
+        }
 
 
-		/*
+        /*
         private void CheckOldD3D9Dll()
         {
 
@@ -254,10 +254,10 @@ namespace SAModManager.Controls.SADX
 
         }
 		*/
-		#endregion
+        #endregion
 
-		#region Input Tab
-		private void InitMouseList()
+        #region Input Tab
+        private void InitMouseList()
         {
             List<string> mouseActionList = new()
             {
@@ -312,79 +312,79 @@ namespace SAModManager.Controls.SADX
                 DisplayInputGroup(1);
         }
 
-		public void SavePatches(ref object input)
-		{
-			GameSettings settings = input as GameSettings;
+        public void SavePatches(ref object input)
+        {
+            GameSettings settings = input as GameSettings;
 
-			if (listPatches is null)
-				return;
+            if (listPatches is null)
+                return;
 
-			settings.EnabledGamePatches.Clear();
+            settings.EnabledGamePatches.Clear();
 
-			foreach (PatchesData patch in listPatches.Items)
-				if (patch.IsChecked == true)
-					settings.EnabledGamePatches.Add(patch.InternalName);
-		}
+            foreach (PatchesData patch in listPatches.Items)
+                if (patch.IsChecked == true)
+                    settings.EnabledGamePatches.Add(patch.InternalName);
+        }
 
-		private void SetItemFromPad(int action)
-		{
-			switch (action)
-			{
-				case 0:
-					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseStart;
-					break;
-				case 1:
-					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseAttack;
-					break;
-				case 2:
-					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseJump;
-					break;
-				case 3:
-					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseAction;
-					break;
-				case 4:
-					mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseFlute;
-					break;
-			}
-		}
+        private void SetItemFromPad(int action)
+        {
+            switch (action)
+            {
+                case 0:
+                    mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseStart;
+                    break;
+                case 1:
+                    mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseAttack;
+                    break;
+                case 2:
+                    mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseJump;
+                    break;
+                case 3:
+                    mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseAction;
+                    break;
+                case 4:
+                    mouseBtnAssign.SelectedIndex = GameProfile.Controller.VanillaMouseFlute;
+                    break;
+            }
+        }
 
-		private void SetItemToPad(int value)
-		{
-			int action = mouseAction.SelectedIndex;
-			switch (action)
-			{
-				case 0:
-					GameProfile.Controller.VanillaMouseStart = value;
-					break;
-				case 1:
-					GameProfile.Controller.VanillaMouseAttack = value;
-					break;
-				case 2:
-					GameProfile.Controller.VanillaMouseJump = value;
-					break;
-				case 3:
-					GameProfile.Controller.VanillaMouseAction = value;
-					break;
-				case 4:
-					GameProfile.Controller.VanillaMouseFlute = value;
-					break;
-			}
-		}
+        private void SetItemToPad(int value)
+        {
+            int action = mouseAction.SelectedIndex;
+            switch (action)
+            {
+                case 0:
+                    GameProfile.Controller.VanillaMouseStart = value;
+                    break;
+                case 1:
+                    GameProfile.Controller.VanillaMouseAttack = value;
+                    break;
+                case 2:
+                    GameProfile.Controller.VanillaMouseJump = value;
+                    break;
+                case 3:
+                    GameProfile.Controller.VanillaMouseAction = value;
+                    break;
+                case 4:
+                    GameProfile.Controller.VanillaMouseFlute = value;
+                    break;
+            }
+        }
 
-		private void mouseAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			ComboBox comboBox = sender as ComboBox;
-			SetItemFromPad(comboBox.SelectedIndex);
-		}
+        private void mouseAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            SetItemFromPad(comboBox.SelectedIndex);
+        }
 
-		private void mouseBtnAssign_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			ComboBox comboBox = sender as ComboBox;
-			SetItemToPad(comboBox.SelectedIndex);
-		}
+        private void mouseBtnAssign_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            SetItemToPad(comboBox.SelectedIndex);
+        }
 
-		#region App Launcher
-		public static async Task UpdateAppLauncher()
+        #region App Launcher
+        public static async Task UpdateAppLauncher()
         {
             string fullName = "AppLauncher.7z";
             string destName = App.CurrentGame.gameDirectory;
@@ -521,11 +521,11 @@ namespace SAModManager.Controls.SADX
             labelVoiceLevel?.SetValue(ContentProperty, $"{(int)sliderVoice.Value}");
         }
 
-		private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
-			labelSFXLevel?.SetValue(ContentProperty, $"{(int)sliderSFX.Value}");
-		}
-		#endregion
+        private void sliderSFX_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            labelSFXLevel?.SetValue(ContentProperty, $"{(int)sliderSFX.Value}");
+        }
+        #endregion
 
         #region Patches Tab
         private PatchesData GetPatchFromView(object sender)
@@ -564,7 +564,6 @@ namespace SAModManager.Controls.SADX
             list.Items.Clear();
 
             var patches = PatchesList.Deserialize(patchesPath);
-            bool isListEmpty = (set.EnabledGamePatches.Count <= 0);
 
             if (patches is not null)
             {
@@ -572,23 +571,7 @@ namespace SAModManager.Controls.SADX
 
                 foreach (var patch in listPatch)
                 {
-                    if (isListEmpty) 
-                    {
-                        // Convert patch name to the corresponding property name in GamePatches class
-                        string propertyName = patch.Name.Replace(" ", ""); // Adjust the naming convention as needed
-                        var property = typeof(GamePatches).GetProperty(propertyName);
-
-                        if (property != null)
-                        {
-                            // Update the IsChecked property based on the GamePatches class
-                            patch.IsChecked = (bool)property.GetValue(set.Patches);
-                        }
-                    }
-                    else
-                    {
-                        patch.IsChecked = set.EnabledGamePatches.Contains(patch.Name);
-                    }
-
+                    patch.IsChecked = set.EnabledGamePatches.Contains(patch.Name);
                     string desc = "GamePatches." + patch.Name + "Desc";
                     patch.InternalName = patch.Name;
                     patch.Name = Lang.GetString("GamePatches." + patch.Name);
@@ -643,242 +626,242 @@ namespace SAModManager.Controls.SADX
         #endregion
         #endregion
 
-		#region Private Functions
-		private void SetupBindings()
-		{
-			// Graphics Bindings
+        #region Private Functions
+        private void SetupBindings()
+        {
+            // Graphics Bindings
 
-			// Display Options
-			comboScreen.ItemsSource = GraphicsManager.Screens;
-			comboScreen.DisplayMemberPath = "Key";
-			comboScreen.SetBinding(ComboBox.SelectedIndexProperty, new Binding("SelectedScreen")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay,
-			});
-			txtResX.MinValue = 0;
-			txtResY.MinValue = 0;
-			txtResX.SetBinding(NumberBox.ValueProperty, new Binding("HorizontalResolution")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			txtResY.SetBinding(NumberBox.ValueProperty, new Binding("VerticalResolution")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("Enable43ResolutionRatio")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			comboScreenMode.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ScreenMode")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay,
-				Converter = new ScreenModeConverter(),
-			});
-			txtCustomResX.MinValue = 0;
-			txtCustomResY.MinValue = 0;
+            // Display Options
+            comboScreen.ItemsSource = GraphicsManager.Screens;
+            comboScreen.DisplayMemberPath = "Key";
+            comboScreen.SetBinding(ComboBox.SelectedIndexProperty, new Binding("SelectedScreen")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay,
+            });
+            txtResX.MinValue = 0;
+            txtResY.MinValue = 0;
+            txtResX.SetBinding(NumberBox.ValueProperty, new Binding("HorizontalResolution")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            txtResY.SetBinding(NumberBox.ValueProperty, new Binding("VerticalResolution")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            chkRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("Enable43ResolutionRatio")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            comboScreenMode.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ScreenMode")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay,
+                Converter = new ScreenModeConverter(),
+            });
+            txtCustomResX.MinValue = 0;
+            txtCustomResY.MinValue = 0;
 
-			txtCustomResX.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowWidth")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			txtCustomResX.SetBinding(NumberBox.IsEnabledProperty, new Binding("ScreenMode")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay,
-				Converter = new CustomWindowEnabledConverter()
-			});
-			txtCustomResY.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowHeight")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			txtCustomResY.SetBinding(NumberBox.IsEnabledProperty, new Binding("ScreenMode")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay,
-				Converter = new CustomWindowEnabledConverter()
-			});
-			comboCustomWindow.SetBinding(ComboBox.IsEnabledProperty, new Binding("ScreenMode")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay,
-				Converter = new CustomWindowEnabledConverter()
-			});
-			chkMaintainRatio.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay,
-				Converter = new CustomWindowEnabledConverter()
-			});
-			chkMaintainRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableKeepResolutionRatio")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkStretchToWindow.SetBinding(CheckBox.IsCheckedProperty, new Binding("StretchToWindow")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkDisableBorderImage.SetBinding(CheckBox.IsCheckedProperty, new Binding("DisableBorderImage")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
+            txtCustomResX.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowWidth")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            txtCustomResX.SetBinding(NumberBox.IsEnabledProperty, new Binding("ScreenMode")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay,
+                Converter = new CustomWindowEnabledConverter()
+            });
+            txtCustomResY.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowHeight")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            txtCustomResY.SetBinding(NumberBox.IsEnabledProperty, new Binding("ScreenMode")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay,
+                Converter = new CustomWindowEnabledConverter()
+            });
+            comboCustomWindow.SetBinding(ComboBox.IsEnabledProperty, new Binding("ScreenMode")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay,
+                Converter = new CustomWindowEnabledConverter()
+            });
+            chkMaintainRatio.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay,
+                Converter = new CustomWindowEnabledConverter()
+            });
+            chkMaintainRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableKeepResolutionRatio")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            chkStretchToWindow.SetBinding(CheckBox.IsCheckedProperty, new Binding("StretchToWindow")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            chkDisableBorderImage.SetBinding(CheckBox.IsCheckedProperty, new Binding("DisableBorderImage")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
 
-			// Settings
-			chkVSync.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableVsync")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkPause.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnablePauseOnInactive")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkShowMouse.SetBinding(CheckBox.IsCheckedProperty, new Binding("ShowMouseInFullscreen")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			chkResizableWin.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableResizableWindow")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
+            // Settings
+            chkVSync.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableVsync")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            chkPause.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnablePauseOnInactive")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            chkShowMouse.SetBinding(CheckBox.IsCheckedProperty, new Binding("ShowMouseInFullscreen")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            chkResizableWin.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableResizableWindow")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
 
-			// Other Visual Settings
-			comboFramerate.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameFrameRate")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			comboDetail.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameClipLevel")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			comboFog.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameFogMode")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			comboBGFill.SetBinding(ComboBox.SelectedIndexProperty, new Binding("FillModeBackground")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			comboFMVFill.SetBinding(ComboBox.SelectedIndexProperty, new Binding("FillModeFMV")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			comboTextureFilter.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ModeTextureFiltering")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay,
-			}); ;
-			checkMipmapping.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableForcedMipmapping")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			checkUIScale.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableUIScaling")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			comboRenderBackend.SetBinding(ComboBox.SelectedIndexProperty, new Binding("RenderBackend")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
+            // Other Visual Settings
+            comboFramerate.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameFrameRate")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            comboDetail.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameClipLevel")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            comboFog.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameFogMode")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            comboBGFill.SetBinding(ComboBox.SelectedIndexProperty, new Binding("FillModeBackground")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            comboFMVFill.SetBinding(ComboBox.SelectedIndexProperty, new Binding("FillModeFMV")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            comboTextureFilter.SetBinding(ComboBox.SelectedIndexProperty, new Binding("ModeTextureFiltering")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay,
+            }); ;
+            checkMipmapping.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableForcedMipmapping")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            checkUIScale.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableUIScaling")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            comboRenderBackend.SetBinding(ComboBox.SelectedIndexProperty, new Binding("RenderBackend")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
 
-			// Input Settings
-			radBetterInput.SetBinding(RadioButton.IsCheckedProperty, new Binding("EnabledInputMod")
-			{
-				Source = GameProfile.Controller,
-				Mode = BindingMode.TwoWay
-			});
-			inputMouseDragAccel.SetBinding(RadioButton.IsCheckedProperty, new Binding("VanillaMouseUseDrag")
-			{
-				Source = GameProfile.Controller,
-				Mode = BindingMode.TwoWay
-			});
-			//inputMouseDragHold.IsChecked = (GameSettings.GameConfig.MouseMode == 0) ? true : false;
+            // Input Settings
+            radBetterInput.SetBinding(RadioButton.IsCheckedProperty, new Binding("EnabledInputMod")
+            {
+                Source = GameProfile.Controller,
+                Mode = BindingMode.TwoWay
+            });
+            inputMouseDragAccel.SetBinding(RadioButton.IsCheckedProperty, new Binding("VanillaMouseUseDrag")
+            {
+                Source = GameProfile.Controller,
+                Mode = BindingMode.TwoWay
+            });
+            //inputMouseDragHold.IsChecked = (GameSettings.GameConfig.MouseMode == 0) ? true : false;
 
-			// Audio Settings
-			checkEnableMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableGameMusic")
-			{
-				Source = GameProfile.Sound,
-				Mode = BindingMode.TwoWay
-			});
-			checkEnableSounds.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableGameSound")
-			{
-				Source = GameProfile.Sound,
-				Mode = BindingMode.TwoWay
-			});
-			checkBassMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableBassMusic")
-			{
-				Source = GameProfile.Sound,
-				Mode = BindingMode.TwoWay
-			});
-			checkBassSFX.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableBassSFX")
-			{
-				Source = GameProfile.Sound,
-				Mode = BindingMode.TwoWay
-			});
-			checkEnable3DSound.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableGameSound3D")
-			{
-				Source = GameProfile.Sound,
-				Mode = BindingMode.TwoWay
-			});
-			sliderMusic.Minimum = 0;
-			sliderMusic.Maximum = 100;
-			sliderMusic.SetBinding(ScrollBar.ValueProperty, new Binding("GameMusicVolume")
-			{
-				Source = GameProfile.Sound,
-				Mode = BindingMode.TwoWay
-			});
-			sliderVoice.Minimum = 0;
-			sliderVoice.Maximum = 100;
-			sliderVoice.SetBinding(ScrollBar.ValueProperty, new Binding("GameSoundVolume")
-			{
-				Source = GameProfile.Sound,
-				Mode = BindingMode.TwoWay
-			});
-			sliderSFX.Minimum = 0;
-			sliderSFX.Maximum = 100;
-			sliderSFX.SetBinding(ScrollBar.ValueProperty, new Binding("SEVolume")
-			{
-				Source = GameProfile.Sound,
-				Mode = BindingMode.TwoWay
-			});
+            // Audio Settings
+            checkEnableMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableGameMusic")
+            {
+                Source = GameProfile.Sound,
+                Mode = BindingMode.TwoWay
+            });
+            checkEnableSounds.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableGameSound")
+            {
+                Source = GameProfile.Sound,
+                Mode = BindingMode.TwoWay
+            });
+            checkBassMusic.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableBassMusic")
+            {
+                Source = GameProfile.Sound,
+                Mode = BindingMode.TwoWay
+            });
+            checkBassSFX.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableBassSFX")
+            {
+                Source = GameProfile.Sound,
+                Mode = BindingMode.TwoWay
+            });
+            checkEnable3DSound.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableGameSound3D")
+            {
+                Source = GameProfile.Sound,
+                Mode = BindingMode.TwoWay
+            });
+            sliderMusic.Minimum = 0;
+            sliderMusic.Maximum = 100;
+            sliderMusic.SetBinding(ScrollBar.ValueProperty, new Binding("GameMusicVolume")
+            {
+                Source = GameProfile.Sound,
+                Mode = BindingMode.TwoWay
+            });
+            sliderVoice.Minimum = 0;
+            sliderVoice.Maximum = 100;
+            sliderVoice.SetBinding(ScrollBar.ValueProperty, new Binding("GameSoundVolume")
+            {
+                Source = GameProfile.Sound,
+                Mode = BindingMode.TwoWay
+            });
+            sliderSFX.Minimum = 0;
+            sliderSFX.Maximum = 100;
+            sliderSFX.SetBinding(ScrollBar.ValueProperty, new Binding("SEVolume")
+            {
+                Source = GameProfile.Sound,
+                Mode = BindingMode.TwoWay
+            });
 
-			tsVoiceLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameVoiceLanguage")
-			{ 
-				Source = GameProfile.TestSpawn,
-				Mode = BindingMode.TwoWay
-			});
-			tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
-			{
-				Source = GameProfile.TestSpawn,
-				Mode = BindingMode.TwoWay
-			});
+            tsVoiceLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameVoiceLanguage")
+            {
+                Source = GameProfile.TestSpawn,
+                Mode = BindingMode.TwoWay
+            });
+            tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
+            {
+                Source = GameProfile.TestSpawn,
+                Mode = BindingMode.TwoWay
+            });
 
-			DebugConfig.SetBinding(DebugOptions.SettingsProperty, new Binding("DebugSettings")
-			{
-				Source = GameProfile,
-				Mode = BindingMode.TwoWay
-			});
+            DebugConfig.SetBinding(DebugOptions.SettingsProperty, new Binding("DebugSettings")
+            {
+                Source = GameProfile,
+                Mode = BindingMode.TwoWay
+            });
         }
         #endregion
-	}
+    }
 }

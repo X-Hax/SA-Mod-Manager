@@ -787,11 +787,6 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		public TestSpawnSettings TestSpawn { get; set; } = new();
 
-        /// <summary>
-        /// Patches for SADX.
-        /// </summary>
-        [Obsolete]
-        public GamePatches Patches { get; set; } = new();
 
         public List<string> EnabledGamePatches { get; set; } = [];
 
@@ -832,7 +827,6 @@ namespace SAModManager.Configuration.SADX
 			Controller.ConvertFromV0(oldSettings);
 			Sound.ConvertFromV0(oldSettings);
 			TestSpawn.ConvertFromV0(oldSettings);
-			Patches.ConvertFromV0(oldSettings);
 			DebugSettings.ConvertFromV0(oldSettings);
 
 			SettingsVersion = (int)SADXSettingsVersions.v1;

@@ -13,11 +13,11 @@ using SAModManager.Management;
 
 namespace SAModManager.Controls.SA2
 {
-	/// <summary>
-	/// Interaction logic for GameConfig.xaml
-	/// </summary>
-	public partial class GameConfig : UserControl
-	{
+    /// <summary>
+    /// Interaction logic for GameConfig.xaml
+    /// </summary>
+    public partial class GameConfig : UserControl
+    {
         #region Variables
         public GameSettings GameProfile;
 
@@ -88,9 +88,9 @@ namespace SAModManager.Controls.SA2
 
         private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-			if (GraphicsManager.Screens.Count > 1)
-				GraphicsManager.UpdateResolutionPresets(comboScreen.SelectedIndex);
-		}
+            if (GraphicsManager.Screens.Count > 1)
+                GraphicsManager.UpdateResolutionPresets(comboScreen.SelectedIndex);
+        }
 
         private void chkRatio_Click(object sender, RoutedEventArgs e)
         {
@@ -98,7 +98,7 @@ namespace SAModManager.Controls.SA2
             {
                 txtResX.IsEnabled = false;
                 decimal resYDecimal = txtResY.Value;
-				Decimal roundedValue = Math.Round(resYDecimal * GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
+                Decimal roundedValue = Math.Round(resYDecimal * GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
                 txtResX.Value = roundedValue;
             }
             else if (!suppressEvent)
@@ -154,7 +154,7 @@ namespace SAModManager.Controls.SA2
 
         #endregion
 
-     
+
         #endregion
 
         #region Patches Tab
@@ -194,7 +194,6 @@ namespace SAModManager.Controls.SA2
             list.Items.Clear();
 
             var patches = PatchesList.Deserialize(patchesPath);
-            bool isListEmpty = set.EnabledGamePatches.Count == 0;
 
             if (patches is not null)
             {
@@ -202,23 +201,7 @@ namespace SAModManager.Controls.SA2
 
                 foreach (var patch in listPatch)
                 {
-                    if (isListEmpty)
-                    {
-                        // Convert patch name to the corresponding property name in GamePatches class
-                        string propertyName = patch.Name.Replace(" ", ""); // Adjust the naming convention as needed
-                        var property = typeof(GamePatches).GetProperty(propertyName);
-
-                        if (property != null)
-                        {
-                            // Update the IsChecked property based on the GamePatches class
-                            patch.IsChecked = (bool)property.GetValue(set.Patches);
-                        }
-                    }
-                    else
-                    {
-                        patch.IsChecked = set.EnabledGamePatches.Contains(patch.Name);
-                    }
-
+                    patch.IsChecked = set.EnabledGamePatches.Contains(patch.Name);
                     string desc = "GamePatchesSA2." + patch.Name + "Desc";
                     patch.InternalName = patch.Name;
                     patch.Name = Lang.GetString("GamePatchesSA2." + patch.Name);
@@ -297,8 +280,8 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay,
             });
-			comboScreen.ItemsSource = GraphicsManager.Screens;
-			comboScreen.DisplayMemberPath = "Key";
+            comboScreen.ItemsSource = GraphicsManager.Screens;
+            comboScreen.DisplayMemberPath = "Key";
             txtResX.MinValue = 0;
             txtResY.MinValue = 0;
             txtResX.SetBinding(NumberBox.ValueProperty, new Binding("HorizontalResolution")
@@ -380,48 +363,48 @@ namespace SAModManager.Controls.SA2
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
-			chkStretchToWindow.SetBinding(CheckBox.IsCheckedProperty, new Binding("StretchToWindow")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay,
-			});
-			chkDisableBorderImage.SetBinding(CheckBox.IsCheckedProperty, new Binding("DisableBorderImage")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
+            chkStretchToWindow.SetBinding(CheckBox.IsCheckedProperty, new Binding("StretchToWindow")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay,
+            });
+            chkDisableBorderImage.SetBinding(CheckBox.IsCheckedProperty, new Binding("DisableBorderImage")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
             ChkSkipIntro.SetBinding(CheckBox.IsCheckedProperty, new Binding("SkipIntro")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
-			tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.TwoWay
-			});
-			tsVoiceLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameVoiceLanguage")
-			{
-				Source = GameProfile.TestSpawn,
-				Mode = BindingMode.TwoWay
-			});
+            tsTextLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameTextLanguage")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.TwoWay
+            });
+            tsVoiceLanguage.SetBinding(ComboBox.SelectedIndexProperty, new Binding("GameVoiceLanguage")
+            {
+                Source = GameProfile.TestSpawn,
+                Mode = BindingMode.TwoWay
+            });
 
-			DebugConfig.SetBinding(DebugOptions.SettingsProperty, new Binding("DebugSettings")
-			{
-				Source = GameProfile,
-				Mode = BindingMode.TwoWay
-			});
-		}
-		#endregion
+            DebugConfig.SetBinding(DebugOptions.SettingsProperty, new Binding("DebugSettings")
+            {
+                Source = GameProfile,
+                Mode = BindingMode.TwoWay
+            });
+        }
+        #endregion
 
-		private void DownloadDXVK_Click(object sender, RoutedEventArgs e)
-		{
-			var ps = new ProcessStartInfo("https://github.com/doitsujin/dxvk/releases")
-			{
-				UseShellExecute = true,
-				Verb = "open"
-			};
-			Process.Start(ps);
-		}
-	}
+        private void DownloadDXVK_Click(object sender, RoutedEventArgs e)
+        {
+            var ps = new ProcessStartInfo("https://github.com/doitsujin/dxvk/releases")
+            {
+                UseShellExecute = true,
+                Verb = "open"
+            };
+            Process.Start(ps);
+        }
+    }
 }

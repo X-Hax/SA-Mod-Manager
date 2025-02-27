@@ -381,13 +381,6 @@ namespace SAModManager.Configuration.SA2
         /// </summary>
         public TestSpawnSettings TestSpawn { get; set; } = new();
 
-        /// <summary>
-        /// Patches for SA2.
-        /// </summary>
-        [Obsolete]
-        public GamePatches Patches { get; set; } = new();
-
-
         public List<string> EnabledGamePatches { get; set; } = [];
 
         /// <summary>
