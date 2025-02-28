@@ -25,17 +25,7 @@ namespace SAModManager.Controls.SA2
         private static string patchesPath = null;
         #endregion
 
-        private void InitPatches()
-        {
-            if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
-            {
-                string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
-                if (File.Exists(pathDest))
-                    patchesPath = pathDest;
-
-                SetPatches();
-            }
-        }
+        
 
         public GameConfig(ref object gameSettings, ref bool suppressEvent_)
         {
@@ -152,13 +142,25 @@ namespace SAModManager.Controls.SA2
             }
         }
 
-        #endregion
+		#endregion
 
 
-        #endregion
+		#endregion
 
-        #region Patches Tab
-        private PatchesData GetPatchFromView(object sender)
+		#region Patches Tab
+		private void InitPatches()
+		{
+			if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
+			{
+				string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
+				if (File.Exists(pathDest))
+					patchesPath = pathDest;
+
+				SetPatches();
+			}
+		}
+
+		private PatchesData GetPatchFromView(object sender)
         {
             if (sender is ListViewItem lvItem)
                 return lvItem.Content as PatchesData;
@@ -188,38 +190,48 @@ namespace SAModManager.Controls.SA2
             PatchCategory.Text = Lang.GetString("CommonStrings.Category");
             PatchDescription.Text = Lang.GetString("CommonStrings.Description");
         }
+		private bool GetPatchCheckState(PatchesData patch)
+		{
+			if (GameProfile.EnabledGamePatches.ContainsKey(patch.Name))
+				return GameProfile.EnabledGamePatches[patch.Name];
+			else
+				return patch.IsChecked;
+		}
 
-        private static List<PatchesData> GetPatches(ref ListView list, GameSettings set)
-        {
-            list.Items.Clear();
+		private List<PatchesData> GetPatches(ref ListView list)
+		{
+			list.Items.Clear();
 
-            var patches = PatchesList.Deserialize(patchesPath);
+			var patches = PatchesList.Deserialize(patchesPath);
 
-            if (patches is not null)
-            {
-                var listPatch = patches.Patches;
+			if (patches is not null)
+			{
+				var listPatch = patches.Patches;
 
-                foreach (var patch in listPatch)
-                {
-                    patch.IsChecked = set.EnabledGamePatches.Contains(patch.Name);
-                    string desc = "GamePatchesSA2." + patch.Name + "Desc";
-                    patch.InternalName = patch.Name;
-                    patch.Name = Lang.GetString("GamePatchesSA2." + patch.Name);
-                    patch.Description = Lang.GetString(desc); //need to use a variable otherwise it fails for some reason
+				foreach (var patch in listPatch)
+				{
+					string nKey = "GamePatches." + patch.Name;              // Display Name Key
+					string lnString = Lang.GetString(nKey);
+					string dKey = "GamePatches." + patch.Name + "Desc";     // Description Key
+					string ldString = Lang.GetString(dKey);
 
-                }
+					patch.InternalName = lnString == nKey ? patch.InternalName : lnString;
+					patch.Description = ldString == dKey ? patch.Description : ldString;
 
-                return listPatch;
-            }
+					patch.IsChecked = GetPatchCheckState(patch);
+				}
 
-            return null;
-        }
+				return listPatch;
+			}
 
-        public void SetPatches()
+			return null;
+		}
+
+		public void SetPatches()
         {
             listPatches.Items.Clear();
 
-            List<PatchesData> patches = GetPatches(ref listPatches, GameProfile);
+            List<PatchesData> patches = GetPatches(ref listPatches);
 
             if (patches is not null)
             {
@@ -249,7 +261,27 @@ namespace SAModManager.Controls.SA2
 
         }
 
-        private void RefreshPatchesList()
+		private void btnResetPatches_Click(object sender, RoutedEventArgs e)
+		{
+			PatchesList defaults = PatchesList.Deserialize(patchesPath);
+
+			foreach (PatchesData patch in listPatches.Items)
+			{
+				foreach (var value in defaults.Patches)
+				{
+					if (patch.Name == value.Name)
+					{
+						patch.IsChecked = value.IsChecked;
+						defaults.Patches.Remove(value);
+						break;
+					}
+				}
+			}
+
+			RefreshPatchesList();
+		}
+
+		private void RefreshPatchesList()
         {
             ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
             view.Refresh();
@@ -265,9 +297,8 @@ namespace SAModManager.Controls.SA2
 
             settings.EnabledGamePatches.Clear();
             foreach (PatchesData patch in listPatches.Items)
-                if (patch.IsChecked == true)
-                    settings.EnabledGamePatches.Add(patch.InternalName);
-        }
+				settings.EnabledGamePatches.Add(patch.Name, patch.IsChecked);
+		}
 
         #region Private Functions
         private void SetupBindings()

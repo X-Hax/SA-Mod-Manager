@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SAModManager.Controls.SADX"
 			 xmlns:elements="clr-namespace:SAModManager.Controls"
+			 xmlns:icons="clr-namespace:SAModManager.Icons"
              mc:Ignorable="d" x:Name="SADXConfig"
              d:DesignHeight="636" d:DesignWidth="700">
     <UserControl.Resources>
-        <elements:BoolFlipConverter x:Key="FlipBool"/>
-    </UserControl.Resources>
+		<elements:BoolFlipConverter x:Key="FlipBool"/>
+	</UserControl.Resources>
     <Grid>
         <TabControl x:Name="tcGame">
             <!--This Tab is for Game Graphics.-->
@@ -248,11 +249,11 @@
 												<ColumnDefinition Width="*"/>
 											</Grid.ColumnDefinitions>
 
-											<Label Content="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend}" Grid.Column="0"/>
+											<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend}" Grid.Column="0"/>
 											<ComboBox x:Name="comboRenderBackend" Grid.Column="2" VerticalAlignment="Center" SelectedIndex="0">
-												<ComboBoxItem Content="Direct3D 8" ToolTip="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip}"/>
-												<ComboBoxItem Content="Direct3D 9" ToolTip="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D9.ToolTip}"/>
-                                                <ComboBoxItem Content="Direct3D 11 (Experimental)" ToolTip="{StaticResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D11.ToolTip}"/>
+												<ComboBoxItem Content="Direct3D 8" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip}"/>
+												<ComboBoxItem Content="Direct3D 9" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D9.ToolTip}"/>
+												<ComboBoxItem Content="Direct3D 11 (Experimental)" ToolTip="{DynamicResource GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D11.ToolTip}"/>
 											</ComboBox>
 										</Grid>
 
@@ -504,19 +505,17 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="btnSelectAllPatch" Margin="0,5,5,5" Grid.Column="0" Click="btnSelectAllPatch_Click">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="15" Source="{DynamicResource Icon.SelectAll}" Margin="0,0,5,0"/>
-                                    <TextBlock Text="{DynamicResource CommonStrings.SelectAll}" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-                            <Button x:Name="btnDeselectAllPatch" Margin="5,5,0,5" Grid.Column="1" Click="btnDeselectAllPatch_Click">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="15" Source="{DynamicResource Icon.DeselectAll}" Margin="0,0,5,0"/>
-                                    <TextBlock Text="{DynamicResource CommonStrings.DeselectAll}" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
+							<elements:ImageButton Grid.Column="0" Margin="5" Style="{StaticResource ImageTextButtonStyle}"
+												  Icon="{DynamicResource Icons.Select}" Content="{DynamicResource CommonStrings.SelectAll}"
+												  Click="btnSelectAllPatch_Click"/>
+							<elements:ImageButton Grid.Column="1" Margin="5" Style="{StaticResource ImageTextButtonStyle}"
+												  Icon="{DynamicResource Icons.Deselect}" Content="{DynamicResource CommonStrings.DeselectAll}"
+												  Click="btnDeselectAllPatch_Click"/>
+							<elements:ImageButton Grid.Column="2" Margin="5" Style="{StaticResource ImageTextButtonStyle}"
+												  Icon="{DynamicResource Icons.Refresh}" Content="{DynamicResource CommonStrings.Reset}"
+												  Click="btnResetPatches_Click"/>
                         </Grid>
 
                         <ListView x:Name="listPatches" Foreground="White" Grid.Column="1" Grid.Row="2" FontSize="13" ItemsSource="{Binding Source={RelativeSource AncestorType={x:Type local:GameConfig}}, Path=Patches}" DisplayMemberPath="Name">
@@ -534,7 +533,7 @@
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
                                                         <CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="{Binding Name}"/>
+                                                        <TextBlock Text="{Binding InternalName}"/>
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>

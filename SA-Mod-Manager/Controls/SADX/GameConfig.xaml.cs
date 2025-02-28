@@ -33,19 +33,6 @@ namespace SAModManager.Controls.SADX
         private static string patchesPath = null;
         #endregion
 
-
-        private void InitPatches()
-        {
-            if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
-            {
-                string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
-                if (File.Exists(pathDest))
-                    patchesPath = pathDest;
-
-                SetPatches();
-            }
-        }
-
         public GameConfig(ref object gameSettings, ref bool suppressEvent_)
         {
 
@@ -322,9 +309,8 @@ namespace SAModManager.Controls.SADX
             settings.EnabledGamePatches.Clear();
 
             foreach (PatchesData patch in listPatches.Items)
-                if (patch.IsChecked == true)
-                    settings.EnabledGamePatches.Add(patch.InternalName);
-        }
+				settings.EnabledGamePatches.Add(patch.Name, patch.IsChecked);
+		}
 
         private void SetItemFromPad(int action)
         {
@@ -525,10 +511,22 @@ namespace SAModManager.Controls.SADX
         {
             labelSFXLevel?.SetValue(ContentProperty, $"{(int)sliderSFX.Value}");
         }
-        #endregion
+		#endregion
 
-        #region Patches Tab
-        private PatchesData GetPatchFromView(object sender)
+		#region Patches Tab
+		private void InitPatches()
+		{
+			if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
+			{
+				string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
+				if (File.Exists(pathDest))
+					patchesPath = pathDest;
+
+				SetPatches();
+			}
+		}
+
+		private PatchesData GetPatchFromView(object sender)
         {
             if (sender is ListViewItem lvItem)
                 return lvItem.Content as PatchesData;
@@ -541,7 +539,6 @@ namespace SAModManager.Controls.SADX
 
         private void PatchViewItem_MouseEnter(object sender, MouseEventArgs e)
         {
-
             var patch = GetPatchFromView(sender);
 
             if (patch is null)
@@ -559,10 +556,16 @@ namespace SAModManager.Controls.SADX
             PatchDescription.Text = Lang.GetString("CommonStrings.Description");
         }
 
-        private static List<PatchesData> GetPatches(ref ListView list, GameSettings set)
-        {
-            list.Items.Clear();
+		private bool GetPatchCheckState(PatchesData patch)
+		{
+			if (GameProfile.EnabledGamePatches.ContainsKey(patch.Name))
+				return GameProfile.EnabledGamePatches[patch.Name];
+			else
+				return patch.IsChecked;
+		}
 
+        private List<PatchesData> GetPatches()
+        {
             var patches = PatchesList.Deserialize(patchesPath);
 
             if (patches is not null)
@@ -571,11 +574,15 @@ namespace SAModManager.Controls.SADX
 
                 foreach (var patch in listPatch)
                 {
-                    patch.IsChecked = set.EnabledGamePatches.Contains(patch.Name);
-                    string desc = "GamePatches." + patch.Name + "Desc";
-                    patch.InternalName = patch.Name;
-                    patch.Name = Lang.GetString("GamePatches." + patch.Name);
-                    patch.Description = Lang.GetString(desc); //need to use a variable otherwise it fails for some reason
+					string nKey = "GamePatches." + patch.Name;              // Display Name Key
+					string lnString = Lang.GetString(nKey);
+					string dKey = "GamePatches." + patch.Name + "Desc";		// Description Key
+					string ldString = Lang.GetString(dKey);
+
+					patch.InternalName = lnString == nKey ? patch.InternalName : lnString;
+					patch.Description = ldString == dKey ? patch.Description : ldString;
+
+					patch.IsChecked = GetPatchCheckState(patch);
                 }
 
                 return listPatch;
@@ -588,7 +595,7 @@ namespace SAModManager.Controls.SADX
         {
             listPatches.Items.Clear();
 
-            List<PatchesData> patches = GetPatches(ref listPatches, GameProfile);
+            List<PatchesData> patches = GetPatches();
 
             if (patches is not null)
             {
@@ -618,7 +625,27 @@ namespace SAModManager.Controls.SADX
 
         }
 
-        private void RefreshPatchesList()
+		private void btnResetPatches_Click(object sender, RoutedEventArgs e)
+		{
+			PatchesList defaults = PatchesList.Deserialize(patchesPath);
+
+			foreach (PatchesData patch in listPatches.Items)
+			{
+				foreach (var value in defaults.Patches)
+				{
+					if (patch.Name == value.Name)
+					{
+						patch.IsChecked = value.IsChecked;
+						defaults.Patches.Remove(value);
+						break;
+					}
+				}
+			}
+
+			RefreshPatchesList();
+		}
+
+		private void RefreshPatchesList()
         {
             ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
             view.Refresh();
@@ -862,6 +889,8 @@ namespace SAModManager.Controls.SADX
                 Mode = BindingMode.TwoWay
             });
         }
-        #endregion
+		#endregion
+
+		
     }
 }

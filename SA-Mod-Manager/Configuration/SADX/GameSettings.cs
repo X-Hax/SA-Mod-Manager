@@ -609,6 +609,7 @@ namespace SAModManager.Configuration.SADX
 		}
 	}
 
+	[Obsolete]
 	public class GamePatches
 	{
 		/// <summary>
@@ -757,6 +758,7 @@ namespace SAModManager.Configuration.SADX
 			v1,		// Version 1: Initial version at launch
 			v2,		// Version 2: Updated to include all settings, intended to be used as the only loaded file, now writes SADXLoaderInfo and SADXConfigFile.
 			v3,		// Version 3: Added Graphics.StretchToWindow and Graphics.DisableBorderWindow.
+			v4,     // Version 4: Removed old Patch system entirely, moving to new modular system.
 
 			MAX,	// Do Not Modify, new versions are placed above this.
 		}
@@ -787,8 +789,10 @@ namespace SAModManager.Configuration.SADX
 		/// </summary>
 		public TestSpawnSettings TestSpawn { get; set; } = new();
 
-
-        public List<string> EnabledGamePatches { get; set; } = [];
+		/// <summary>
+		/// Game Patch List for SADX.
+		/// </summary>
+        public Dictionary<string, bool> EnabledGamePatches { get; set; } = new Dictionary<string, bool>();
 
         /// <summary>
         /// Debug Settings.
