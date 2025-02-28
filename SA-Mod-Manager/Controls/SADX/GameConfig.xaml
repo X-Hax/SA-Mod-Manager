@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SAModManager.Controls.SADX"
 			 xmlns:elements="clr-namespace:SAModManager.Controls"
-			 xmlns:icons="clr-namespace:SAModManager.Icons"
              mc:Ignorable="d" x:Name="SADXConfig"
              d:DesignHeight="636" d:DesignWidth="700">
     <UserControl.Resources>
