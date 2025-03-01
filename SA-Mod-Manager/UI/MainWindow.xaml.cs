@@ -185,6 +185,7 @@ namespace SAModManager
             App.CancelUpdate = true;
             App.UriQueue.Close();
             Save_AppUserSettings();
+			SettingsManager.SaveAppDirectoryInfo();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -1811,7 +1812,11 @@ namespace SAModManager
 
             // Save the Profiles file.
             ProfileManager.SaveProfiles();
-        }
+
+			// Save Manager location.
+			SettingsManager.SaveAppDirectoryInfo();
+
+		}
 
         private void LoadCodesFromMods(SAModInfo inf, string mod)
         {

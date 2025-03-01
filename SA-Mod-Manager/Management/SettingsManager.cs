@@ -157,15 +157,16 @@ namespace SAModManager.Management
 		}
 
 		/// <summary>
-		/// Saves a text file to the current game's mod directory that the mod loader uses to find the extlib folder.
-		/// 
-		/// Not currently used, but left in place if it ever becomes useful.
+		/// Saves the Manager's directory to a text file in the current game's .modloader folder.
 		/// </summary>
 		public static void SaveAppDirectoryInfo()
 		{
-			string destFile = Path.Combine(App.CurrentGame.modDirectory, "samanager.txt");
+			if (App.CurrentGame.id != GameEntry.GameType.Unsupported)
+			{
+				string destFile = Path.Combine(App.CurrentGame.modLoaderDirectory, "samanager.txt");
 
-			File.WriteAllText(destFile, SettingsFolder);
+				File.WriteAllText(destFile, App.StartDirectory);
+			}
 		}
     }
 }
