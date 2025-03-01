@@ -792,7 +792,7 @@ namespace SAModManager.Configuration.SADX
 		/// <summary>
 		/// Game Patch List for SADX.
 		/// </summary>
-        public Dictionary<string, bool> EnabledGamePatches { get; set; } = new Dictionary<string, bool>();
+        public Dictionary<string, bool> Patches { get; set; } = new Dictionary<string, bool>();
 
         /// <summary>
         /// Debug Settings.

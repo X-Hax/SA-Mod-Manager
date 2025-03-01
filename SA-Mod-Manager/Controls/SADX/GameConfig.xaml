@@ -7,8 +7,13 @@
 			 xmlns:elements="clr-namespace:SAModManager.Controls"
              mc:Ignorable="d" x:Name="SADXConfig"
              d:DesignHeight="636" d:DesignWidth="700">
-    <UserControl.Resources>
-		<elements:BoolFlipConverter x:Key="FlipBool"/>
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<elements:BoolFlipConverter x:Key="FlipBool"/>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../../Icons/Icons.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
 	</UserControl.Resources>
     <Grid>
         <TabControl x:Name="tcGame">
@@ -60,7 +65,7 @@
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 									<StackPanel Orientation="Horizontal" Margin="5" Grid.Column="0">
-										<elements:NumberBox x:Name="txtResX" Height="22" Width="75" Type="Integer" IsEnabled="{Binding ElementName=chkRatio, Path=IsChecked, Converter={StaticResource FlipBool}}" ValueChanged="ResolutionChanged"/>
+										<elements:NumberBox x:Name="txtResX" Height="22" Width="75" Type="Integer" IsEnabled="{Binding ElementName=chkRatio, Path=IsChecked, Converter={StaticResource FlipBool}, Mode=OneWay}" ValueChanged="ResolutionChanged"/>
 										<Label Content="x" VerticalContentAlignment="Center"/>
 										<elements:NumberBox x:Name="txtResY" Height="22" Width="75" Type="Integer" ValueChanged="ResolutionChanged"/>
 									</StackPanel>
@@ -83,13 +88,13 @@
 								<CheckBox x:Name="chkRatio" Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio}" Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Margin="5" ToolTip="{DynamicResource MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio}" Click="chkRatio_Click" />
 
 								<Label Content="{DynamicResource GameConfig.Tabs.Graphics.Group.Display.CustomSize}" Margin="5" Grid.Column="0" Grid.Row="3"/>
-								<Grid Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch">
+								<Grid x:Name="CustomWindowSettingsPanel" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="*"/>
 									</Grid.ColumnDefinitions>
 									<StackPanel Margin="5" Grid.Column="0" Orientation="Horizontal">
-										<elements:NumberBox x:Name="txtCustomResX" Height="22" Width="75" Type="Integer" IsEnabled="{Binding ElementName=chkMaintainRatio, Path=IsChecked, Converter={StaticResource FlipBool}}"/>
+										<elements:NumberBox x:Name="txtCustomResX" Height="22" Width="75" Type="Integer" IsEnabled="{Binding ElementName=chkMaintainRatio, Path=IsChecked, Converter={StaticResource FlipBool}, Mode=OneWay}"/>
 										<Label Content="x" VerticalContentAlignment="Center"/>
 										<elements:NumberBox x:Name="txtCustomResY" Height="22" Width="75" Type="Integer" ValueChanged="ResolutionChanged"/>
 									</StackPanel>

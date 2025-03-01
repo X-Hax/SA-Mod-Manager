@@ -94,13 +94,18 @@ namespace SAModManager.Controls.SADX
 
             switch (box.Name)
             {
-                case "txtResY":
+				case "txtResX":
+					MatchCustomResToRenderRes();
+					break;
+				case "txtResY":
                     if (chkRatio.IsChecked == true)
                     {
                         decimal ratio = GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43);
                         txtResX.Value = Math.Ceiling(txtResY.Value * ratio);
                     }
-                    break;
+					MatchCustomResToRenderRes();
+
+					break;
                 case "txtCustomResY":
                     if (chkMaintainRatio.IsChecked == true)
                     {
@@ -114,31 +119,31 @@ namespace SAModManager.Controls.SADX
                 comboDisplay.SelectedIndex = -1;
         }
 
-        private void HorizontalRes_Changed(object sender, RoutedEventArgs e)
-        {
-            if (!suppressEvent)
-                comboDisplay.SelectedIndex = -1;
-        }
-
         private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (GraphicsManager.Screens.Count > 1)
                 GraphicsManager.UpdateResolutionPresets(comboScreen.SelectedIndex);
         }
 
+		private void MatchCustomResToRenderRes()
+		{
+			if (chkMaintainRatio.IsChecked == true)
+			{
+				decimal ratio = txtResX.Value / txtResY.Value;
+				txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
+			}
+		}
+
         private void chkRatio_Click(object sender, RoutedEventArgs e)
         {
             if (chkRatio.IsChecked == true)
             {
-                txtResX.IsEnabled = false;
                 decimal resYDecimal = txtResY.Value;
                 decimal roundedValue = Math.Round(resYDecimal * (decimal)GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
                 txtResX.Value = roundedValue;
-            }
-            else if (!suppressEvent)
-            {
-                txtResX.IsEnabled = true;
-            }
+
+				MatchCustomResToRenderRes();
+			}
         }
 
         private void DisplaySize_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -159,30 +164,25 @@ namespace SAModManager.Controls.SADX
 
                     if (chkRatio.IsChecked == false)
                         txtResX.Value = GraphicsManager.ResolutionPresets[index].Width;
-                    break;
+
+					MatchCustomResToRenderRes();
+					break;
 
                 case "comboCustomWindow":
                     txtCustomResY.Value = GraphicsManager.ResolutionPresets[index].Height;
 
-                    if (chkRatio.IsChecked == false)
-                        txtCustomResX.Value = GraphicsManager.ResolutionPresets[index].Width;
+					if (chkMaintainRatio.IsChecked == false)
+						txtCustomResX.Value = GraphicsManager.ResolutionPresets[index].Width;
+					else
+						MatchCustomResToRenderRes();
                     break;
             }
         }
 
         private void chkMaintainRatio_Click(object sender, RoutedEventArgs e)
         {
-            if (chkMaintainRatio.IsChecked == true)
-            {
-                txtCustomResX.IsEnabled = false;
-                decimal ratio = txtResX.Value / txtResY.Value;
-                txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
-            }
-            else if (!suppressEvent)
-            {
-                txtCustomResX.IsEnabled = true;
-            }
-        }
+			MatchCustomResToRenderRes();
+		}
 
         public static void UpdateD3D8Paths()
         {
@@ -194,7 +194,6 @@ namespace SAModManager.Controls.SADX
         {
             comboRenderBackend.SelectedIndex = 1;
         }
-
 
         private void comboTextureFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -306,10 +305,10 @@ namespace SAModManager.Controls.SADX
             if (listPatches is null)
                 return;
 
-            settings.EnabledGamePatches.Clear();
+            settings.Patches.Clear();
 
             foreach (PatchesData patch in listPatches.Items)
-				settings.EnabledGamePatches.Add(patch.Name, patch.IsChecked);
+				settings.Patches.Add(patch.Name, patch.IsChecked);
 		}
 
         private void SetItemFromPad(int action)
@@ -558,8 +557,8 @@ namespace SAModManager.Controls.SADX
 
 		private bool GetPatchCheckState(PatchesData patch)
 		{
-			if (GameProfile.EnabledGamePatches.ContainsKey(patch.Name))
-				return GameProfile.EnabledGamePatches[patch.Name];
+			if (GameProfile.Patches.ContainsKey(patch.Name))
+				return GameProfile.Patches[patch.Name];
 			else
 				return patch.IsChecked;
 		}
@@ -692,46 +691,35 @@ namespace SAModManager.Controls.SADX
             txtCustomResX.MinValue = 0;
             txtCustomResY.MinValue = 0;
 
-            txtCustomResX.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowWidth")
+			CustomWindowSettingsPanel.SetBinding(Grid.IsEnabledProperty, new Binding("ScreenMode")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.OneWay,
+				Converter = new CustomWindowEnabledConverter()
+			});
+			txtCustomResX.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowWidth")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
-            txtCustomResX.SetBinding(NumberBox.IsEnabledProperty, new Binding("ScreenMode")
-            {
-                Source = GameProfile.Graphics,
-                Mode = BindingMode.TwoWay,
-                Converter = new CustomWindowEnabledConverter()
-            });
-            txtCustomResY.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowHeight")
+			txtCustomResY.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowHeight")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
-            });
-            txtCustomResY.SetBinding(NumberBox.IsEnabledProperty, new Binding("ScreenMode")
-            {
-                Source = GameProfile.Graphics,
-                Mode = BindingMode.TwoWay,
-                Converter = new CustomWindowEnabledConverter()
-            });
-            comboCustomWindow.SetBinding(ComboBox.IsEnabledProperty, new Binding("ScreenMode")
-            {
-                Source = GameProfile.Graphics,
-                Mode = BindingMode.TwoWay,
-                Converter = new CustomWindowEnabledConverter()
-            });
-            chkMaintainRatio.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
-            {
-                Source = GameProfile.Graphics,
-                Mode = BindingMode.TwoWay,
-                Converter = new CustomWindowEnabledConverter()
             });
             chkMaintainRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableKeepResolutionRatio")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
-            chkStretchToWindow.SetBinding(CheckBox.IsCheckedProperty, new Binding("StretchToWindow")
+			chkMaintainRatio.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.OneWay,
+				Converter = new CustomWindowEnabledConverter()
+			});
+
+			chkStretchToWindow.SetBinding(CheckBox.IsCheckedProperty, new Binding("StretchToWindow")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay

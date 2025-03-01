@@ -386,7 +386,7 @@ namespace SAModManager.Configuration.SA2
 		/// <summary>
 		/// Game Patch List for SA2.
 		/// </summary>
-		public Dictionary<string, bool> EnabledGamePatches { get; set; } = new Dictionary<string, bool>();
+		public Dictionary<string, bool> Patches { get; set; } = new Dictionary<string, bool>();
 
 		/// <summary>
 		/// Debug Settings.
