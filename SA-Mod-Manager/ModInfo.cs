@@ -152,17 +152,41 @@ namespace SAModManager
 
     public class PatchesData
     {
+		/// <summary>
+		/// Internal name of the patch to be written to the patches list in the profile.
+		/// </summary>
         public string Name { get; set; }
+
+		/// <summary>
+		/// Author of the patch.
+		/// </summary>
         public string Author { get; set; }
-        public string Category { get; set; }
-        public string Description { get; set; }
-        public bool IsChecked { get; set; }
-        public string InternalName { get; set; }
+        
+		/// <summary>
+		/// Category of the patch.
+		/// </summary>
+		public string Category { get; set; }
+		
+		/// <summary>
+		/// Display name for the patch.
+		/// </summary>
+		public string InternalName { get; set; }
+		
+		/// <summary>
+		/// Default description of the patch.
+		/// </summary>
+		public string Description { get; set; }
+        
+		/// <summary>
+		/// Default check state of the patch.
+		/// </summary>
+		public bool IsChecked { get; set; }
     }
 
     public class PatchesList
     {
         public List<PatchesData> Patches { get; set; } = new();
+
         public static PatchesList Deserialize(string path)
         {
             if (File.Exists(path))

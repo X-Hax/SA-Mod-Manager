@@ -331,6 +331,7 @@ namespace SAModManager.Configuration.SA2
         }
     }
 
+	[Obsolete]
     public class GamePatches
     {
         [DefaultValue(true)]
@@ -361,6 +362,7 @@ namespace SAModManager.Configuration.SA2
             v0,     // Version 0: Original LoaderInfo Version
             v1,     // Version 1: Launch Version, functional parity with SA2GameSettings.
             v2,     // Version 2: Removed KeepAspectOnResize option, added StretchToWindow and DisableBorderImage
+			v3,		// Version 3: Removed old Patch system entirely, moving to new modular system.
 
             MAX,    // Do Not Modify, new versions are placed above this.
         }
@@ -381,12 +383,15 @@ namespace SAModManager.Configuration.SA2
         /// </summary>
         public TestSpawnSettings TestSpawn { get; set; } = new();
 
-        public List<string> EnabledGamePatches { get; set; } = [];
+		/// <summary>
+		/// Game Patch List for SA2.
+		/// </summary>
+		public Dictionary<string, bool> Patches { get; set; } = new Dictionary<string, bool>();
 
-        /// <summary>
-        /// Debug Settings.
-        /// </summary>
-        public DebugSettings DebugSettings { get; set; } = new();
+		/// <summary>
+		/// Debug Settings.
+		/// </summary>
+		public DebugSettings DebugSettings { get; set; } = new();
 
         /// <summary>
         /// Path to the game install saved with this configuration.

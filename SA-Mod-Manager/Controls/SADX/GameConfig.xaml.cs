@@ -33,19 +33,6 @@ namespace SAModManager.Controls.SADX
         private static string patchesPath = null;
         #endregion
 
-
-        private void InitPatches()
-        {
-            if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
-            {
-                string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
-                if (File.Exists(pathDest))
-                    patchesPath = pathDest;
-
-                SetPatches();
-            }
-        }
-
         public GameConfig(ref object gameSettings, ref bool suppressEvent_)
         {
 
@@ -107,13 +94,18 @@ namespace SAModManager.Controls.SADX
 
             switch (box.Name)
             {
-                case "txtResY":
+				case "txtResX":
+					MatchCustomResToRenderRes();
+					break;
+				case "txtResY":
                     if (chkRatio.IsChecked == true)
                     {
                         decimal ratio = GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43);
                         txtResX.Value = Math.Ceiling(txtResY.Value * ratio);
                     }
-                    break;
+					MatchCustomResToRenderRes();
+
+					break;
                 case "txtCustomResY":
                     if (chkMaintainRatio.IsChecked == true)
                     {
@@ -127,31 +119,31 @@ namespace SAModManager.Controls.SADX
                 comboDisplay.SelectedIndex = -1;
         }
 
-        private void HorizontalRes_Changed(object sender, RoutedEventArgs e)
-        {
-            if (!suppressEvent)
-                comboDisplay.SelectedIndex = -1;
-        }
-
         private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (GraphicsManager.Screens.Count > 1)
                 GraphicsManager.UpdateResolutionPresets(comboScreen.SelectedIndex);
         }
 
+		private void MatchCustomResToRenderRes()
+		{
+			if (chkMaintainRatio.IsChecked == true)
+			{
+				decimal ratio = txtResX.Value / txtResY.Value;
+				txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
+			}
+		}
+
         private void chkRatio_Click(object sender, RoutedEventArgs e)
         {
             if (chkRatio.IsChecked == true)
             {
-                txtResX.IsEnabled = false;
                 decimal resYDecimal = txtResY.Value;
                 decimal roundedValue = Math.Round(resYDecimal * (decimal)GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
                 txtResX.Value = roundedValue;
-            }
-            else if (!suppressEvent)
-            {
-                txtResX.IsEnabled = true;
-            }
+
+				MatchCustomResToRenderRes();
+			}
         }
 
         private void DisplaySize_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -172,30 +164,25 @@ namespace SAModManager.Controls.SADX
 
                     if (chkRatio.IsChecked == false)
                         txtResX.Value = GraphicsManager.ResolutionPresets[index].Width;
-                    break;
+
+					MatchCustomResToRenderRes();
+					break;
 
                 case "comboCustomWindow":
                     txtCustomResY.Value = GraphicsManager.ResolutionPresets[index].Height;
 
-                    if (chkRatio.IsChecked == false)
-                        txtCustomResX.Value = GraphicsManager.ResolutionPresets[index].Width;
+					if (chkMaintainRatio.IsChecked == false)
+						txtCustomResX.Value = GraphicsManager.ResolutionPresets[index].Width;
+					else
+						MatchCustomResToRenderRes();
                     break;
             }
         }
 
         private void chkMaintainRatio_Click(object sender, RoutedEventArgs e)
         {
-            if (chkMaintainRatio.IsChecked == true)
-            {
-                txtCustomResX.IsEnabled = false;
-                decimal ratio = txtResX.Value / txtResY.Value;
-                txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
-            }
-            else if (!suppressEvent)
-            {
-                txtCustomResX.IsEnabled = true;
-            }
-        }
+			MatchCustomResToRenderRes();
+		}
 
         public static void UpdateD3D8Paths()
         {
@@ -207,7 +194,6 @@ namespace SAModManager.Controls.SADX
         {
             comboRenderBackend.SelectedIndex = 1;
         }
-
 
         private void comboTextureFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -319,12 +305,11 @@ namespace SAModManager.Controls.SADX
             if (listPatches is null)
                 return;
 
-            settings.EnabledGamePatches.Clear();
+            settings.Patches.Clear();
 
             foreach (PatchesData patch in listPatches.Items)
-                if (patch.IsChecked == true)
-                    settings.EnabledGamePatches.Add(patch.InternalName);
-        }
+				settings.Patches.Add(patch.Name, patch.IsChecked);
+		}
 
         private void SetItemFromPad(int action)
         {
@@ -525,10 +510,22 @@ namespace SAModManager.Controls.SADX
         {
             labelSFXLevel?.SetValue(ContentProperty, $"{(int)sliderSFX.Value}");
         }
-        #endregion
+		#endregion
 
-        #region Patches Tab
-        private PatchesData GetPatchFromView(object sender)
+		#region Patches Tab
+		private void InitPatches()
+		{
+			if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
+			{
+				string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
+				if (File.Exists(pathDest))
+					patchesPath = pathDest;
+
+				SetPatches();
+			}
+		}
+
+		private PatchesData GetPatchFromView(object sender)
         {
             if (sender is ListViewItem lvItem)
                 return lvItem.Content as PatchesData;
@@ -541,7 +538,6 @@ namespace SAModManager.Controls.SADX
 
         private void PatchViewItem_MouseEnter(object sender, MouseEventArgs e)
         {
-
             var patch = GetPatchFromView(sender);
 
             if (patch is null)
@@ -559,10 +555,16 @@ namespace SAModManager.Controls.SADX
             PatchDescription.Text = Lang.GetString("CommonStrings.Description");
         }
 
-        private static List<PatchesData> GetPatches(ref ListView list, GameSettings set)
-        {
-            list.Items.Clear();
+		private bool GetPatchCheckState(PatchesData patch)
+		{
+			if (GameProfile.Patches.ContainsKey(patch.Name))
+				return GameProfile.Patches[patch.Name];
+			else
+				return patch.IsChecked;
+		}
 
+        private List<PatchesData> GetPatches()
+        {
             var patches = PatchesList.Deserialize(patchesPath);
 
             if (patches is not null)
@@ -571,11 +573,15 @@ namespace SAModManager.Controls.SADX
 
                 foreach (var patch in listPatch)
                 {
-                    patch.IsChecked = set.EnabledGamePatches.Contains(patch.Name);
-                    string desc = "GamePatches." + patch.Name + "Desc";
-                    patch.InternalName = patch.Name;
-                    patch.Name = Lang.GetString("GamePatches." + patch.Name);
-                    patch.Description = Lang.GetString(desc); //need to use a variable otherwise it fails for some reason
+					string nKey = "GamePatches." + patch.Name;              // Display Name Key
+					string lnString = Lang.GetString(nKey);
+					string dKey = "GamePatches." + patch.Name + "Desc";		// Description Key
+					string ldString = Lang.GetString(dKey);
+
+					patch.InternalName = lnString == nKey ? patch.InternalName : lnString;
+					patch.Description = ldString == dKey ? patch.Description : ldString;
+
+					patch.IsChecked = GetPatchCheckState(patch);
                 }
 
                 return listPatch;
@@ -588,7 +594,7 @@ namespace SAModManager.Controls.SADX
         {
             listPatches.Items.Clear();
 
-            List<PatchesData> patches = GetPatches(ref listPatches, GameProfile);
+            List<PatchesData> patches = GetPatches();
 
             if (patches is not null)
             {
@@ -618,7 +624,27 @@ namespace SAModManager.Controls.SADX
 
         }
 
-        private void RefreshPatchesList()
+		private void btnResetPatches_Click(object sender, RoutedEventArgs e)
+		{
+			PatchesList defaults = PatchesList.Deserialize(patchesPath);
+
+			foreach (PatchesData patch in listPatches.Items)
+			{
+				foreach (var value in defaults.Patches)
+				{
+					if (patch.Name == value.Name)
+					{
+						patch.IsChecked = value.IsChecked;
+						defaults.Patches.Remove(value);
+						break;
+					}
+				}
+			}
+
+			RefreshPatchesList();
+		}
+
+		private void RefreshPatchesList()
         {
             ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
             view.Refresh();
@@ -665,46 +691,35 @@ namespace SAModManager.Controls.SADX
             txtCustomResX.MinValue = 0;
             txtCustomResY.MinValue = 0;
 
-            txtCustomResX.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowWidth")
+			CustomWindowSettingsPanel.SetBinding(Grid.IsEnabledProperty, new Binding("ScreenMode")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.OneWay,
+				Converter = new CustomWindowEnabledConverter()
+			});
+			txtCustomResX.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowWidth")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
-            txtCustomResX.SetBinding(NumberBox.IsEnabledProperty, new Binding("ScreenMode")
-            {
-                Source = GameProfile.Graphics,
-                Mode = BindingMode.TwoWay,
-                Converter = new CustomWindowEnabledConverter()
-            });
-            txtCustomResY.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowHeight")
+			txtCustomResY.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowHeight")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
-            });
-            txtCustomResY.SetBinding(NumberBox.IsEnabledProperty, new Binding("ScreenMode")
-            {
-                Source = GameProfile.Graphics,
-                Mode = BindingMode.TwoWay,
-                Converter = new CustomWindowEnabledConverter()
-            });
-            comboCustomWindow.SetBinding(ComboBox.IsEnabledProperty, new Binding("ScreenMode")
-            {
-                Source = GameProfile.Graphics,
-                Mode = BindingMode.TwoWay,
-                Converter = new CustomWindowEnabledConverter()
-            });
-            chkMaintainRatio.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
-            {
-                Source = GameProfile.Graphics,
-                Mode = BindingMode.TwoWay,
-                Converter = new CustomWindowEnabledConverter()
             });
             chkMaintainRatio.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableKeepResolutionRatio")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
             });
-            chkStretchToWindow.SetBinding(CheckBox.IsCheckedProperty, new Binding("StretchToWindow")
+			chkMaintainRatio.SetBinding(CheckBox.IsEnabledProperty, new Binding("ScreenMode")
+			{
+				Source = GameProfile.Graphics,
+				Mode = BindingMode.OneWay,
+				Converter = new CustomWindowEnabledConverter()
+			});
+
+			chkStretchToWindow.SetBinding(CheckBox.IsCheckedProperty, new Binding("StretchToWindow")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
@@ -862,6 +877,8 @@ namespace SAModManager.Controls.SADX
                 Mode = BindingMode.TwoWay
             });
         }
-        #endregion
+		#endregion
+
+		
     }
 }
