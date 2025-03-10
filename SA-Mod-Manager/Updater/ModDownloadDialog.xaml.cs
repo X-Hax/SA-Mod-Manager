@@ -171,14 +171,20 @@ namespace SAModManager.Updater
             });
         }
 
-        private async Task Extracting(string dataDir, string filePath)
+        private async Task<bool> Extracting(string dataDir, string filePath)
         {
+            string failed = "Failed to extract '" + filePath + "'\n at " + dataDir + "\n\n";
             string isValid = Path.GetExtension(filePath);
+
             if (Util.IsStringValid(isValid) == false)
             {
-                Close();
-                throw new Exception("Failed to extract '" + filePath + "'\n at " + dataDir + "\n\n");
-           
+                await Dispatcher.InvokeAsync(() =>
+                {
+
+                    var error = new MessageWindow(Lang.GetString("Updater.DL.Mod.ManifestApplyFail"), failed, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+                    error.ShowDialog();
+                });
+                return false;
             }
 
             try
@@ -186,12 +192,21 @@ namespace SAModManager.Updater
                 UpdateHeaderTextDirect(Lang.GetString("Updater.DL.Mod.Extracting"));
                 Util.CreateSafeDirectory(dataDir);
                 await Util.ExtractArchive(filePath, dataDir, null, true);
+                return true;
             }
             catch (Exception ex)
             {
-                Close();
-                throw new Exception("Failed to extract '" + filePath + "'\n at " + dataDir + "\n\n", ex);
+                failed += ex;
             }
+
+            await Dispatcher.InvokeAsync(() =>
+            {
+       
+                var error = new MessageWindow(Lang.GetString("Updater.DL.Mod.ManifestApplyFail"), failed, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK);
+                error.ShowDialog();
+            });
+
+            return false;
         }
 
         private async Task ParseManifestAndAdjustFiles(ModDownload file, string filePath, string dataDir)
@@ -514,8 +529,6 @@ namespace SAModManager.Updater
                 Directory.Delete(dataDir, true);
             }
 
-            File.WriteAllText(Path.Combine(file.Folder, "mod.version"), file.Updated.ToString(DateTimeFormatInfo.InvariantInfo));
-
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -550,8 +563,10 @@ namespace SAModManager.Updater
                     dataDir = Path.Combine(this.dest, dataDir);
                     if (File.Exists(filePath))
                     {
-                        await Extracting(dataDir, filePath);
-                        await ParseManifestAndAdjustFiles(mod, filePath, dataDir);
+                        if (await Extracting(dataDir, filePath))
+                        {
+                            await ParseManifestAndAdjustFiles(mod, filePath, dataDir);
+                        }
                     }
                     CleanUp(mod, dataDir, filePath);
                 }
