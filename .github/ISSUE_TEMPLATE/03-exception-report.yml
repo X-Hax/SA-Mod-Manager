@@ -17,6 +17,13 @@ body:
       description: Please share your Exception Report is here. You can include any additional crash related files here.
     validations:
       required: true
+
+  - type: textarea
+    attributes:
+      label: Reproduction Steps
+      description: Please provide the steps you were taking when the error occurred. This includes any steps taken the last time the program was operational prior to the error occurring.
+    validations:
+      required: true
   - type: dropdown
     id: os
     attributes:
