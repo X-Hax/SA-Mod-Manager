@@ -1,36 +1,43 @@
 name: "Exception Report"
-description: "Report a crash from the Mod Manager. DO NOT report game crashes."
+description: "Report a crash from the Mod Manager. Please use the Mod Loader links if this is a game related crash."
 title: "[Exception Report]: "
 labels: ["exception report", "bug"]
 body:
-- type: checkboxes
-  attributes:
-    label: Report Verification
-    description: Before submitting your Exception Report, please check the Issues on the repo for any similar reports. If you find one, please add your report to that issue.
-    options:
-    - label: I have checked and verified there are no similar reports.
+  - type: checkboxes
+    attributes:
+      label: Report Verification
+      description: Before submitting your Exception Report, please check the Issues on the repo for any similar reports. If you find one, please add your report to that issue.
+      options:
+        - label: I have checked and verified there are no similar reports.
+          required: true
+  - type: textarea
+    id: ex-report
+    attributes:
+      label: Exception Report
+      description: Please share your Exception Report is here. You can include any additional crash related files here.
+    validations:
       required: true
-- type: textarea
-  id: ex-report
-  attributes:
-    label: Exception Report
-    description: Please share your Exception Report is here. You can include any additional crash related files here.
-  validations:
-    required: true
-- type: textarea
-  attributes:
-    label: Reproduction Steps
-    description: Please provide the steps you were taking when the bug occurred.
-    value: |
-      1. 
-      2. 
-      3. 
-      ...
-  validations:
-    required: true
-- type: textarea
-  attributes:
-    label: Additional Information
-    description: Please provide any additional information you believe may pertain to this bug. You can provide screenshots, videos, and any potential logs by clicking this area to highlight it, then dragging the file(s) in.
-  validations:
-    required: false
+  - type: dropdown
+    id: os
+    attributes:
+      label: Please select your Operating System.
+      multiple: false
+      options:
+        - Windows
+        - Linux
+        - MacOS
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: Operation System Information
+      description: Please provide the version of your Operating System. If you're using Linux or MacOS, please provide the emulation layer you're using.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional Information
+      description: Please provide any additional information you believe may pertain to this bug. You can provide screenshots, videos, and any potential logs by clicking this area to highlight it, then dragging the file(s) in.
+    validations:
+      required: false
