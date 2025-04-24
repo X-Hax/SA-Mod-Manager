@@ -443,8 +443,7 @@ namespace SAModManager.Configuration.SA2
             if (Directory.Exists(GamePath))
             {
                 string configfolder = Path.Combine(GamePath, "Config");
-                if (!Directory.Exists(configfolder))
-                    Directory.CreateDirectory(configfolder);
+                Util.CreateSafeDirectory(configfolder);
 
                 string keyboardPath = Path.GetFullPath(Path.Combine(GamePath, App.CurrentGame.GameConfigFile[0]));
 
