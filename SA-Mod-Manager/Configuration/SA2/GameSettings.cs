@@ -442,6 +442,10 @@ namespace SAModManager.Configuration.SA2
 
             if (Directory.Exists(GamePath))
             {
+                string configfolder = Path.Combine(GamePath, "Config");
+                if (!Directory.Exists(configfolder))
+                    Directory.CreateDirectory(configfolder);
+
                 string keyboardPath = Path.GetFullPath(Path.Combine(GamePath, App.CurrentGame.GameConfigFile[0]));
 
                 //if keyboard config is missing add it (fix game crashes if official launcher was never used)
