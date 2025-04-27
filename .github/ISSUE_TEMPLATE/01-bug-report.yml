@@ -8,7 +8,7 @@ body:
       value: |
         You are filing a bug report for the **SA Mod Manager**. For **game issues**, such as a **game crash** or **settings not working**, please report those to their respective repositories.
         [Report SADX Issues Here](https://github.com/X-Hax/sadx-mod-loader)
-        [Report SA2 Here Here](https://github.com/X-Hax/sa2-mod-loader) 
+        [Report SA2 Issues Here](https://github.com/X-Hax/sa2-mod-loader) 
   - type: checkboxes
     attributes:
       label: Report Verification
