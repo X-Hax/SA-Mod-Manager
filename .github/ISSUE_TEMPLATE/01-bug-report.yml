@@ -38,6 +38,8 @@ body:
       options:
         - Release Build
         - Development Build
+    validations:
+      required: true
   - type: dropdown
     id: os
     attributes:
