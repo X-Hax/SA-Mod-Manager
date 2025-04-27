@@ -3,10 +3,16 @@ description: "File a Bug Report"
 title: "[Bug Report]: "
 labels: ["bug"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        You are filing a bug report for the **SA Mod Manager**. For **game issues**, such as a **game crash** or **settings not working**, please report those to their respective repositories.
+        [Report SADX Issues Here](https://github.com/X-Hax/sadx-mod-loader)
+        [Report SA2 Here Here](https://github.com/X-Hax/sa2-mod-loader) 
   - type: checkboxes
     attributes:
       label: Report Verification
-      description: Please confirm that this report you are submitting is for the Mod Manager. If it is for game crashes pertaining to the Mod Loader, please report those to the corresponding repository. If it's a mod related issue, please report that to the mod developer. Please also confirm that you have checked the Issues to ensure this issue has not already been reported.
+      description: Please confirm that this report you are submitting is for the Mod Manager program (not for either of the games) and verify that you have checked the Issues to ensure this issue has not already been reported.
       options:
         - label: This report is for a bug with the SA Mod Manager.
           required: true
@@ -24,6 +30,14 @@ body:
       description: Please provide the steps you were taking when the bug occurred. This includes any steps taken the last time the program was operational prior to the bug occurring.
     validations:
       required: true
+  - type: dropdown
+    id: build
+    attributes:
+      label: Please select which build you are using.
+      multiple: false
+      options:
+        - Release Build
+        - Development Build
   - type: dropdown
     id: os
     attributes:
