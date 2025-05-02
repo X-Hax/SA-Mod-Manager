@@ -163,6 +163,9 @@ namespace SAModManager.Management
 		{
 			if (App.CurrentGame.id != GameEntry.GameType.Unsupported)
 			{
+				if (!Directory.Exists(App.CurrentGame.modLoaderDirectory))
+					return;
+
 				string destFile = Path.Combine(App.CurrentGame.modLoaderDirectory, "samanager.txt");
 
 				File.WriteAllText(destFile, App.StartDirectory);
