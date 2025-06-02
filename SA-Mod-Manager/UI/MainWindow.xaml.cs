@@ -31,6 +31,7 @@ using System.DirectoryServices.ActiveDirectory;
 using System.Collections.ObjectModel;
 using SAModManager.Management;
 using PropertyChanged;
+using System.Media;
 
 namespace SAModManager
 {
@@ -2373,7 +2374,11 @@ namespace SAModManager
                 Source = App.CurrentGame,
                 Mode = BindingMode.TwoWay
             });
-
+            checkUseSoftwareRendering.SetBinding(CheckBox.IsCheckedProperty, new Binding("UseSoftwareRendering")
+            {
+                Source = App.ManagerSettings,
+                Mode = BindingMode.TwoWay
+            });
 
         }
 
@@ -3010,6 +3015,14 @@ namespace SAModManager
         {
             AdvancedSettingsWindow wind = new AdvancedSettingsWindow();
             wind.Show();
+        }
+
+		private void checkUseSoftwareRendering_Click(object sender, RoutedEventArgs e)
+		{
+            if (App.ManagerSettings.UseSoftwareRendering)
+                RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
+            else
+                RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.Default;
         }
     }
 

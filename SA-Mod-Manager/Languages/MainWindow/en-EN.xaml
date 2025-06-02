@@ -76,7 +76,8 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Log Debug Info to File</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Create Crash Dumps</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Check Game Health</system:String>
-
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.UseSoftwareRendering">Disable Hardware Acceleration</system:String>
+	
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">About</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">About</system:String>
@@ -222,6 +223,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Opens a link to the SA Docs website which has various information regarding modding the Adventure games.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Opens a link to the Issues on the Mod Manager's GitHub repo for reporting bugs.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Runs a health check on your game install to see if you have any missing or modified files.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.UseSoftwareRendering">Disables hardware acceleration and sets the app to render using Software Rendering. May improve performance or fix some graphical issues on some systems.</system:String>
 	<!--#endregion-->
 
 </ResourceDictionary>

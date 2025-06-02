@@ -17,6 +17,7 @@ namespace SAModManager.Configuration
         v0 = 0,	// V0: Pre-Release
         v1 = 1,	// V1: Initial Release
 		v2 = 2,	// V2: Migrated to GameEntry system for managing game selection setup.
+        v3 = 3, // V3: Added Software Render Mode option (Visible option is "Disable Hardware Acceleration").
 
 		MAX,
     }
@@ -236,6 +237,9 @@ namespace SAModManager.Configuration
         public double managerHeight { get; set; }
         [DefaultValue(false)]
         public bool KeepModOrder { get; set; } = false;
+
+        [DefaultValue(false)]
+        public bool UseSoftwareRendering { get; set; } = false;
 
         /// <summary>
         /// Deserializes a Manager Settings CFG (JSON) file and returns a populated class.

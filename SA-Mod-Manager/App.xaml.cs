@@ -23,6 +23,8 @@ using System.Text.RegularExpressions;
 using System.Text;
 using System.Collections.ObjectModel;
 using SAModManager.Management;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace SAModManager
 {
@@ -140,6 +142,12 @@ namespace SAModManager
                 Current.Shutdown();
                 return;
             }
+
+            if (isLinux)
+                ManagerSettings.UseSoftwareRendering = true;
+
+            if (ManagerSettings.UseSoftwareRendering)
+			    RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 
             MainWindow = new MainWindow();
             base.OnStartup(e);

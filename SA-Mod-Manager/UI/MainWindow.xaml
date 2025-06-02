@@ -473,10 +473,12 @@
 											<RowDefinition Height="Auto"/>
 											<RowDefinition Height="Auto"/>
 											<RowDefinition Height="Auto"/>
+											<RowDefinition Height="Auto"/>
 										</Grid.RowDefinitions>
 										<CheckBox x:Name="checkManagerOpen" Grid.Row="0" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.KeepOpen}"/>
 										<CheckBox x:Name="checkDevEnabled" Grid.Row="1" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.TestSpawn}"/>
 										<CheckBox x:Name="checkKeepModOrder" Grid.Row="2" Margin="5" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.KeepModOrder}"/>
+										<CheckBox x:Name="checkUseSoftwareRendering" Grid.Row="3" Margin="5" Click="checkUseSoftwareRendering_Click" Content="{DynamicResource Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.UseSoftwareRendering}" ToolTip="{DynamicResource MainWindow.Tips.Tab.Options.UseSoftwareRendering}"/>
 									</Grid>
 
 									<Grid Grid.Column="1">
