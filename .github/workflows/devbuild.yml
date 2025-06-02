@@ -24,6 +24,10 @@ jobs:
           fetch-depth: 0
           submodules: 'recursive'
           
+      - name: Add Dev to resources
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: echo "true" > SA-Mod-Manager/Resources/Dev.txt
+          
       - name: Add Git hash to resources
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: echo ${{github.sha}} > SA-Mod-Manager/Resources/Version.txt

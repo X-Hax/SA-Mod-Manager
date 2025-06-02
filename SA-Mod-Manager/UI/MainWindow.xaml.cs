@@ -1143,7 +1143,7 @@ namespace SAModManager
         private async void btnCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
             UIHelper.ToggleButton(ref btnCheckUpdates, false);
-            bool isDev = !string.IsNullOrEmpty(App.RepoCommit);
+            bool isDev = App.isDev;
             bool managerUpdate = isDev ? await App.PerformDevUpdateManagerCheck() : await App.PerformUpdateManagerCheck();
             App.CancelUpdate = false;
 
@@ -1365,9 +1365,8 @@ namespace SAModManager
         {
             bool isPortable = Directory.Exists(Path.Combine(App.StartDirectory, "SAManager"));
             string portable = isPortable ? " Portable" : "";
-            if (string.IsNullOrEmpty(App.RepoCommit)) //release
+            if (App.isDev == false) //release
             {
-
                 Title = titleName + portable + " " + "(" + Version + ")";
             }
             else
@@ -2957,7 +2956,7 @@ namespace SAModManager
 
         private async void ComboBoxChannel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            bool isDev = !string.IsNullOrEmpty(App.RepoCommit);
+            bool isDev = App.isDev;
             string currentChannel = isDev ? App.UpdateChannels[1] : App.UpdateChannels[0];
 
             if (comboUpdateChannel.SelectedItem != null && currentChannel != comboUpdateChannel.SelectedItem as string)
