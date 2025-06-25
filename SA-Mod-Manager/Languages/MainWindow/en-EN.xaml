@@ -195,6 +195,8 @@
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Launches the game with the above settings applied.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Enables setting for player 2.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Sets the Mission of the selected level.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.EventManual">Forces a cutscene with the specified ID to play, if it exists. Overrides all settings when enabled.</system:String>
+    
     <!--#endregion-->
 
 	<!--#region Manager Config Tips-->
