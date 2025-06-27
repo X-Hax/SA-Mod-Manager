@@ -108,7 +108,7 @@ namespace SAModManager.Controls.SA2
 
 
             tsComboEvent.SelectedIndex = EventNames.Keys.ToList<int>().IndexOf(GameProfile.TestSpawn.EventIndex);
-            if (GameProfile.TestSpawn.UseManual || GameProfile.TestSpawn.UsePosition)
+            if (GameProfile.TestSpawn.UseManual || GameProfile.TestSpawn.UsePosition || GameProfile.TestSpawn.UseEventManual)
                 expandAdvanced.IsExpanded = true;
         }
 
@@ -196,6 +196,16 @@ namespace SAModManager.Controls.SA2
                 if (tsComboMission.SelectedIndex > -1)
                     tsNumMission.Value = tsComboMission.SelectedIndex;
 
+                tsCheckCharacter.IsChecked = false;
+                tsCheckLevel.IsChecked = false;
+                tsCheckPlayer2.IsChecked = false;
+                tsCheckEvent.IsChecked = false;
+            }
+        }
+        private void tsCheckEventManual_Checked(object sender, RoutedEventArgs e)
+        {
+            if (GameProfile.TestSpawn.UseEventManual)
+            {
                 tsCheckCharacter.IsChecked = false;
                 tsCheckLevel.IsChecked = false;
                 tsCheckPlayer2.IsChecked = false;
@@ -311,6 +321,16 @@ namespace SAModManager.Controls.SA2
                 Mode = BindingMode.TwoWay
             });
             tsNumAngle.SetBinding(NumberBox.ValueProperty, new Binding("Rotation")
+            {
+                Source = GameProfile.TestSpawn,
+                Mode = BindingMode.TwoWay
+            });
+            tsCheckEventManual.SetBinding(CheckBox.IsCheckedProperty, new Binding("UseEventManual")
+            {
+                Source = GameProfile.TestSpawn,
+                Mode = BindingMode.TwoWay
+            });
+            tsNumEvent.SetBinding(NumberBox.ValueProperty, new Binding("EventIndex")
             {
                 Source = GameProfile.TestSpawn,
                 Mode = BindingMode.TwoWay
@@ -566,7 +586,8 @@ namespace SAModManager.Controls.SA2
                 cmdline.Add($"-p2 {charIndex}");
             }
 
-            if (GameProfile.TestSpawn.LevelIndex > -1 && GameProfile.TestSpawn.UseEvent == false)
+            if (GameProfile.TestSpawn.LevelIndex > -1)
+                if (GameProfile.TestSpawn.UseEvent == false && GameProfile.TestSpawn.UseEventManual == false)
             {
                 int lvl_result = GameProfile.TestSpawn.LevelIndex;
                 if (tsCheckManual.IsChecked == false)
@@ -594,8 +615,9 @@ namespace SAModManager.Controls.SA2
 			if (GameProfile.TestSpawn.UsePosition)
 				cmdline.Add($"-p {GameProfile.TestSpawn.XPosition} {GameProfile.TestSpawn.YPosition} {GameProfile.TestSpawn.ZPosition} -r {GameProfile.TestSpawn.Rotation}");
 
-			if (GameProfile.TestSpawn.UseEvent && GameProfile.TestSpawn.EventIndex > -1)
-                cmdline.Add($"-e {GameProfile.TestSpawn.EventIndex}");
+			if (GameProfile.TestSpawn.EventIndex > -1)
+                if (GameProfile.TestSpawn.UseEvent || GameProfile.TestSpawn.UseEventManual)
+                    cmdline.Add($"-e {GameProfile.TestSpawn.EventIndex}");
 
 
             if (GameProfile.TestSpawn.UseSave && GameProfile.TestSpawn.SaveIndex > -1)
