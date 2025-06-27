@@ -131,7 +131,7 @@ namespace SAModManager
                 {
                     UpdateManagerStatusText(Lang.GetString("UpdateStatus.ChkUpdate"));
                     UIHelper.ToggleButton(ref btnCheckUpdates, false);
-                    bool isDev = !string.IsNullOrEmpty(App.RepoCommit);
+                    bool isDev = App.isDev;
 
                     bool managerUpdate = isDev ? await App.PerformDevUpdateManagerCheck() : await App.PerformUpdateManagerCheck();
                     if (managerUpdate)
