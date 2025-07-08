@@ -566,6 +566,7 @@ namespace SAModManager.Updater
                         if (await Extracting(dataDir, filePath))
                         {
                             await ParseManifestAndAdjustFiles(mod, filePath, dataDir);
+                            File.WriteAllText(Path.Combine(mod.Folder, "mod.version"), mod.Updated.ToString(DateTimeFormatInfo.InvariantInfo));
                         }
                     }
                     CleanUp(mod, dataDir, filePath);

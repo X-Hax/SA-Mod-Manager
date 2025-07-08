@@ -279,6 +279,12 @@ namespace SAModManager.Configuration.SA2
         public bool UseManual { get; set; } = false;
 
         /// <summary>
+        /// Enables the Manual settings for Events/Cutscenes.
+        /// </summary>
+        [DefaultValue(false)]
+        public bool UseEventManual { get; set; } = false;
+
+        /// <summary>
         /// Enables manually modifying the start position when using test spawn.
         /// </summary>
         [DefaultValue(false)]

@@ -57,6 +57,7 @@ namespace SAModManager
         private static readonly Mutex mutex = new(true, pipeName);
         public static Updater.UriQueue UriQueue;
         public static string RepoCommit = SAModManager.Properties.Resources.Version.Trim();
+        public static bool isDev = !string.IsNullOrEmpty(SAModManager.Properties.Resources.Dev);
 
         public static LangEntry CurrentLang { get; set; }
         public static LanguageList LangList { get; set; }
@@ -65,7 +66,7 @@ namespace SAModManager
         public static bool IsLightTheme = false;
         public static ThemeList ThemeList { get; set; }
         public static List<string> UpdateChannels { get; set; } = ["Release", "Development"];
-        public static string CurrentChannel { get; set; } = string.IsNullOrEmpty(RepoCommit) ? UpdateChannels[0] : UpdateChannels[1];
+        public static string CurrentChannel { get; set; } = !isDev ? UpdateChannels[0] : UpdateChannels[1];
 
         public static Game CurrentGame = GamesInstall.Unknown;
         public static List<Game> GamesList = new();
@@ -399,7 +400,7 @@ namespace SAModManager
             if (update.Item2 is not null)
             {
                 string changelog = await GitHub.GetGitChangeLog(update.Item2.HeadSHA);
-                var manager = new InfoManagerUpdate(changelog, ".Dev");
+                var manager = new InfoManagerUpdate(changelog, "(Dev Version)", null, true);
                 manager.ShowDialog();
 
                 if (manager.DialogResult != true)

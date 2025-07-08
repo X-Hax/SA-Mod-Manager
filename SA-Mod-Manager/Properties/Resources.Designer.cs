@@ -61,6 +61,15 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Dev {
+            get {
+                return ResourceManager.GetString("Dev", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;SyntaxDefinition name=&quot;OpCode&quot; xmlns=&quot;http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008&quot;&gt;
         ///	&lt;RuleSet&gt;
         ///		&lt;Keywords fontSize=&quot;14&quot; foreground=&quot;Yellow&quot;&gt;
