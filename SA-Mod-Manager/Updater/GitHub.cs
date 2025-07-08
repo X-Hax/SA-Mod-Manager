@@ -10,6 +10,7 @@ using static SAModManager.Updater.GitHubArtifact;
 using static SAModManager.Updater.WorkflowRunInfo.GitHubTagInfo;
 using System.Text.RegularExpressions;
 using System.IO;
+using SAModManager.UI;
 
 namespace SAModManager.Updater
 {
@@ -357,28 +358,37 @@ namespace SAModManager.Updater
 
             string apiUrl = $"https://api.github.com/repos/{owner}/{repo}/actions/runs";
 
-            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string jsonResult = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonConvert.DeserializeObject<WorkflowList>(jsonResult);
+				HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
-                if (apiResponse != null && apiResponse.Runs.Count > 0)
-                {
-                    for (int i = 0; i < apiResponse.Runs.Count; i++)
-                    {
-                        if (apiResponse.Runs[i].HeadBranch.Equals(branch, StringComparison.CurrentCultureIgnoreCase)) //only get builds from the current branch.
-                        {
-                            return apiResponse.Runs[i]; //return the first build that contains the right branch, this should be the last update every time.
-                        }
-                    }
-                }
-            }
+				if (response.IsSuccessStatusCode)
+				{
+					string jsonResult = await response.Content.ReadAsStringAsync();
+					var apiResponse = JsonConvert.DeserializeObject<WorkflowList>(jsonResult);
 
-            ((MainWindow)App.Current.MainWindow)?.UpdateManagerStatusText("Error WorkFlow: " + response.StatusCode);
-            return null;
+					if (apiResponse != null && apiResponse.Runs.Count > 0)
+					{
+						for (int i = 0; i < apiResponse.Runs.Count; i++)
+						{
+							if (apiResponse.Runs[i].HeadBranch.Equals(branch, StringComparison.CurrentCultureIgnoreCase)) //only get builds from the current branch.
+							{
+								return apiResponse.Runs[i]; //return the first build that contains the right branch, this should be the last update every time.
+							}
+						}
+					}
+				}
 
+			    ((MainWindow)App.Current.MainWindow)?.UpdateManagerStatusText("Error WorkFlow: " + response.StatusCode);
+				return null;
+			}
+            catch
+            {
+                MessageWindow msg = new MessageWindow(Lang.GetString("MessageWindow.Errors.ConnectionFailed.Title"), Lang.GetString("MessageWindow.Errors.ConnectionFailed.Message"), type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Error);
+                msg.ShowDialog();
+				((MainWindow)App.Current.MainWindow)?.UpdateManagerStatusText("Failed to establish Connection.");
+				return null;
+			}
         }
 
         private static async Task<string> GetSHAFromLastTag(GitHubRelease release, HttpClient httpClient)
