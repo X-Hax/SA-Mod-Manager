@@ -4,6 +4,8 @@ using IniGroup = System.Collections.Generic.Dictionary<string, string>;
 using IniNameGroup = System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.Dictionary<string, string>>;
 using IniNameValue = System.Collections.Generic.KeyValuePair<string, string>;
 
+// TODO: Reimplement Message Window with ADVTheme Dependency.
+
 namespace SAMM.Utilities.INI
 {
 	public static class IniFile
