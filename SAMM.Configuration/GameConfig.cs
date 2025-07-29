@@ -3,11 +3,9 @@ using System.Diagnostics;
 
 namespace SAMM.Configuration
 {
-	public abstract class GameConfig
+	public class GameConfig
 	{
 		#region Variables
-		public GameIDs GameID { get; set; } = GameIDs.Unsupported;
-
 		public Uri? GameIcon { get; set; }
 
 		public string GameDirectory { get; set; } = string.Empty;
@@ -33,7 +31,10 @@ namespace SAMM.Configuration
 
 		#endregion
 
-		public virtual void LaunchGame(string cmds = "")
+		public GameConfig() { }
+
+		#region Functions
+		public void LaunchGame(string customExecutable = "", string cmds = "")
 		{
 			string gameExecutablePath = Path.Combine(GameDirectory, GameExecutable);
 
@@ -47,7 +48,15 @@ namespace SAMM.Configuration
 			Process.Start(processStartInfo);
 		}
 
-		abstract protected bool verifyExecutable();
+		private bool verifyExecutable()
+		{
+			foreach (var file in Directory.GetFiles(GameDirectory, "*.exe"))
+			{
+				if (Path.GetFileName(file) == GameExecutable)
+					return true;
+			}
+			return false;
+		}
 
 		public async Task<bool> VerifyExecutable()
 		{
@@ -57,7 +66,18 @@ namespace SAMM.Configuration
 			});
 		}
 
-		abstract protected bool installModloader();
+		private bool installModloader()
+		{
+			try
+			{
+				ModLoaderInfo.InstallLoader(ModloaderPath, GameDirectory, true);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
 
 		public async Task<bool> InstallModloader()
 		{
@@ -67,7 +87,18 @@ namespace SAMM.Configuration
 			});
 		}
 
-		abstract protected bool uninstallModloader();
+		private bool uninstallModloader()
+		{
+			try
+			{
+				ModLoaderInfo.UninstallLoader(GameDirectory);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
 
 		public async Task<bool> UninstallModloader()
 		{
@@ -76,5 +107,61 @@ namespace SAMM.Configuration
 				return uninstallModloader();
 			});
 		}
+
+		#endregion
+
+		#region Static
+		private static Dictionary<GameIDs, GameConfig> gameConfigurations = new Dictionary<GameIDs, GameConfig>()
+		{
+			{ GameIDs.Unsupported, new GameConfig() },
+			{ 
+				GameIDs.SADX, new GameConfig()
+				{
+					// GameIcon = new Uri("");
+					GameExecutable = "sonic.exe",
+					GameSystemFolder = "system",
+					ModLoaderInfo = new ModLoaderInfo()
+					{
+						Filename = "SADXModLoader",
+						InjectionFile = "CHRMODELS",
+						Repository = "sadx-mod-loader",
+						VersionFile = "sadxmlver.txt"
+					},
+					OneClickProtocol = "sadxmm:"
+				}
+			},
+			{ 
+				GameIDs.SA2B, new GameConfig()
+				{
+					// GameIcon = new Uri("");
+					GameExecutable = "sonic2app.exe",
+					GameSystemFolder = Path.Combine("resource", "gd_PC"),
+					ModLoaderInfo = new ModLoaderInfo()
+					{
+						Filename = "SA2ModLoader",
+						InjectionFile = Path.Combine("DLL", "Data_DLL"),
+						Repository = "sa2-mod-loader",
+						VersionFile = "sa2mlver.txt"
+					},
+					OneClickProtocol = "sa2mm:"
+				}
+			}
+		};
+
+		public static GameConfig GetGameConfig(GameIDs gameID, string gameDirectory)
+		{
+			if (gameConfigurations.ContainsKey(gameID))
+			{
+				GameConfig gameConfig = gameConfigurations[gameID];
+				gameConfig.GameDirectory = gameDirectory;
+				return gameConfig;
+			}
+			else
+			{
+				return gameConfigurations[GameIDs.Unsupported];
+			}
+		}
+
+		#endregion
 	}
 }
