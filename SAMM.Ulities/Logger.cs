@@ -1,4 +1,4 @@
-﻿namespace SAMM.Ulities
+﻿namespace SAMM.Utilities
 {
 	public static class Logger
 	{
