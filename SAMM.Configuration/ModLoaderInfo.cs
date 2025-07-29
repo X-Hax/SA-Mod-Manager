@@ -41,7 +41,7 @@ namespace SAMM.Configuration
 			string injectionFilepath = Path.Combine(gameSystemDirectory, InjectionFile + ".dll");
 			string origInjectionFilepath = Path.Combine(gameSystemDirectory, InjectionFile + "_orig.dll");
 
-			// Copy the injection file. We don't overwrite in the event this "orig" file already exists.
+			// Copy the injection file. We don't overwrite in the event this "orig" file already exists and this still gets run.
 			if (createBackup)
 				File.Copy(injectionFilepath, origInjectionFilepath, false);
 
