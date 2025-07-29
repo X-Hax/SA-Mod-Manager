@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SAMM.Ulities\SAMM.Ulities.csproj" />
+    <ProjectReference Include="..\SAMM.Ulities\SAMM.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

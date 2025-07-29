@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAMM.App", "SAMM.App\SAMM.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAMM.App.Desktop", "SAMM.App.Desktop\SAMM.App.Desktop.csproj", "{98ECA84A-FA04-35B4-5E2C-8A26753F29DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAMM.Ulities", "SAMM.Ulities\SAMM.Ulities.csproj", "{A7DB72F2-F880-4B7D-AE7E-E407A76F0161}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAMM.Utilities", "SAMM.Ulities\SAMM.Utilities.csproj", "{A7DB72F2-F880-4B7D-AE7E-E407A76F0161}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
