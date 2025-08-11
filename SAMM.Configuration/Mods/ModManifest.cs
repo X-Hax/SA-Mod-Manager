@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Security.Cryptography;
-using SAMM.Utilities.Updater;
-
+/*
 namespace SAMM.Configuration.Mods
 {
 	/// <summary>
@@ -577,3 +576,4 @@ namespace SAMM.Configuration.Mods
 		}
 	}
 }
+*/

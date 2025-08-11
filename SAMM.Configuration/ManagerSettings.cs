@@ -95,7 +95,7 @@ namespace SAMM.Configuration
 				case "sonic2app.exe":
 				case "sonic2app_decrypted.exe":
 					Name = "Sonic Adventure 2";
-					Type = GameIDs.SA2;
+					Type = GameIDs.SA2B;
 					break;
 			}
 		}
@@ -228,7 +228,7 @@ namespace SAMM.Configuration
 			}
 			catch (Exception ex)
 			{
-				new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ProfileLoad") + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+				//new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ProfileLoad") + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
 
 			}
 
@@ -243,7 +243,7 @@ namespace SAMM.Configuration
 		{
 			try
 			{
-				App.CreateConfigFolder();
+				//App.CreateConfigFolder();
 				string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
 				File.WriteAllText(path, jsonContent);
 			}

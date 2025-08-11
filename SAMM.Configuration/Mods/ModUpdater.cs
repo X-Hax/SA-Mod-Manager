@@ -4,8 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using SAMM.Utilities.INI;
-using SAMM.Utilities.Updater;
-
+/*
 namespace SAMM.Configuration.Mods
 {
     public class ModUpdateAndErrors
@@ -421,3 +420,4 @@ namespace SAMM.Configuration.Mods
         private static partial Regex MyRegex();
     }
 }
+*/

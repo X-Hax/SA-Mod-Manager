@@ -1,4 +1,5 @@
-﻿namespace SAMM.Configuration.Mods
+﻿/*
+namespace SAMM.Configuration.Mods
 {
     public enum ModDownloadType
     {
@@ -83,3 +84,4 @@
     }
 }
 
+*/
