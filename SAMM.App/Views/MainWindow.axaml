@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="750"
+		xmlns:models="clr-namespace:SAMM.App.Models;assembly=SAMM.App"
+		x:DataType="models:MainWindowViewModel"
+		Height="{Binding ManagerSettings.ManagerHeight}" Width="{Binding ManagerSettings.ManagerWidth}"
+        x:Class="SAMM.App.Views.MainWindow"
+        Title="SA Mod Manager"
+		xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+		xmlns:advconverter="clr-namespace:ADVTheme.Converters;assembly=ADVTheme">
+	<Window.Resources>
+		<advconverter:DoubleIncrementConverter x:Key="DialogHostSizeConverter" ModifierMethod="Multiply" ModifierValue="0.9"/>
+		<advconverter:DoubleIncrementConverter x:Key="TabWidth" ModifierMethod="Divide" ModifierValue="5.12"/>
+	</Window.Resources>
+
+	<dialogHostAvalonia:DialogHost CloseOnClickAway="True" BlurBackground="True">
+		<dialogHostAvalonia:DialogHost.DialogContent>
+			<Border Width="{Binding Path=$parent.Width, Converter={StaticResource DialogHostSizeConverter}}"
+					Height="{Binding Path=$parent.Height, Converter={StaticResource DialogHostSizeConverter}}">
+				
+			</Border>
+		</dialogHostAvalonia:DialogHost.DialogContent>
+		
+		<Grid Margin="5" RowDefinitions="*,Auto">
+			<TabControl x:Name="ManagerTabs" TabStripPlacement="Top">
+				<TabItem Header="Mods" TabIndex="0">
+					<Grid RowDefinitions="*">
+						
+					</Grid>
+				</TabItem>
+
+				<TabItem Header="Codes" TabIndex="1">
+					
+				</TabItem>
+
+				<TabItem Header="Game Config" TabIndex="2">
+					
+				</TabItem>
+
+				<TabItem Header="Quick Boot" TabIndex="3">
+					
+				</TabItem>
+				
+				<TabItem Header="Settings" TabIndex="4">
+					<ScrollViewer AllowAutoHide="True">
+						<Grid RowDefinitions="Auto,Auto,Auto">
+							
+						</Grid>
+					</ScrollViewer>
+				</TabItem>
+			</TabControl>
+			<Grid Grid.Row="1" Height="35" ColumnDefinitions="Auto,Auto,*,Auto">
+				<Button Grid.Column="0" Margin="0,0,10,0">
+					<StackPanel Orientation="Horizontal" Spacing="5" >
+						<Path Stroke="{DynamicResource ADVTheme.Brush.Highlight.Base}" StrokeJoin="Round" StrokeThickness="2" Data="{DynamicResource ADVTheme.Icon.Plus}"/>
+						<TextBlock Text="Save and Play" VerticalAlignment="Center"/>
+					</StackPanel>
+				</Button>
+				<Button Grid.Column="1">
+					
+				</Button>
+				<ComboBox Grid.Column="3" >
+					
+				</ComboBox>
+			</Grid>
+		</Grid>
+	</dialogHostAvalonia:DialogHost>
+</Window>
