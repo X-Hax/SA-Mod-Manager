@@ -10,10 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ADVTheme\ADVTheme\ADVTheme.csproj" />
     <ProjectReference Include="..\SAMM.App\SAMM.App.csproj" />
   </ItemGroup>
 </Project>
