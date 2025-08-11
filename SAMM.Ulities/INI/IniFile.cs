@@ -73,7 +73,7 @@ namespace SAMM.Utilities.INI
 					{
 						string s = SetIniKeyValueError(data);
 						s += "\n\nAdvanced Code Error:\nINI File error: Group " + curgroup + " already exists in group " + curgroup + "\nline " + (i + 1) + "\n" + ex;
-						new MessageWindow(Lang.GetString("MessageWindow.Errors.IniKeyDuplicateTitle"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+						//new MessageWindow(Lang.GetString("MessageWindow.Errors.IniKeyDuplicateTitle"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
 						result.Clear();
 
 					}
@@ -97,7 +97,7 @@ namespace SAMM.Utilities.INI
 					{
 						string s = SetIniKeyValueError(data);
 						s += "\n\nAdvanced Code Error:\nINI File error: Value " + key + " already exists in group " + curgroup + "\nline " + (i + 1) + "\n" + ex;
-						new MessageWindow(Lang.GetString("MessageWindow.Errors.IniKeyDuplicateTitle"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+						//new MessageWindow(Lang.GetString("MessageWindow.Errors.IniKeyDuplicateTitle"), s, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
 						result.Clear();
 					}
 				}
@@ -107,15 +107,15 @@ namespace SAMM.Utilities.INI
 
 		private static string SetIniKeyValueError(string[] data)
 		{
-			string s = Lang.GetString("MessageWindow.Errors.IniKeyDuplicate") + "\n\n";
+			string s = string.Empty; //Lang.GetString("MessageWindow.Errors.IniKeyDuplicate") + "\n\n";
 			int nameIndex = Array.FindIndex(data, v => v.StartsWith("Name=", StringComparison.OrdinalIgnoreCase));
 
 			if (nameIndex > -1)
 			{
 				int authorIndex = Array.FindIndex(data, v => v.StartsWith("Author=", StringComparison.OrdinalIgnoreCase));
 				string author = authorIndex > -1 ? data[authorIndex] : string.Empty;
-				s += string.Format(Lang.GetString("MessageWindow.Errors.IniKeyDuplicateMod0"), data[nameIndex].Substring(5), author.Substring(7));
-				s += "\n" + Lang.GetString("MessageWindow.Errors.IniKeyDuplicateMod1");
+				//s += string.Format(Lang.GetString("MessageWindow.Errors.IniKeyDuplicateMod0"), data[nameIndex].Substring(5), author.Substring(7));
+				//s += "\n" + Lang.GetString("MessageWindow.Errors.IniKeyDuplicateMod1");
 			}
 
 			return s;

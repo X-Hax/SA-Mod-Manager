@@ -13,7 +13,7 @@
 			}
 			catch (UnauthorizedAccessException ex)
 			{
-				new MessageWindow(Lang.GetString("MessageWindow.Errors.PermissionTitle"), string.Format(Lang.GetString("MessageWindow.Errors.FolderPermission"), path) + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				//new MessageWindow(Lang.GetString("MessageWindow.Errors.PermissionTitle"), string.Format(Lang.GetString("MessageWindow.Errors.FolderPermission"), path) + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
 			}
 		}
 
@@ -52,9 +52,9 @@
 
 		public static void ClearTempFolder()
 		{
-			DeleteReadOnlyDirectory(App.tempFolder);
-			if (Directory.Exists(".SATemp")) //temp support for previous version but no longer used
-				DeleteReadOnlyDirectory(".SATemp");
+			//DeleteReadOnlyDirectory(App.tempFolder);
+			//if (Directory.Exists(".SATemp")) //temp support for previous version but no longer used
+			//	DeleteReadOnlyDirectory(".SATemp");
 		}
 
 		public static void CopyFolder(string origin, string dest, bool dllCheck = false)
