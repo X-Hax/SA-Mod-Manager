@@ -10,4 +10,13 @@
 		<dialogHostAvalonia:DialogHostStyles />
 		<adv:ADVTheme/>
     </Application.Styles>
+
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="avares://SAMM.App/Language/en-US.axaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+		<ResourceInclude x:Key="English" Source="avares://SAMM.App/Language/en-US.axaml"/>
+	</Application.Resources>
 </Application>

@@ -1,6 +1,15 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					x:ClassModifier="public">
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceInclude Source="avares://ADVTheme/Language/en-US.axaml"/>
 	</ResourceDictionary.MergedDictionaries>
+
+	<x:String x:Key="MainWindow.SaveAndPlay">Save &#38; Play</x:String>
+	<x:String x:Key="MainWindow.Save">Save</x:String>
+	<x:String x:Key="MainWindow.Mods">Mods</x:String>
+	<x:String x:Key="MainWindow.Codes">Codes</x:String>
+	<x:String x:Key="MainWindow.GameConfig">Game Config</x:String>
+	<x:String x:Key="MainWindow.TestSpawn">Test Spawn</x:String>
+	<x:String x:Key="MainWindow.Settings">Settings</x:String>
 </ResourceDictionary>
