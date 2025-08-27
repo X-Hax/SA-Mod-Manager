@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Security.Cryptography;
+
+// TODO: Reimplement and adjust as needed.
+
 /*
 namespace SAMM.Configuration.Mods
 {

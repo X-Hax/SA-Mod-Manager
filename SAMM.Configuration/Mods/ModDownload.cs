@@ -1,4 +1,6 @@
-﻿/*
+﻿// TODO: Reimplement and adjust as needed.
+
+/*
 namespace SAMM.Configuration.Mods
 {
     public enum ModDownloadType
