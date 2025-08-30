@@ -83,8 +83,7 @@ namespace SAModManager.ModsCommon
 			// Loop through enabled mods and check for dependencies.
 			foreach (SAModInfo mod in enabledModInfoList)
 			{
-				bool check = false;
-				// If Dependencies are 0, we return false.
+				// If Dependencies are 0, we move on to the next one.
 				if (mod.Dependencies.Count <= 0)
 					continue;
 
@@ -92,7 +91,8 @@ namespace SAModManager.ModsCommon
 
 				foreach (string dep in mod.Dependencies)
 				{
-					bool validated = false;
+					// This variable is used to check if the mod was validated before running further checks after checking the enabled mods list.
+					bool validated = false; 
 					ModDependency dependency = new ModDependency(dep);
 					StringBuilder sb = new StringBuilder();
 
@@ -165,6 +165,7 @@ namespace SAModManager.ModsCommon
 				}
 			}
 
+			// If we get here, return false so the game will boot as usual.
 			return false;
 		}
 	}
