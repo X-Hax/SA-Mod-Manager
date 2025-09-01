@@ -1,5 +1,6 @@
 ﻿using SAMM.Configuration.Enumeration;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -52,7 +53,7 @@ namespace SAMM.Configuration
 		/// <summary>
 		/// <see cref="GameIDs"/> for the <see cref="GameEntry"/>.
 		/// </summary>
-		public GameIDs Type { get; set; }
+		public GameIDs Type { get; set; } = GameIDs.Unsupported;
 
 		/// <summary>
 		/// Name of the <see cref="GameEntry"/>.
@@ -67,7 +68,7 @@ namespace SAMM.Configuration
 		/// <summary>
 		/// Executable name for the <see cref="GameEntry"/>
 		/// </summary>
-		public string Executable { get; set; }
+		public string Executable { get; set; } = string.Empty;
 
 		#endregion
 
