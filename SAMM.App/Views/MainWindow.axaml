@@ -9,11 +9,14 @@
         x:Class="SAMM.App.Views.MainWindow"
         Title="SA Mod Manager" 
 		xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
-		xmlns:advconverter="clr-namespace:ADVTheme.Converters;assembly=ADVTheme">
+		xmlns:advconverter="clr-namespace:ADVTheme.Converters;assembly=ADVTheme"
+		xmlns:sammconverters="clr-namespace:SAMM.App.Converters">
 	<Window.Resources>
 		<advconverter:DoubleIncrementConverter x:Key="DialogHostSizeConverter" ModifierMethod="Multiply" ModifierValue="0.9"/>
 		<advconverter:DoubleIncrementConverter x:Key="TabWidth" ModifierMethod="Multiply" ModifierValue="1"/>
 		<advconverter:DoubleIncrementConverter x:Key="MainTabFontSize" ModifierMethod="Add" ModifierValue="2"/>
+		<sammconverters:ModConfigExists x:Key="ModConfigConverter"/>
+		<sammconverters:ValidGameConverter x:Key="ValidateGameConfigConverter"/>
 		<Image x:Key="WindowIcon" Source="avares://SAMM.App/Assets/Icons/SADXModManager.ico"/>
 
 		<ControlTheme x:Key="WindowTabItem" TargetType="TabItem">
@@ -165,7 +168,8 @@
 					<TabItem Grid.Column="0" Header="{DynamicResource MainWindow.Mods}" Theme="{StaticResource WindowTabItem}" TabIndex="0" Tag="{StaticResource ADVTheme.Icon.SonicHead}">
 						<Grid RowDefinitions="500,Auto" Margin="10">
 							<Grid ColumnDefinitions="*,Auto">
-								<ListBox x:Name="ModList" VerticalAlignment="Stretch" Margin="2,2,7,2" ItemsSource="{Binding ModEntries}">
+								<ListBox x:Name="ModList" VerticalAlignment="Stretch" Margin="2,2,7,2" ItemsSource="{Binding ModEntries}"
+										 SelectionMode="Multiple">
 									<ListBox.ItemTemplate>
 										<DataTemplate>
 											<Border Name="PART_Border" CornerRadius="{DynamicResource ADVTheme.CornerRadius}">
@@ -181,10 +185,10 @@
 									</ListBox.ItemTemplate>
 								</ListBox>
 								<StackPanel Grid.Column="1" Margin="2" Orientation="Vertical" Spacing="5">
-									<Button x:Name="AddMod">
+									<Button x:Name="AddMod" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
 										<Path Width="24" Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Green.Base}"/>
 									</Button>
-									<Button x:Name="ConfigMod">
+									<Button x:Name="ConfigMod" IsEnabled="{Binding ElementName=ModList, Path=SelectedItem, Converter={StaticResource ModConfigConverter}}">
 										<Path Width="24" Data="{StaticResource ADVTheme.Icon.Settings}" Fill="{DynamicResource ADVTheme.Brush.Gray.Base}"/>
 									</Button>
 								</StackPanel>
