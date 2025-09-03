@@ -1,0 +1,87 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	
+	<!-- Theme used for the main tab items in the MainWindow -->
+	<ControlTheme x:Key="WindowTabItem" TargetType="TabItem">
+		<Setter Property="Foreground" Value="{DynamicResource ADVTheme.Brush.Foreground.Base}" />
+		<Setter Property="CornerRadius" Value="{DynamicResource ADVTheme.CornerRadius}"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Padding" Value="10" />
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Border Name="PART_ElementControl" Padding="{TemplateBinding Padding}"
+						Background="{DynamicResource ADVTheme.Brush.Background.Base}"
+						BorderBrush="Transparent" CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource TabItemCorners}}"
+						BorderThickness="0">
+					<Grid ColumnDefinitions="24,10,*" HorizontalAlignment="Center">
+						<Path Name="PART_TabIcon" Data="{TemplateBinding Tag}" Stroke="{TemplateBinding BorderBrush}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}" StrokeThickness="{TemplateBinding BorderThickness}" StrokeJoin="Round" StrokeLineCap="Round"/>
+						<ContentPresenter Grid.Column="2" Name="PART_ContentPresenter"
+									  FontSize="{TemplateBinding FontSize, Converter={StaticResource MainTabFontSize}}"
+									  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+									  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+									  Content="{TemplateBinding Header}"
+									  ContentTemplate="{TemplateBinding HeaderTemplate}"
+									  RecognizesAccessKey="True" />
+					</Grid>
+				</Border>
+			</ControlTemplate>
+		</Setter>
+		<Style Selector="^:focus /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Foreground" Value="{DynamicResource ADVTheme.Brush.Foreground.Alt}"/>
+		</Style>
+		<Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Foreground" Value="{DynamicResource ADVTheme.Brush.Foreground.Alt}"/>
+		</Style>
+		<Style Selector="^:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Foreground" Value="{DynamicResource ADVTheme.Brush.Foreground.Alt}"/>
+		</Style>
+		<Style Selector="^:selected:focus:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Foreground" Value="{DynamicResource ADVTheme.Brush.Foreground.Alt}"/>
+		</Style>
+
+		<Style Selector="^:disabled /template/ Border#PART_ElementControl">
+			<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Controls.Dark}"/>
+			<Setter Property="Opacity" Value="{DynamicResource ADVTheme.Opacity.Disabled}" />
+		</Style>
+		<Style Selector="^:pointerover /template/ Border#PART_ElementControl">
+			<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Controls.Light}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Border.Light}"/>
+		</Style>
+		<Style Selector="^:focus /template/ Border#PART_ElementControl">
+			<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Lighter}"/>
+		</Style>
+		<Style Selector="^:selected /template/ Border#PART_ElementControl">
+			<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Highlight.Base}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Base}"/>
+		</Style>
+		<Style Selector="^:selected:focus /template/ Border#PART_ElementControl">
+			<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Light}" />
+		</Style>
+		<Style Selector="^:selected:pointerover /template/ Border#PART_ElementControl">
+			<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Lighter}"/>
+			<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Highlight.Light}" />
+		</Style>
+		<Style Selector="^:selected:focus:pointerover /template/ Border#PART_ElementControl">
+			<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Lighter}"/>
+			<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Highlight.Light}" />
+		</Style>
+
+		<Style Selector="^[TabStripPlacement=Right]">
+			<Setter Property="HorizontalContentAlignment" Value="Right" />
+		</Style>
+
+		<Style Selector="^ /template/ Path#PART_TabIcon">
+			<Setter Property="Transitions">
+				<Setter.Value>
+					<Transitions>
+						<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+					</Transitions>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style Selector="^:selected /template/ Path#PART_TabIcon">
+			<Setter Property="Fill" Value="{DynamicResource ADVTheme.Brush.Foreground.Alt}"/>
+			<Setter Property="RenderTransform" Value="scale(1.4)"/>
+		</Style>
+	</ControlTheme>
+</ResourceDictionary>

@@ -1,0 +1,58 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:advconverter="clr-namespace:ADVTheme.Converters;assembly=ADVTheme">
+
+	<advconverter:DoubleIncrementConverter x:Key="MainTabFontSize" ModifierMethod="Add" ModifierValue="2"/>
+
+	<!-- Tab Control used for the main tabs in the MainWindow -->
+	<ControlTheme x:Key="MainWindowTabControl"
+				  TargetType="TabControl">
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Border Padding="{TemplateBinding Padding}"
+						HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+						VerticalAlignment="Top"
+						Background="{TemplateBinding Background}"
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						CornerRadius="{TemplateBinding CornerRadius}">
+					<DockPanel>
+						<ItemsPresenter Name="PART_ItemsPresenter"
+										ItemsPanel="{TemplateBinding ItemsPanel}">
+							<ItemsPresenter.ItemsPanel>
+								<ItemsPanelTemplate>
+									<Grid Height="38" Width="{Binding Path=$parent[TabControl].Bounds.Width}"
+										  ColumnDefinitions="*,*,1.3*,1.2*,*"/>
+								</ItemsPanelTemplate>
+							</ItemsPresenter.ItemsPanel>
+						</ItemsPresenter>
+						<ContentPresenter Name="PART_SelectedContentHost"
+									  Margin="{TemplateBinding Padding}"
+									  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+									  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+									  Content="{TemplateBinding SelectedContent}"
+									  ContentTemplate="{TemplateBinding SelectedContentTemplate}" />
+					</DockPanel>
+				</Border>
+			</ControlTemplate>
+		</Setter>
+		<Style Selector="^[TabStripPlacement=Top] /template/ ItemsPresenter#PART_ItemsPresenter">
+			<Setter Property="DockPanel.Dock" Value="Top" />
+		</Style>
+		<Style Selector="^[TabStripPlacement=Bottom] /template/ ItemsPresenter#PART_ItemsPresenter">
+			<Setter Property="DockPanel.Dock" Value="Bottom" />
+		</Style>
+		<Style Selector="^[TabStripPlacement=Left] /template/ ItemsPresenter#PART_ItemsPresenter">
+			<Setter Property="DockPanel.Dock" Value="Left" />
+		</Style>
+		<Style Selector="^[TabStripPlacement=Left] /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
+			<Setter Property="Orientation" Value="Vertical" />
+		</Style>
+		<Style Selector="^[TabStripPlacement=Right] /template/ ItemsPresenter#PART_ItemsPresenter">
+			<Setter Property="DockPanel.Dock" Value="Right" />
+		</Style>
+		<Style Selector="^[TabStripPlacement=Right] /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
+			<Setter Property="Orientation" Value="Vertical" />
+		</Style>
+	</ControlTheme>
+</ResourceDictionary>

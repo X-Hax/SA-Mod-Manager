@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SAMM.Utilities.INI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace SAMM.Configuration.Mods
 {
@@ -25,14 +27,18 @@ namespace SAMM.Configuration.Mods
 		#region Constructors
 		public ModEntry() { }
 
-		public ModEntry(string directory)
+		public ModEntry(string gameDirectory, string modPath)
 		{
-			if (Path.Exists(directory))
+			if (Path.Exists(Path.GetFullPath(modPath)))
 			{
-				if (File.Exists(Path.Combine(directory, "mod.ini")))
+				if (File.Exists(Path.Combine(modPath)))
 				{
-					Directory = directory;
+					ModInfo = IniSerializer.Deserialize<ModInfo>(modPath);
+					if (ModInfo == null)
+						return;
 
+					Directory = Path.GetRelativePath(gameDirectory, modPath);
+					HasConfig = File.Exists(Path.Combine(Path.GetDirectoryName(modPath), "configschema.xml"));
 				}
 			}
 		}
@@ -40,7 +46,29 @@ namespace SAMM.Configuration.Mods
 		#endregion
 
 		#region Functions
+		public static IEnumerable<ModEntry> GetModEntries(string gameDirectory)
+		{
+			string modsDirectory = Path.Combine(gameDirectory, "mods");
+			if (Path.Exists(modsDirectory))
+			{
+				if (File.Exists(Path.Combine(modsDirectory, "mods.ini")))
+				{
+					throw new Exception("Invalid file! mod.ini located in mods directory.");
+				}
 
+				foreach (var subdir in System.IO.Directory.EnumerateDirectories(modsDirectory))
+				{
+					string path = Path.Combine(subdir, "mod.ini");
+					if (File.Exists(path))
+					{
+						yield return new ModEntry(gameDirectory, path);
+						continue;
+					}
+				}
+			}
+			else
+				yield break;
+		}
 
 		#endregion
 	}

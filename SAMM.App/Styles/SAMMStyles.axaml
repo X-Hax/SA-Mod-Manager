@@ -1,0 +1,12 @@
+<Styles x:Class="SAMM.App.Styles.SAMMStyles"
+		xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Styles.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<MergeResourceInclude Source="avares://SAMM.App/Styles/TabControl.axaml"/>
+				<MergeResourceInclude Source="avares://SAMM.App/Styles/TabItem.axaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Styles.Resources>
+</Styles>
