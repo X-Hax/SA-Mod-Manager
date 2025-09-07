@@ -3,12 +3,12 @@
              x:Class="SAMM.App.App"
 		     xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
 			 xmlns:adv="using:ADVTheme"
+			 xmlns:samm="using:SAMM.App.Styles"
              RequestedThemeVariant="Dark">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
     <Application.Styles>
 		<dialogHostAvalonia:DialogHostStyles />
 		<adv:ADVTheme/>
+		<samm:SAMMStyles/>
     </Application.Styles>
 
 	<Application.Resources>
