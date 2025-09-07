@@ -1,0 +1,42 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					x:ClassModifier="public">
+
+	<!-- Text for features on the Main Window (non-tab items) -->
+	<x:String x:Key="MainWindow.SaveAndPlay">Save &#38; Play</x:String>
+	<x:String x:Key="MainWindow.SaveAndPlay.ToolTip">Save the current settings and boot the game.</x:String>
+	
+	<x:String x:Key="MainWindow.Save">Save</x:String>
+	<x:String x:Key="MainWindow.Save.ToolTip">Save the current settings.</x:String>
+
+	<x:String x:Key="MainWindow.GameSelection.ToolTip">Game Selection</x:String>
+	
+	<!-- Elements in the Mods Tab in Main Window -->
+	<x:String x:Key="MainWindow.Mods">Mods</x:String>
+	<x:String x:Key="MainWindow.Mods.ToolTip">View and configure mods.</x:String>
+	<x:String x:Key="MainWindow.Mods.RefreshModList.ToolTip">Refresh Mod List.</x:String>
+	<x:String x:Key="MainWindow.Mods.AddMod.ToolTip">Add a new Mod.</x:String>
+	<x:String x:Key="MainWindow.Mods.ConfigureMod.ToolTip">Configure Mod Settings.</x:String>
+	<x:String x:Key="MainWindow.Mods.ModList.Name.ToolTip">Sort the list by mod name.</x:String>
+	<x:String x:Key="MainWindow.Mods.ModList.Author.ToolTip">Sort the list by author name.</x:String>
+	<x:String x:Key="MainWindow.Mods.ModList.Category.ToolTip">Sort the list by category.</x:String>
+	<x:String x:Key="MainWindow.Mods.ModList.Version.ToolTip">Sort the list by version.</x:String>
+	<x:String x:Key="MainWindow.Mods.ModList.ClearFilters.ToolTip">Clear current set filters.</x:String>
+	
+	<!-- Elements in the Codes Tab in the Main Window -->
+	<x:String x:Key="MainWindow.Codes">Codes</x:String>
+	<x:String x:Key="MainWindow.Codes.ToolTip">View and configure codes.</x:String>
+	
+	<!-- Elements in the Game Config Tab in the Main Window -->
+	<x:String x:Key="MainWindow.GameConfig">Game Config</x:String>
+	<x:String x:Key="MainWindow.GameConfig.ToolTip">Configure game settings.</x:String>
+	
+	<!-- Elements in the Test Spawn Tab in the Main Window -->
+	<x:String x:Key="MainWindow.TestSpawn">Test Spawn</x:String>
+	<x:String x:Key="MainWindow.TestSpawn.ToolTip">Configure Test Spawn options.</x:String>
+	
+	<!-- Elements in the Settings Tab in the Main Window -->
+	<x:String x:Key="MainWindow.Settings">Settings</x:String>
+	<x:String x:Key="MainWindow.Settings.ToolTip">Configure settings for the Mod Manager.</x:String>
+
+</ResourceDictionary>
