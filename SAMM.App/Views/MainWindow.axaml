@@ -4,153 +4,61 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="680" d:DesignHeight="730"
 		xmlns:models="clr-namespace:SAMM.App.Models;assembly=SAMM.App"
-		x:DataType="models:MainWindowViewModel" MinHeight="420" MinWidth="480"
+		x:DataType="models:MainWindowViewModel" MinHeight="420" MinWidth="800"
 		Height="{Binding ManagerSettings.ManagerHeight}" Width="{Binding ManagerSettings.ManagerWidth}"
         x:Class="SAMM.App.Views.MainWindow"
-        Title="SA Mod Manager" 
+        Title="SA Mod Manager" FontSize="{DynamicResource ADVTheme.FontSize}"
 		xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
 		xmlns:advconverter="clr-namespace:ADVTheme.Converters;assembly=ADVTheme"
 		xmlns:sammconverters="clr-namespace:SAMM.App.Converters">
 	<Window.Resources>
 		<advconverter:DoubleIncrementConverter x:Key="DialogHostSizeConverter" ModifierMethod="Multiply" ModifierValue="0.9"/>
 		<advconverter:DoubleIncrementConverter x:Key="TabWidth" ModifierMethod="Multiply" ModifierValue="1"/>
-		<advconverter:DoubleIncrementConverter x:Key="MainTabFontSize" ModifierMethod="Add" ModifierValue="2"/>
+		
 		<sammconverters:ModConfigExists x:Key="ModConfigConverter"/>
 		<sammconverters:ValidGameConverter x:Key="ValidateGameConfigConverter"/>
+		<sammconverters:ModInfoDescriptionConverter x:Key="ModInfoDescriptionConverter"/>
 		<Image x:Key="WindowIcon" Source="avares://SAMM.App/Assets/Icons/SADXModManager.ico"/>
 
-		<ControlTheme x:Key="WindowTabItem" TargetType="TabItem">
-			<Setter Property="Foreground" Value="{DynamicResource ADVTheme.Brush.Foreground.Base}" />
+		<ControlTheme x:Key="ModListTheme" TargetType="ListBox">
+			<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Background.Base}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Border.Base}" />
+			<Setter Property="BorderThickness" Value="2" />
 			<Setter Property="CornerRadius" Value="{DynamicResource ADVTheme.CornerRadius}"/>
-			<Setter Property="VerticalContentAlignment" Value="Center"/>
-			<Setter Property="Padding" Value="10" />
+			<Setter Property="Padding" Value="4" />
+			<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+			<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+			<Setter Property="ScrollViewer.IsScrollChainingEnabled" Value="True" />
 			<Setter Property="Template">
 				<ControlTemplate>
-					<Border Name="PART_ElementControl" Padding="{TemplateBinding Padding}" 
-							Background="{DynamicResource ADVTheme.Brush.Background.Base}"
-							BorderBrush="Transparent" CornerRadius="{TemplateBinding CornerRadius, Converter={StaticResource TabItemCorners}}"
-							BorderThickness="0">
-						<Grid ColumnDefinitions="24,10,*" HorizontalAlignment="Center">
-							<Path Name="PART_TabIcon" Data="{TemplateBinding Tag}" Stroke="{TemplateBinding BorderBrush}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}" StrokeThickness="{TemplateBinding BorderThickness}" StrokeJoin="Round" StrokeLineCap="Round"/>
-							<ContentPresenter Grid.Column="2" Name="PART_ContentPresenter"
-										  FontSize="{TemplateBinding FontSize, Converter={StaticResource MainTabFontSize}}"
-										  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-										  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-										  Content="{TemplateBinding Header}"
-										  ContentTemplate="{TemplateBinding HeaderTemplate}"
-										  RecognizesAccessKey="True" />
+					<Border Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="{TemplateBinding CornerRadius}">
+						<Grid RowDefinitions="Auto,*">
+							<Grid ColumnDefinitions="*,*,*,*" Margin="5,5,5,0">
+								<TextBlock Grid.Column="0" Text="Mod" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+								<TextBlock Grid.Column="1" Text="Author" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+								<TextBlock Grid.Column="2" Text="Category" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+								<TextBlock Grid.Column="3" Text="Version" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+							</Grid>
+							<ScrollViewer Name="PART_ScrollViewer" Grid.Row="1"
+										  AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}"
+										  BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}"
+										  Background="{TemplateBinding Background}"
+										  HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+										  IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
+										  IsDeferredScrollingEnabled="{TemplateBinding (ScrollViewer.IsDeferredScrollingEnabled)}"
+										  VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
+										  VerticalSnapPointsType="{TemplateBinding (ScrollViewer.VerticalSnapPointsType)}"
+										  HorizontalSnapPointsType="{TemplateBinding (ScrollViewer.HorizontalSnapPointsType)}">
+								<ItemsPresenter Name="PART_ItemsPresenter"
+												Margin="{TemplateBinding Padding}"
+												ItemsPanel="{TemplateBinding ItemsPanel}" />
+							</ScrollViewer>
 						</Grid>
 					</Border>
 				</ControlTemplate>
 			</Setter>
-			<Style Selector="^:focus /template/ ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Foreground" Value="{DynamicResource ADVTheme.Brush.Foreground.Alt}"/>
-			</Style>
-			<Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Foreground" Value="{DynamicResource ADVTheme.Brush.Foreground.Alt}"/>
-			</Style>
-			<Style Selector="^:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Foreground" Value="{DynamicResource ADVTheme.Brush.Foreground.Alt}"/>
-			</Style>
-			<Style Selector="^:selected:focus:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-				<Setter Property="Foreground" Value="{DynamicResource ADVTheme.Brush.Foreground.Alt}"/>
-			</Style>
-			
-			<Style Selector="^:disabled /template/ Border#PART_ElementControl">
-				<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Controls.Dark}"/>
-				<Setter Property="Opacity" Value="{DynamicResource ADVTheme.Opacity.Disabled}" />
-			</Style>
-			<Style Selector="^:pointerover /template/ Border#PART_ElementControl">
-				<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Controls.Light}" />
-				<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Border.Light}"/>
-			</Style>
-			<Style Selector="^:focus /template/ Border#PART_ElementControl">
-				<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Lighter}"/>
-			</Style>
-			<Style Selector="^:selected /template/ Border#PART_ElementControl">
-				<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Highlight.Base}" />
-				<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Base}"/>
-			</Style>
-			<Style Selector="^:selected:focus /template/ Border#PART_ElementControl">
-				<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Light}" />
-			</Style>
-			<Style Selector="^:selected:pointerover /template/ Border#PART_ElementControl">
-				<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Lighter}"/>
-				<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Highlight.Light}" />
-			</Style>
-			<Style Selector="^:selected:focus:pointerover /template/ Border#PART_ElementControl">
-				<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Lighter}"/>
-				<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Highlight.Light}" />
-			</Style>
-			
-			<Style Selector="^[TabStripPlacement=Right]">
-				<Setter Property="HorizontalContentAlignment" Value="Right" />
-			</Style>
-
-			<Style Selector="^ /template/ Path#PART_TabIcon">
-				<Setter Property="Transitions">
-					<Setter.Value>
-						<Transitions>
-							<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
-						</Transitions>
-					</Setter.Value>
-				</Setter>
-			</Style>
-			<Style Selector="^:selected /template/ Path#PART_TabIcon">
-				<Setter Property="Fill" Value="{DynamicResource ADVTheme.Brush.Foreground.Alt}"/>
-				<Setter Property="RenderTransform" Value="scale(1.4)"/>
-			</Style>
-		</ControlTheme>
-
-		<ControlTheme x:Key="MainWindowTabControl"
-				  TargetType="TabControl">
-			<Setter Property="Template">
-				<ControlTemplate>
-					<Border Padding="{TemplateBinding Padding}"
-							HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-							VerticalAlignment="Top"
-							Background="{TemplateBinding Background}"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="{TemplateBinding CornerRadius}">
-						<DockPanel>
-							<ItemsPresenter Name="PART_ItemsPresenter"
-											ItemsPanel="{TemplateBinding ItemsPanel}">
-								<ItemsPresenter.ItemsPanel>
-									<ItemsPanelTemplate>
-										<Grid Height="38" Width="{Binding Path=$parent[TabControl].Bounds.Width}"
-											  ColumnDefinitions="*,*,1.3*,1.2*,*"/>
-									</ItemsPanelTemplate>
-								</ItemsPresenter.ItemsPanel>
-							</ItemsPresenter>
-							<ContentPresenter Name="PART_SelectedContentHost"
-										  Margin="{TemplateBinding Padding}"
-										  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-										  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-										  Content="{TemplateBinding SelectedContent}"
-										  ContentTemplate="{TemplateBinding SelectedContentTemplate}" />
-						</DockPanel>
-					</Border>
-				</ControlTemplate>
-			</Setter>
-			<Style Selector="^[TabStripPlacement=Top] /template/ ItemsPresenter#PART_ItemsPresenter">
-				<Setter Property="DockPanel.Dock" Value="Top" />
-			</Style>
-			<Style Selector="^[TabStripPlacement=Bottom] /template/ ItemsPresenter#PART_ItemsPresenter">
-				<Setter Property="DockPanel.Dock" Value="Bottom" />
-			</Style>
-			<Style Selector="^[TabStripPlacement=Left] /template/ ItemsPresenter#PART_ItemsPresenter">
-				<Setter Property="DockPanel.Dock" Value="Left" />
-			</Style>
-			<Style Selector="^[TabStripPlacement=Left] /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
-				<Setter Property="Orientation" Value="Vertical" />
-			</Style>
-			<Style Selector="^[TabStripPlacement=Right] /template/ ItemsPresenter#PART_ItemsPresenter">
-				<Setter Property="DockPanel.Dock" Value="Right" />
-			</Style>
-			<Style Selector="^[TabStripPlacement=Right] /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
-				<Setter Property="Orientation" Value="Vertical" />
-			</Style>
 		</ControlTheme>
 	</Window.Resources>
 
@@ -164,35 +72,49 @@
 		
 		<Grid RowDefinitions="*,Auto">
 			<Grid>
-				<TabControl x:Name="ManagerTabs" Theme="{StaticResource MainWindowTabControl}" Width="{Binding Path=$parent[Window].Bounds.Width}">
-					<TabItem Grid.Column="0" Header="{DynamicResource MainWindow.Mods}" Theme="{StaticResource WindowTabItem}" TabIndex="0" Tag="{StaticResource ADVTheme.Icon.SonicHead}">
-						<Grid RowDefinitions="500,Auto" Margin="10">
-							<Grid ColumnDefinitions="*,Auto">
-								<ListBox x:Name="ModList" VerticalAlignment="Stretch" Margin="2,2,7,2" ItemsSource="{Binding ModEntries}"
-										 SelectionMode="Multiple">
-									<ListBox.ItemTemplate>
-										<DataTemplate>
-											<Border Name="PART_Border" CornerRadius="{DynamicResource ADVTheme.CornerRadius}">
-												<Grid ColumnDefinitions="20,5,*,*,*,*">
-													<CheckBox Grid.Column="0"/>
-													<TextBlock Grid.Column="2" Text="{Binding ModInfo.Name}" VerticalAlignment="Center"/>
-													<TextBlock Grid.Column="3" Text="{Binding ModInfo.Author}" VerticalAlignment="Center"/>
-													<TextBlock Grid.Column="4" Text="{Binding ModInfo.Category}" VerticalAlignment="Center"/>
-													<TextBlock Grid.Column="5" Text="{Binding ModInfo.Version}" VerticalAlignment="Center"/>
-												</Grid>
-											</Border>
-										</DataTemplate>
-									</ListBox.ItemTemplate>
-								</ListBox>
-								<StackPanel Grid.Column="1" Margin="2" Orientation="Vertical" Spacing="5">
-									<Button x:Name="AddMod" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
-										<Path Width="24" Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Green.Base}"/>
-									</Button>
-									<Button x:Name="ConfigMod" IsEnabled="{Binding ElementName=ModList, Path=SelectedItem, Converter={StaticResource ModConfigConverter}}">
-										<Path Width="24" Data="{StaticResource ADVTheme.Icon.Settings}" Fill="{DynamicResource ADVTheme.Brush.Gray.Base}"/>
-									</Button>
-								</StackPanel>
+				<TabControl x:Name="ManagerTabs" Theme="{DynamicResource MainWindowTabControl}" Width="{Binding Path=$parent[Window].Bounds.Width}">
+					<TabItem Grid.Column="0" Header="{DynamicResource MainWindow.Mods}" Theme="{DynamicResource WindowTabItem}" TabIndex="0" Tag="{StaticResource ADVTheme.Icon.SonicHead}">
+						<Grid ColumnDefinitions="*,Auto" Margin="10">
+							<Grid RowDefinitions="500,Auto">
+								<DataGrid x:Name="ModList" ItemsSource="{Binding ModEntries}" Margin="2,2,7,2" IsReadOnly="True" GridLinesVisibility="All"
+										  CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserSortColumns="True" CellTheme="{StaticResource ModEntryCell}"
+										  BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}" BorderThickness="2" CornerRadius="{DynamicResource ADVTheme.CornerRadius}">
+									<DataGrid.Columns>
+										<DataGridTemplateColumn HeaderPointerPressed="DataGridTemplateColumn_HeaderPointerPressed">
+											<DataGridTemplateColumn.HeaderTemplate>
+												<DataTemplate>
+													<Grid Width="18" HorizontalAlignment="Right">
+														<Path HorizontalAlignment="Center" Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Red.Base}"/>
+													</Grid>
+												</DataTemplate>
+											</DataGridTemplateColumn.HeaderTemplate>
+											<DataTemplate>
+												<CheckBox IsChecked="{Binding IsEnabled}" HorizontalAlignment="Right" Margin="2"/>
+											</DataTemplate>
+										</DataGridTemplateColumn>
+										<DataGridTextColumn Header="{DynamicResource Common.Name}" Binding="{Binding ModInfo.Name}" FontSize="{DynamicResource ADVTheme.FontSize}"/>
+										<DataGridTextColumn Header="{DynamicResource Common.Author}" Binding="{Binding ModInfo.Author}" FontSize="{DynamicResource ADVTheme.FontSize}" />
+										<DataGridTextColumn Header="{DynamicResource Common.Category}" Binding="{Binding ModInfo.Category}" FontSize="{DynamicResource ADVTheme.FontSize}"/>
+										<DataGridTextColumn Header="{DynamicResource Common.Version}" Binding="{Binding ModInfo.Version}" FontSize="{DynamicResource ADVTheme.FontSize}"/>
+									</DataGrid.Columns>
+								</DataGrid>
+								<Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="7">
+									<TextBlock Text="Description: "/>
+									<TextBlock Grid.Column="1" Text="{Binding ElementName=ModList, Path=SelectedItem, Converter={StaticResource ModInfoDescriptionConverter}}"
+											   TextWrapping="Wrap"/>
+								</Grid>
 							</Grid>
+							<StackPanel Grid.Column="1" Margin="2" Orientation="Vertical" Spacing="5">
+								<Button x:Name="Refresh" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}" Command="{Binding RefreshModListCommand}">
+									<Path Width="24" Data="{StaticResource ADVTheme.Icon.Refresh}" Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}"/>
+								</Button>
+								<Button x:Name="AddMod" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
+									<Path Width="24" Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Green.Base}"/>
+								</Button>
+								<Button x:Name="ConfigMod" IsEnabled="{Binding ElementName=ModList, Path=SelectedItem, Converter={StaticResource ModConfigConverter}}">
+									<Path Width="24" Data="{StaticResource ADVTheme.Icon.Settings}" Fill="{DynamicResource ADVTheme.Brush.Gray.Base}"/>
+								</Button>
+							</StackPanel>
 						</Grid>
 					</TabItem>
 

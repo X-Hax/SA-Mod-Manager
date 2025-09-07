@@ -13,4 +13,9 @@ public partial class MainWindow : Window
 
         DataContext = new MainWindowViewModel();
     }
+
+	private void DataGridTemplateColumn_HeaderPointerPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+	{
+		ModList.CollectionView.SortDescriptions.Clear();
+	}
 }
