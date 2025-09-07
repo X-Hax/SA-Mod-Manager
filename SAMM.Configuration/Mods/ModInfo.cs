@@ -108,7 +108,7 @@ namespace SAMM.Configuration.Mods
 		/// List of mods that are required by the current mod.
 		/// </summary>
 		[IniName("Dependency")]
-		[IniCollection(IniCollectionMode.SingleLine, Format = "|", StartIndex = 1)]
+		[IniCollection(IniCollectionMode.NoSquareBrackets, Format = "|", StartIndex = 1)]
 		public List<ModDependency> Dependencies { get; set; } = new List<ModDependency>();
 
 		/// <summary>
