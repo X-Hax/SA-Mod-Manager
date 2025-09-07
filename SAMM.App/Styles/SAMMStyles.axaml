@@ -6,6 +6,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<MergeResourceInclude Source="avares://SAMM.App/Styles/TabControl.axaml"/>
 				<MergeResourceInclude Source="avares://SAMM.App/Styles/TabItem.axaml"/>
+				<MergeResourceInclude Source="avares://SAMM.App/Styles/DataGrid.axaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Styles.Resources>
