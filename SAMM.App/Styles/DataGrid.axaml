@@ -1,4 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
+					xmlns:i="using:Avalonia.Xaml.Interactivity"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:collections="using:Avalonia.Collections">
   
@@ -93,11 +94,11 @@
     <ControlTheme x:Key="{x:Type DataGridColumnHeader}" TargetType="DataGridColumnHeader">
       <Setter Property="Foreground" Value="{DynamicResource DataGridColumnHeaderForegroundBrush}" />
       <Setter Property="Background" Value="{DynamicResource DataGridColumnHeaderBackgroundBrush}" />
-      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
       <Setter Property="VerticalContentAlignment" Value="Center" />
       <Setter Property="SeparatorBrush" Value="{DynamicResource DataGridGridLinesBrush}" />
       <Setter Property="Padding" Value="12,0,0,0" />
-      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontSize" Value="{DynamicResource ADVTheme.FontSize}" />
       <Setter Property="MinHeight" Value="32" />
       <Setter Property="Template">
         <ControlTemplate>
@@ -119,7 +120,7 @@
                 
                   <ContentPresenter x:Name="PART_ContentPresenter"
                                     Content="{TemplateBinding Content}"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"/>
                 
                   <Path Name="SortIcon"
                         IsVisible="False"
@@ -628,5 +629,5 @@
         <Setter Property="Grid.ColumnSpan" Value="3" />
       </Style>
     </ControlTheme>
-	
+
 </ResourceDictionary>

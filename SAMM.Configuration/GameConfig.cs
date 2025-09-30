@@ -6,8 +6,6 @@ namespace SAMM.Configuration
 	public class GameConfig
 	{
 		#region Variables
-		public Uri? GameIcon { get; set; }
-
 		public string GameDirectory { get; set; } = string.Empty;
 
 		public string GameExecutable { get; set; } = string.Empty;
@@ -28,6 +26,23 @@ namespace SAMM.Configuration
 		public ModLoaderInfo? ModLoaderInfo { get; set; }
 
 		public string OneClickProtocol { get; set; } = string.Empty;
+
+		public bool IsModLoaderInstalled
+		{
+			get
+			{
+				if (ModLoaderInfo != null)
+				{
+					if (ModLoaderInfo.InjectionFile.Length > 0)
+					{
+						return File.Exists(Path.Combine(GameSystemFolder, ModLoaderInfo.InjectionFile + "_orig.dll"));
+					}
+				}
+
+				return false;
+			}
+		}
+
 
 		#endregion
 
@@ -117,7 +132,6 @@ namespace SAMM.Configuration
 			{ 
 				GameIDs.SADX, new GameConfig()
 				{
-					// GameIcon = new Uri("");
 					GameExecutable = "sonic.exe",
 					GameSystemFolder = "system",
 					ModLoaderInfo = new ModLoaderInfo()
@@ -133,7 +147,6 @@ namespace SAMM.Configuration
 			{ 
 				GameIDs.SA2B, new GameConfig()
 				{
-					// GameIcon = new Uri("");
 					GameExecutable = "sonic2app.exe",
 					GameSystemFolder = Path.Combine("resource", "gd_PC"),
 					ModLoaderInfo = new ModLoaderInfo()

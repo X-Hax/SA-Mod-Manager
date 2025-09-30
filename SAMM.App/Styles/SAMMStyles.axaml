@@ -10,4 +10,7 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Styles.Resources>
+	
+	<StyleInclude Source="avares://SAMM.App/Assets/Geometry/SAMMIcons.axaml"/>
+	<StyleInclude Source="avares://SAMM.App/Assets/Images/SAMMImages.axaml"/>
 </Styles>

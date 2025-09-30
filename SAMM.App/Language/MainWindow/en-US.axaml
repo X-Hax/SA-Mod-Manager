@@ -22,6 +22,9 @@
 	<x:String x:Key="MainWindow.Mods.ModList.Category.ToolTip">Sort the list by category.</x:String>
 	<x:String x:Key="MainWindow.Mods.ModList.Version.ToolTip">Sort the list by version.</x:String>
 	<x:String x:Key="MainWindow.Mods.ModList.ClearFilters.ToolTip">Clear current set filters.</x:String>
+	<x:String x:Key="MainWindow.Mods.Profiles">Profiles:</x:String>
+	<x:String x:Key="MainWindow.Mods.ProfileManager.ToolTip">Open the Profile Manager.</x:String>
+	<x:String x:Key="MainWindow.Mods.ProfileQuickAdd.ToolTip">Add a new profile with currently selected mods, codes, and other settings.</x:String>
 	
 	<!-- Elements in the Codes Tab in the Main Window -->
 	<x:String x:Key="MainWindow.Codes">Codes</x:String>
@@ -38,5 +41,31 @@
 	<!-- Elements in the Settings Tab in the Main Window -->
 	<x:String x:Key="MainWindow.Settings">Settings</x:String>
 	<x:String x:Key="MainWindow.Settings.ToolTip">Configure settings for the Mod Manager.</x:String>
-
+	<x:String x:Key="MainWindow.Settings.AppSettingsHeader">Application Settings</x:String>
+	<x:String x:Key="MainWindow.Settings.Language.ToolTip">Select your preferred language.</x:String>
+	<x:String x:Key="MainWindow.Settings.Theme.ToolTip">Select the Theme you want the SAMM to use.</x:String>
+	<x:String x:Key="MainWindow.Settings.UpdateChannel">Update Channel</x:String>
+	<x:String x:Key="MainWindow.Settings.UpdateChannel.ToolTip">Select the channel you wish to use for updates. Dev updates may include unstable or experimental code.</x:String>
+	<x:String x:Key="MainWindow.Settings.ModloaderSettingsHeader">Mod Loader Settings</x:String>
+	<x:String x:Key="MainWindow.Settings.InstallLoader">Install Mod Loader</x:String>
+	<x:String x:Key="MainWindow.Settings.InstallLoader.ToolTip">Installs the Mod Loader.</x:String>
+	<x:String x:Key="MainWindow.Settings.UninstallLoader">Uninstall Mod Loader</x:String>
+	<x:String x:Key="MainWindow.Settings.UninstallLoader.ToolTip">Uninstalls the mod loader. This does not delete any mods, saves, etc.</x:String>
+	<x:String x:Key="MainWindow.Settings.OpenGameFolder">Open Game Folder</x:String>
+	<x:String x:Key="MainWindow.Settings.OpenGameFolder.ToolTip">Opens the currently selected game's folder.</x:String>
+	<x:String x:Key="MainWindow.Settings.GameHealthCheck">Check Game Health</x:String>
+	<x:String x:Key="MainWindow.Settings.GameHealthCheck.ToolTip">Opens the game health check tool.</x:String>
+	<x:String x:Key="MainWindow.Settings.ManagerUpdates">Enable Startup Check for Manager Updates</x:String>
+	<x:String x:Key="MainWindow.Settings.ManagerUpdates.ToolTip">When enabled, the Manager will check for updates on startup.</x:String>
+	<x:String x:Key="MainWindow.Settings.KeepOpen">Keep Manager Open on Game Startup</x:String>
+	<x:String x:Key="MainWindow.Settings.KeepOpen.ToolTip">When enabled, the Manager will stay open when pressing Save and Play.</x:String>
+	<x:String x:Key="MainWindow.Settings.AdvancedSettings">Advanced Settings</x:String>
+	<x:String x:Key="MainWindow.Settings.AdvancedSettings.ToolTip">Open the Advanced Settings (and other features) window.</x:String>
+	<x:String x:Key="MainWindow.Settings.CheckGameHealth">Check Game Health</x:String>
+	<x:String x:Key="MainWindow.Settings.CheckGameHealth.ToolTip">Opens a tool to check the game's installation for missing or unmatching files.</x:String>
+	<x:String x:Key="MainWindow.Settings.UpdateLoader">Enable Startup Check for the Mod Loader Updates</x:String>
+	<x:String x:Key="MainWindow.Settings.UpdateLoader.ToolTip">When enabled, runs a check for any updates to the selected game's Mod Loader on Manager startup.</x:String>
+	<x:String x:Key="MainWindow.Settings.UpdateMods">Enable Startup Check for Mod Updates</x:String>
+	<x:String x:Key="MainWindow.Settings.UpdateMods.ToolTip">When enabled, all mods in the mod list will be check for updated on Manager startup.</x:String>
+	
 </ResourceDictionary>

@@ -53,7 +53,7 @@ namespace SAMM.Configuration
 		/// <summary>
 		/// <see cref="GameIDs"/> for the <see cref="GameEntry"/>.
 		/// </summary>
-		public GameIDs Type { get; set; } = GameIDs.Unsupported;
+		public GameIDs ID { get; set; } = GameIDs.Unsupported;
 
 		/// <summary>
 		/// Name of the <see cref="GameEntry"/>.
@@ -87,20 +87,31 @@ namespace SAMM.Configuration
 			{
 				default:
 					Name = Path.GetFileNameWithoutExtension(Executable);
-					Type = GameIDs.Unsupported;
+					ID = GameIDs.Unsupported;
 					break;
 				case "sonic.exe":
 					Name = "Sonic Adventure DX";
-					Type = GameIDs.SADX;
+					ID = GameIDs.SADX;
 					break;
 				case "sonic2app.exe":
 				case "sonic2app_decrypted.exe":
 					Name = "Sonic Adventure 2";
-					Type = GameIDs.SA2B;
+					ID = GameIDs.SA2B;
 					break;
 			}
 		}
 
+		/// <summary>
+		/// Validate that a <see cref="GameEntry"/>'s executable path is valid. 
+		/// </summary>
+		/// <returns>True if the game executable exists. False if it does not.</returns>
+		public bool ValidateGameEntry()
+		{
+			if (File.Exists(Path.Combine(Directory, Executable)))
+				return true;
+			else
+				return false;
+		}
 		#endregion
 	}
 
@@ -128,8 +139,8 @@ namespace SAMM.Configuration
 		/// <summary>
 		/// The set Language for the Manager.
 		/// </summary>
-		[DefaultValue(0)]
-		public int Language { get; set; } = 0;      // SADXLoaderInfo.Language
+		[DefaultValue("en-US")]
+		public string Language { get; set; } = "en-US";      // SADXLoaderInfo.Language
 
 		/// <summary>
 		/// Defaulted to empty, but is updated when a mod is initially created to the last used Author name when creating a new mod.
@@ -195,6 +206,35 @@ namespace SAMM.Configuration
 		#endregion
 
 		#region Functions
+		/// <summary>
+		/// Returns the currently set <see cref="GameEntry"/>.
+		/// 
+		/// Runs validation checks on the <see cref="GameEntries"/> and <see cref="CurrentSetGame"/>. 
+		/// Ensures the returned GameEntry is also validated.
+		/// </summary>
+		/// <returns>A validated game entry.</returns>
+		public GameEntry GetCurrentGameEntry()
+		{
+			if (GameEntries.Count > 0 && CurrentSetGame > -1)
+			{
+				if (GameEntries.Count < CurrentSetGame)
+				{
+					// TODO: Implement error handling for when a current set game's index is invalid.
+				}
+				else
+				{
+					GameEntry gameEntry = GameEntries[CurrentSetGame];
+
+					if (gameEntry.ValidateGameEntry())
+						return gameEntry;
+
+					// TODO: Implement validation handling to remove the invalid game entry from the list.
+				}
+			}
+
+			return new GameEntry();
+		}
+
 		/// <summary>
 		/// Deserializes a Manager Settings CFG (JSON) file and returns a populated class.
 		/// </summary>

@@ -7,8 +7,8 @@
              RequestedThemeVariant="Dark">
     <Application.Styles>
 		<dialogHostAvalonia:DialogHostStyles />
-		<adv:ADVTheme/>
 		<samm:SAMMStyles/>
+		<adv:ADVTheme/>
     </Application.Styles>
 
 	<Application.Resources>
@@ -17,6 +17,6 @@
 				<ResourceInclude Source="avares://SAMM.App/Language/en-US.axaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
-		<ResourceInclude x:Key="English" Source="avares://SAMM.App/Language/en-US.axaml"/>
+		<ResourceInclude x:Key="en-US" Source="avares://SAMM.App/Language/en-US.axaml"/>
 	</Application.Resources>
 </Application>

@@ -11,6 +11,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaXaml Remove="Assets\Geometry\Gear.axaml" />
+    <AvaloniaXaml Remove="Assets\Geometry\Grabbable.axaml" />
+    <AvaloniaXaml Remove="Assets\Geometry\SAMMIcons.axaml" />
+    <AvaloniaXaml Remove="Assets\Images\SAMMImages.axaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.5" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.5" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.5" />
@@ -22,12 +29,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\Geometry\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ADVTheme\ADVTheme\ADVTheme.csproj" />
     <ProjectReference Include="..\SAMM.Configuration\SAMM.Configuration.csproj" />
     <ProjectReference Include="..\SAMM.Ulities\SAMM.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Update="Assets\Geometry\Gear.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Geometry\Grabbable.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Geometry\SAMMIcons.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Images\SAMMImages.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
   </ItemGroup>
 </Project>
