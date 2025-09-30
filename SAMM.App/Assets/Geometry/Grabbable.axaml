@@ -1,0 +1,26 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Design.PreviewWith>
+		<Border Margin="10">
+			<Path Data="{DynamicResource SAMM.Icons.Grabbable}" Width="100" Fill="White"/>
+		</Border>
+	</Design.PreviewWith>
+
+	<StreamGeometry x:Key="SAMM.Icons.Grabbable">
+		M 3 2 11 2
+		Q 12 2 12 3 12 4 11 4
+		L 3 4
+		Q 2 4 2 3 2 2 3 2
+		Z
+
+		M 3 5 11 5
+		Q 12 5 12 6 12 7 11 7 7 7 3 7 2 7 2 6 2 5 3 5
+		Z
+
+		M 3 8 11 8
+		Q 12 8 12 9 12 10 11 10
+		L 3 10
+		Q 2 10 2 9 2 8 3 8
+		Z
+	</StreamGeometry>
+</ResourceDictionary>

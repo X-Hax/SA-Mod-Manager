@@ -1,0 +1,15 @@
+<Styles xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Design.PreviewWith>
+		<Border Margin="100">
+			<Viewbox Child="{StaticResource GameIcon.SADX}" Width="64" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+		</Border>
+	</Design.PreviewWith>
+
+	<Styles.Resources>
+		<ResourceDictionary>
+			<Bitmap x:Key="GameIcon.SADX">avares://SAMM.App/Assets/Images/sa1.png</Bitmap>
+			<Bitmap x:Key="GameIcon.SA2B">avares://SAMM.App/Assets/Images/sa2.png</Bitmap>
+		</ResourceDictionary>
+	</Styles.Resources>
+</Styles>
