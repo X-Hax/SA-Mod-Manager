@@ -1,0 +1,100 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:models="clr-namespace:SAMM.App.Models.Dialogs;assembly=SAMM.App"
+			 x:DataType="models:ModConfigDialogModel"
+			 xmlns:selectors="clr-namespace:SAMM.App.Selectors;assembly=SAMM.App"
+			 xmlns:converters="clr-namespace:SAMM.App.Converters;assembly=SAMM.App"
+			 xmlns:config="clr-namespace:SAMM.App.Models;assembly=SAMM.App"
+             x:Class="SAMM.App.Controls.Dialogs.ModConfigDialog">
+	<UserControl.Resources>
+		<converters:ConfigDisplayNameConverter x:Key="NameConverter"/>
+		<converters:FontWeightBoolConverter x:Key="FontWeightConverter" FalseWeight="Regular" TrueWeight="Bold"/>
+	</UserControl.Resources>
+	
+	<Border CornerRadius="{DynamicResource ADVTheme.CornerRadius}" BorderThickness="2" BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}"
+			Background="{DynamicResource ADVTheme.Brush.Background.Base}">
+		<Grid RowDefinitions="Auto,*,Auto">
+			<Grid RowDefinitions="Auto,Auto" Margin="5">
+				<TextBox x:Name="PART_SearchBar" Watermark="{DynamicResource Common.Search}" Width="250" HorizontalAlignment="Stretch"/>
+				<Rectangle Height="2" Fill="{DynamicResource ADVTheme.Brush.Border.Base}" Grid.Row="1" Margin="0,5,0,0"/>
+			</Grid>
+			<ScrollViewer Grid.Row="1">
+				<ItemsControl ItemsSource="{Binding ModConfig.Groups}" Margin="5">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Expander x:Name="{Binding Name}" IsExpanded="True" Margin="5">
+								<Expander.Header>
+									<MultiBinding Converter="{StaticResource NameConverter}">
+										<Binding Path="Name"/>
+										<Binding Path="DisplayName"/>
+									</MultiBinding>
+								</Expander.Header>
+								<ItemsControl ItemsSource="{Binding Properties}">
+									<ItemsControl.DataTemplates>
+										<selectors:ConfigPropertyTemplateSelector>
+											<DataTemplate x:Key="bool" DataType="config:ModConfigPropertyModel">
+												<Border Background="{DynamicResource ADVTheme.Brush.Controls.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
+													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
+														<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}, Mode=TwoWay}">
+															<TextBlock.Text>
+																<MultiBinding Converter="{StaticResource NameConverter}">
+																	<Binding Path="Name"/>
+																	<Binding Path="DisplayName"/>
+																</MultiBinding>
+															</TextBlock.Text>
+														</TextBlock>
+														
+														<ToggleSwitch Grid.Column="1" HorizontalAlignment="Right" IsChecked="{Binding Value}"/>
+													</Grid>
+												</Border>
+											</DataTemplate>
+											<DataTemplate x:Key="int" DataType="config:ModConfigPropertyModel">
+												<Border Background="{DynamicResource ADVTheme.Brush.Controls.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
+													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
+														<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}}">
+															<TextBlock.Text>
+																<MultiBinding Converter="{StaticResource NameConverter}">
+																	<Binding Path="Name"/>
+																	<Binding Path="DisplayName"/>
+																</MultiBinding>
+															</TextBlock.Text>
+														</TextBlock>
+
+														<NumericUpDown Grid.Column="1" HorizontalAlignment="Right" Width="230" Value="{Binding Value}" Minimum="{Binding MinimumValue}" Maximum="{Binding MaximumValue}" Increment="1" FormatString="0"/>
+													</Grid>
+												</Border>
+											</DataTemplate>
+											<DataTemplate x:Key="float" DataType="config:ModConfigPropertyModel">
+												<Border Background="{DynamicResource ADVTheme.Brush.Controls.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
+													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
+														<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}}">
+															<TextBlock.Text>
+																<MultiBinding Converter="{StaticResource NameConverter}">
+																	<Binding Path="Name"/>
+																	<Binding Path="DisplayName"/>
+																</MultiBinding>
+															</TextBlock.Text>
+														</TextBlock>
+
+														<NumericUpDown Grid.Column="1" HorizontalAlignment="Right" Width="230" Value="{Binding Value}" Minimum="{Binding MinimumValue}" Maximum="{Binding MaximumValue}" Increment="0.1" FormatString="0.00"/>
+													</Grid>
+												</Border>
+											</DataTemplate>
+										</selectors:ConfigPropertyTemplateSelector>
+									</ItemsControl.DataTemplates>
+								</ItemsControl>
+							</Expander>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+			<Grid Grid.Row="2" Height="28" ColumnDefinitions="Auto,Auto,Auto" Margin="5" ColumnSpacing="5" HorizontalAlignment="Right">
+				<Button Content="Save" Grid.Column="0" Width="150" Click="SaveButton"/>
+				<Button Content="Reset" Grid.Column="1" Width="150" Click="ResetButton"/>
+			</Grid>
+		</Grid>
+	</Border>
+</UserControl>
