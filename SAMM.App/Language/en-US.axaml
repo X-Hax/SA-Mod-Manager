@@ -7,4 +7,5 @@
 	</ResourceDictionary.MergedDictionaries>
 
 	<x:String x:Key="Common.Name">Name</x:String>
+	<x:String x:Key="Common.Search">Search</x:String>
 </ResourceDictionary>

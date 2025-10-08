@@ -55,7 +55,7 @@
 	<x:String x:Key="MainWindow.Settings.OpenGameFolder.ToolTip">Opens the currently selected game's folder.</x:String>
 	<x:String x:Key="MainWindow.Settings.GameHealthCheck">Check Game Health</x:String>
 	<x:String x:Key="MainWindow.Settings.GameHealthCheck.ToolTip">Opens the game health check tool.</x:String>
-	<x:String x:Key="MainWindow.Settings.ManagerUpdates">Enable Startup Check for Manager Updates</x:String>
+	<x:String x:Key="MainWindow.Settings.ManagerUpdates">Check for Manager Updates on Startup</x:String>
 	<x:String x:Key="MainWindow.Settings.ManagerUpdates.ToolTip">When enabled, the Manager will check for updates on startup.</x:String>
 	<x:String x:Key="MainWindow.Settings.KeepOpen">Keep Manager Open on Game Startup</x:String>
 	<x:String x:Key="MainWindow.Settings.KeepOpen.ToolTip">When enabled, the Manager will stay open when pressing Save and Play.</x:String>
@@ -63,9 +63,9 @@
 	<x:String x:Key="MainWindow.Settings.AdvancedSettings.ToolTip">Open the Advanced Settings (and other features) window.</x:String>
 	<x:String x:Key="MainWindow.Settings.CheckGameHealth">Check Game Health</x:String>
 	<x:String x:Key="MainWindow.Settings.CheckGameHealth.ToolTip">Opens a tool to check the game's installation for missing or unmatching files.</x:String>
-	<x:String x:Key="MainWindow.Settings.UpdateLoader">Enable Startup Check for the Mod Loader Updates</x:String>
+	<x:String x:Key="MainWindow.Settings.UpdateLoader">Check for Mod Loader Updates on Startup</x:String>
 	<x:String x:Key="MainWindow.Settings.UpdateLoader.ToolTip">When enabled, runs a check for any updates to the selected game's Mod Loader on Manager startup.</x:String>
-	<x:String x:Key="MainWindow.Settings.UpdateMods">Enable Startup Check for Mod Updates</x:String>
+	<x:String x:Key="MainWindow.Settings.UpdateMods">Check for Mod Updates on Startup</x:String>
 	<x:String x:Key="MainWindow.Settings.UpdateMods.ToolTip">When enabled, all mods in the mod list will be check for updated on Manager startup.</x:String>
 	
 </ResourceDictionary>
