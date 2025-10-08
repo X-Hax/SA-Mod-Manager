@@ -178,13 +178,13 @@ namespace SAMM.Configuration
 		/// The width of the Manager.
 		/// </summary>
 		[JsonPropertyName("managerWidth")]
-		public double ManagerWidth { get; set; } = 650;
+		public double ManagerWidth { get; set; } = 1200;
 
 		/// <summary>
 		/// The height of the Manager.
 		/// </summary>
 		[JsonPropertyName("managerHeight")]
-		public double ManagerHeight { get; set; } = 730;
+		public double ManagerHeight { get; set; } = 750;
 
 		/// <summary>
 		/// Maintains the order of all mods in the list.
