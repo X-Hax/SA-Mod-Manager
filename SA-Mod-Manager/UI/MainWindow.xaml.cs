@@ -2013,6 +2013,15 @@ namespace SAModManager
             codes = new List<Code>(mainCodes.Codes);
             codesSearch = [];
 
+            if (CodeListView is not null)
+            {
+                CodeListView.BeginInit();
+                CodeListView.Items.Clear();
+                codesSearch?.Clear();
+                EnabledCodes?.Clear();
+                CodeListView.EndInit();
+            }
+
             //if game path hasn't been set, give up the process of loading mods.
 
             if (GamesInstall.IsGameListEmpty() || App.CurrentGame == GamesInstall.Unknown || Directory.Exists(App.CurrentGame.gameDirectory) == false)
