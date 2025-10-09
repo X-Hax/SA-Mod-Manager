@@ -11,15 +11,17 @@ Version 1.3
 
 ## System Requirements
 
-To use SA Mod Manager, you must have:
-* Windows 7 or later
-* [.NET Desktop Runtime 8.0](https://dotnet.microsoft.com/fr-fr/download/dotnet/thank-you/runtime-desktop-8.0.10-windows-x64-installer)
+> [!NOTE]
+> To use SA Mod Manager, you must have:
+> * Windows 7 or later
+> * [.NET Desktop Runtime 8.0](https://dotnet.microsoft.com/fr-fr/download/dotnet/thank-you/runtime-desktop-8.0.10-windows-x64-installer)
 
-To use the Mod Loader, you must have:
-* [Visual C++ Redistributable Runtimes (32 Bits)](https://aka.ms/vs/17/release/vc_redist.x86.exe)
+> [!NOTE]
+> To use the Mod Loader, you must have:
+> * [Visual C++ Redistributable Runtimes (32 Bits)](https://aka.ms/vs/17/release/vc_redist.x86.exe)
 
 ## Supported Games
-* Sonic Adventure DX PC, 2004 version (US release, but If you have the Steam version, or a different region, you can convert it to 2004 US.)
+* Sonic Adventure DX PC, 2004 version (US release, but If you have the Steam version, or a different region, you can [convert it to 2004 US.](https://gitlab.com/PiKeyAr/sadx-mod-installer))
 * Sonic Adventure 2 (Battle) PC
 
 ## How To Use
