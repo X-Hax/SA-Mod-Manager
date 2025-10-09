@@ -388,9 +388,9 @@ namespace SAModManager
                 return;
 
             codes = new List<Code>(mainCodes.Codes);
-            codesSearch = new();
+            codesSearch = [];
             string modDir = Path.Combine(App.CurrentGame.gameDirectory, "mods");
-            List<string> modlistCopy = new();
+            List<string> modlistCopy = [];
 
             //backup mod list here
             foreach (ModData mod in listMods.Items)
@@ -411,8 +411,12 @@ namespace SAModManager
                 {
                     modlistCopy.Remove((string)curModCopy.Tag);
                 }
+                else
+                {
+                   // ModDependency.AutoCheckBox(mods[curItem.Name], mods);
+                }
             }
-
+            //reload codes from mods
             foreach (string mod in modlistCopy)
             {
                 if (mods.TryGetValue(mod, out SAModInfo value))
