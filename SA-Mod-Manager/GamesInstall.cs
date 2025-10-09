@@ -123,17 +123,39 @@ namespace SAModManager
         public defaultLoaderPath originPath;
     }
 
+
     public static class GamesInstall
     {
-        public static async Task InstallDLL_Loader(Game game, bool isupdate = false)
+
+        private static async Task<bool> InstallOfflineVersion(Game game, string loaderPath)
+        {
+            if (!File.Exists(loaderPath))
+            {
+                var offline = new OfflineInstall(game.loader.name);
+                offline.Show();
+                await Task.Delay(700);
+                Util.ExtractEmbedded7z(game.loader.name + ".7z", game.modLoaderDirectory);
+                bool success = File.Exists(Path.Combine(game.modLoaderDirectory, game.loader.name + ".dll"));
+                offline.CheckSuccess(success);
+
+                await Task.Delay(500);
+                offline.Close();
+                return true;
+            }
+
+            return false;
+        }
+
+        public static async Task<bool> InstallDLL_Loader(Game game, bool isupdate = false)
         {
             if (game is null || !File.Exists(Path.Combine(game?.gameDirectory, game?.exeName)))
-                return;
+                return false;
 
 
             Util.CreateSafeDirectory(game.modLoaderDirectory);
 
             string loaderPath = Path.Combine(game.modLoaderDirectory, game.loader.name + ".dll");
+            bool failed = false;
 
             try
             {
@@ -166,7 +188,7 @@ namespace SAModManager
                                 if (releaseID > currentID)
                                 {
                                     await UpdateLoader(game, targetAsset.DownloadUrl, isupdate);
-                                    return;
+                                    return true;
                                 }
                             }
 
@@ -178,27 +200,20 @@ namespace SAModManager
                 else
                 {
                     ((MainWindow)App.Current.MainWindow)?.UpdateManagerStatusText("Error Install Loader: " + response.StatusCode);
+                    failed = true;
                 }
-
-                //offline version
-                if (!File.Exists(loaderPath))
-                {
-                    var offline = new OfflineInstall(game.loader.name);
-                    offline.Show();
-                    await Task.Delay(700);
-                    Util.ExtractEmbedded7z(game.loader.name + ".7z", game.modLoaderDirectory);
-                    bool success = File.Exists(Path.Combine(game.modLoaderDirectory, game.loader.name + ".dll"));
-                    offline.CheckSuccess(success);
-
-                    await Task.Delay(500);
-                    offline.Close();
-                }
-
-
             }
             catch (Exception ex)
             {
                 DownloadDialog.DisplayGenericDownloadFailedMSG(ex);
+                failed = true;
+            }
+
+            //offline version
+            if (failed)
+            {
+                failed = await InstallOfflineVersion(game, loaderPath);
+                return failed;
             }
 
             var resources = new List<DownloadInfo>();
@@ -218,6 +233,8 @@ namespace SAModManager
                     }
                 }
             }
+
+            return true;
         }
 
         public static int GetMultipleGamesInstallCount(Game newGame, string newGamePath)

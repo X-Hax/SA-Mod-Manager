@@ -2663,18 +2663,22 @@ namespace SAModManager
                 UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
                 UIHelper.DisableButton(ref SaveAndPlayButton);
 
-                await GamesInstall.InstallDLL_Loader(App.CurrentGame, false); //first, we download and extract the loader DLL in the mods folder
+                bool valid = await GamesInstall.InstallDLL_Loader(App.CurrentGame, false); //first, we download and extract the loader DLL in the mods folder
 
-                UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
-                //now we can move the loader files to the accurate folders.
-                await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
-                await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
-                await App.EnableOneClickInstall();
-                UpdateBtnInstallLoader_State();
-                UIHelper.EnableButton(ref btnInstallLoader);
-                UIHelper.EnableButton(ref SaveAndPlayButton);
+                if (valid)
+                {
+                    UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
+                    //now we can move the loader files to the accurate folders.
 
-                UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
+                    await Util.MoveFileAsync(App.CurrentGame.loader.dataDllPath, App.CurrentGame.loader.dataDllOriginPath, false);
+                    await Util.CopyFileAsync(App.CurrentGame.loader.loaderdllpath, App.CurrentGame.loader.dataDllPath, false);
+                    await App.EnableOneClickInstall();
+                    UpdateBtnInstallLoader_State();
+                    UIHelper.EnableButton(ref btnInstallLoader);
+                    UIHelper.EnableButton(ref SaveAndPlayButton);
+                    UpdateManagerStatusText(Lang.GetString("UpdateStatus.LoaderInstalled"));
+                }
+
             }
         }
 
