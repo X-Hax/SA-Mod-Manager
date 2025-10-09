@@ -396,7 +396,6 @@ namespace SAModManager
 
         public static async Task<bool> PerformDevUpdateManagerCheck()
         {
-
             var update = await App.GetArtifact();
             if (update.Item2 is not null)
             {

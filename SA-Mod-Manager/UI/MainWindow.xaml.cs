@@ -3003,9 +3003,10 @@ namespace SAModManager
                     msg.ShowDialog();
                     if (msg.isYes)
                     {
-                        await App.PerformDevUpdateManagerCheck();
-
-                    }
+                        bool success = await App.PerformDevUpdateManagerCheck();
+                        if (!success)
+							comboUpdateChannel.SelectedItem = currentChannel;
+					}
                     else
                     {
                         comboUpdateChannel.SelectedItem = currentChannel;
