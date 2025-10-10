@@ -16,7 +16,7 @@ Version 1.3
 > * Windows 7 or later
 > * [.NET Desktop Runtime 8.0](https://dotnet.microsoft.com/fr-fr/download/dotnet/thank-you/runtime-desktop-8.0.10-windows-x64-installer)
 
-> [!NOTE]
+> [!IMPORTANT]
 > To use the Mod Loader, you must have:
 > * [Visual C++ Redistributable Runtimes (32 Bits)](https://aka.ms/vs/17/release/vc_redist.x86.exe)
 
