@@ -55,7 +55,7 @@
     <system:String x:Key="CommonStrings.Success">Succès!</system:String>
     <system:String x:Key="CommonStrings.Failed">Echec</system:String>
 	<system:String x:Key="CommonStrings.ID">ID</system:String>
-	<system:String x:Key="CommonString.Dependency">Dependency</system:String>
+	<system:String x:Key="CommonStrings.Dependency">Dependency</system:String>
 
 	<!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Type</system:String>

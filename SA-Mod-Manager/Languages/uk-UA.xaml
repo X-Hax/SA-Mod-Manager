@@ -57,7 +57,7 @@
     <system:String x:Key="CommonStrings.Success">Вийшло!</system:String>
     <system:String x:Key="CommonStrings.Failed">Не вийшло</system:String>
 	<system:String x:Key="CommonStrings.ID">ID</system:String>
-	<system:String x:Key="CommonString.Dependency">Залежність</system:String>
+	<system:String x:Key="CommonStrings.Dependency">Залежність</system:String>
 
     <!--Region Create Code-->
     <system:String x:Key="CommonStrings.Type">Тип</system:String>

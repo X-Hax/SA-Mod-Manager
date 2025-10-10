@@ -51,7 +51,7 @@
     <system:String x:Key="CommonStrings.Success">Success!</system:String>
     <system:String x:Key="CommonStrings.Failed">Failed</system:String>
 	<system:String x:Key="CommonStrings.ID">ID</system:String>
-	<system:String x:Key="CommonString.Dependency">Dependency</system:String>
+	<system:String x:Key="CommonStrings.Dependency">Dependency</system:String>
 
 	<!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">Riduci a Icona</system:String>

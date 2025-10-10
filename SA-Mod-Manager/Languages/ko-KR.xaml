@@ -49,7 +49,7 @@
     <system:String x:Key="CommonStrings.Success">성공</system:String>
     <system:String x:Key="CommonStrings.Failed">실패</system:String>
 	<system:String x:Key="CommonStrings.ID">ID</system:String>
-	<system:String x:Key="CommonString.Dependency">종속성</system:String>
+	<system:String x:Key="CommonStrings.Dependency">종속성</system:String>
 
 	<!--Window Tips-->
 	<system:String x:Key="Window.Tips.Minimize">최소화</system:String>
