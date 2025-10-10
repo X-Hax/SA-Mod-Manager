@@ -181,6 +181,18 @@ namespace SAModManager
             suppressEvent = false;
         }
 
+        private void ClearCodesList()
+        {
+            if (CodeListView is not null)
+            {
+                CodeListView.BeginInit();
+                CodeListView.Items.Clear();
+                codesSearch?.Clear();
+                EnabledCodes?.Clear();
+                CodeListView.EndInit();
+            }
+        }
+
         private void MainForm_FormClosing(object sender, EventArgs e)
         {
             App.CancelUpdate = true;
@@ -2013,14 +2025,7 @@ namespace SAModManager
             codes = new List<Code>(mainCodes.Codes);
             codesSearch = [];
 
-            if (CodeListView is not null)
-            {
-                CodeListView.BeginInit();
-                CodeListView.Items.Clear();
-                codesSearch?.Clear();
-                EnabledCodes?.Clear();
-                CodeListView.EndInit();
-            }
+
 
             //if game path hasn't been set, give up the process of loading mods.
 
@@ -2905,10 +2910,12 @@ namespace SAModManager
             if (newGame is not null)
             {
                 EnabledMods.Clear();
-                EnabledCodes.Clear();
+                ClearCodesList();
                 App.CurrentGame = newGame;
                 GamesInstall.HandleGameSwap(newGame, newPath);
                 Load(newPath is not null);
+
+          
                 return true;
             }
             else
@@ -2919,10 +2926,11 @@ namespace SAModManager
                     {
                         App.ManagerSettings.CurrentSetGame = ComboGameSelection.SelectedIndex;
                         EnabledMods.Clear();
-                        EnabledCodes.Clear();
+                        ClearCodesList();
                         App.CurrentGame = game;
                         GamesInstall.HandleGameSwap(game, newPath);
                         Load(newPath is not null);
+               
                         return true;
                     }
                 }
