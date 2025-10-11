@@ -1,8 +1,11 @@
-﻿using System.Windows;
+﻿using SAModManager.Ini;
+using SAModManager.Updater;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
-using SAModManager.Ini;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace SAModManager.ModsCommon
 {
@@ -28,11 +31,13 @@ namespace SAModManager.ModsCommon
             public string Folder { get; set; }
             public string ModID { get; set; }
             public string Link { get; set; }
+            public string GBItemType { get; set; }
             public bool isGithub { get; set; }
             public bool IsChecked { get; set; }
 
             public ModToDependency(KeyValuePair<string, SAModInfo> modInfo)
             {
+
                 Name = modInfo.Value.Name;
                 Author = modInfo.Value.Author;
                 Folder = modInfo.Key;
@@ -45,7 +50,10 @@ namespace SAModManager.ModsCommon
                     isGithub = true;
                 }
                 else if (modInfo.Value.GameBananaItemId != null)
+                {
                     Link = modInfo.Value.GameBananaItemId.ToString();
+                    GBItemType = modInfo.Value.GameBananaItemType;
+                }
                 else
                     Link = string.Empty;
             }
@@ -142,25 +150,37 @@ namespace SAModManager.ModsCommon
 
         private string ConvertLink(ModToDependency mod)
         {
-            UpdateType type;
             string retLink = string.Empty;
 
-            if (mod.isGithub)
-                type = UpdateType.Github;
-            else if (!mod.isGithub && mod.Link != string.Empty)
-                type = UpdateType.Gamebanana;
-            else
-                type = UpdateType.Self;
-
-            switch (type)
+            try
             {
-                case UpdateType.Github:
-                    retLink = "https://github.com/" + mod.Link;
-                    break;
-                case UpdateType.Gamebanana:
-                    retLink = App.CurrentGame?.oneClickName + ":" + "https://gamebanana.com/mmdl/0,gb_itemtype:Mod,gb_itemid:" + mod.Link;
-                    break;
+                UpdateType type;
+            
+
+                if (mod.isGithub)
+                    type = UpdateType.Github;
+                else if (!mod.isGithub && mod.Link != string.Empty)
+                    type = UpdateType.Gamebanana;
+                else
+                    type = UpdateType.Self;
+
+                switch (type)
+                {
+                    case UpdateType.Github:
+                        retLink = "https://github.com/" + mod.Link;
+                        break;
+                    case UpdateType.Gamebanana:
+                        {
+
+                            GameBananaItem gbi = Task.Run(async () => await GameBananaItem.Load(mod.GBItemType, long.Parse(mod.Link))).Result;
+                            string key = gbi.Files.ElementAt(0).Key;
+                            retLink = App.CurrentGame?.oneClickName + ":" + "https://gamebanana.com/mmdl/" + key + ",gb_itemtype:Mod,gb_itemid:" + mod.Link;
+
+                        }
+                        break;
+                }
             }
+            catch { }
 
             return retLink;
         }

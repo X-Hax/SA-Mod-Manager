@@ -15,9 +15,11 @@
 	<system:String x:Key="ModDependency.Dependency.EnabledOrder">necesita ponerse arriba</system:String>
 	<system:String x:Key="ModDependency.Dependency.DisabledOrder1">no está activado.</system:String>
 	<system:String x:Key="ModDependency.Dependency.DisabledOrder2">Por favor, activa el mod y ponlo arriba</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled1">no está instalado.</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled2">Por favor, instala</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled3">y ponlo arriba</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled4">¿Quieres descargar esta mod ahora?</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled1">One or more dependencies are missing:</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled2">Please install the missing dependencies</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled3">and place them above</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled4">Would you like to download the mod(s) now?</system:String>
+
+
 
 </ResourceDictionary>

@@ -252,7 +252,7 @@ namespace SAModManager.UI
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            using (var task = new Task(() =>
+            using var task = new Task(() =>
             {
                 switch (game)
                 {
@@ -310,7 +310,7 @@ namespace SAModManager.UI
                             Fails.Add(status);
                     }
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -320,56 +320,54 @@ namespace SAModManager.UI
                         exception.ShowDialog();
                     });
                 }
-            }))
+            });
+            task.Start();
+
+            while (!task.IsCompleted && !task.IsCanceled)
             {
-                task.Start();
+                await Dispatcher.Yield(DispatcherPriority.Background);
+            }
 
-                while (!task.IsCompleted && !task.IsCanceled)
+            if (Fails.Count > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (FileStatus file in Fails)
                 {
-                    await Dispatcher.Yield(DispatcherPriority.Background);
-                }
-
-                if (Fails.Count > 0)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (FileStatus file in Fails)
+                    switch (file.Status)
                     {
-                        switch (file.Status)
-                        {
-                            case FileStatus.StatusValue.Modified:
-                                sb.AppendLine(file.Filename + " " + Lang.GetString("HealthProgress.Files.Modified"));
-                                break;
-                            case FileStatus.StatusValue.NotFound:
-                                sb.AppendLine(file.Filename + " " + Lang.GetString("HealthProgress.Files.Missing"));
-                                break;
-                        }
+                        case FileStatus.StatusValue.Modified:
+                            sb.AppendLine(file.Filename + " " + Lang.GetString("HealthProgress.Files.Modified"));
+                            break;
+                        case FileStatus.StatusValue.NotFound:
+                            sb.AppendLine(file.Filename + " " + Lang.GetString("HealthProgress.Files.Missing"));
+                            break;
                     }
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        MessageWindow failedFiles = new(Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles.Title"),
-                            Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles1") + "\n\n" +
-                            sb.ToString() + "\n\n" + Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles2"),
-                            type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
-
-                        failedFiles.ShowDialog();
-                    });
                 }
-                else
+
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        MessageWindow success = new(Lang.GetString("MessageWindow.Information.HealthCheck.Verified.Title"), Lang.GetString("MessageWindow.Information.HealthCheck.Verified"),
+                    MessageWindow failedFiles = new(Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles.Title"),
+                        Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles1") + "\n\n" +
+                        sb.ToString() + "\n\n" + Lang.GetString("MessageWindow.Information.HealthCheck.FailedFiles2"),
                         type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
 
-                        success.ShowDialog();
-                    });
-
-                }
-
-                Fails.Clear();
-                DialogResult = true;
+                    failedFiles.ShowDialog();
+                });
             }
+            else
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MessageWindow success = new(Lang.GetString("MessageWindow.Information.HealthCheck.Verified.Title"), Lang.GetString("MessageWindow.Information.HealthCheck.Verified"),
+                    type: MessageWindow.WindowType.IconMessage, icon: MessageWindow.Icons.Information, button: MessageWindow.Buttons.OK);
+
+                    success.ShowDialog();
+                });
+
+            }
+
+            Fails.Clear();
+            DialogResult = true;
         }
 
         private void UpdateStatus(string status)

@@ -15,9 +15,9 @@
 <system:String x:Key="ModDependency.Dependency.EnabledOrder">peab paigutama ülalpool</system:String>
   <system:String x:Key="ModDependency.Dependency.DisabledOrder1">keelatud.</system:String>
   <system:String x:Key="ModDependency.Dependency.DisabledOrder2">Palun lubage mod ja asetage see kohale</system:String>
-  <system:String x:Key="ModDependency.Dependency.NotInstalled1">pole installitud.</system:String>
-  <system:String x:Key="ModDependency.Dependency.NotInstalled2">Palun installige</system:String>
-  <system:String x:Key="ModDependency.Dependency.NotInstalled3">ja asetage see kohale</system:String>
-  <system:String x:Key="ModDependency.Dependency.NotInstalled4">Kas soovite modi kohe alla laadida?</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled1">One or more dependencies are missing:</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled2">Please install the missing dependencies</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled3">and place them above</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled4">Would you like to download the mod(s) now?</system:String>
 
 </ResourceDictionary>

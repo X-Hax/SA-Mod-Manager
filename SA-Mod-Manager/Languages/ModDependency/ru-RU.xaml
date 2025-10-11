@@ -15,9 +15,9 @@
 	<system:String x:Key="ModDependency.Dependency.EnabledOrder">необходимо поместить над</system:String>
 	<system:String x:Key="ModDependency.Dependency.DisabledOrder1">выключен.</system:String>
 	<system:String x:Key="ModDependency.Dependency.DisabledOrder2">Пожалуйста, включите мод и поместите его над</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled1">не установлен.</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled2">Пожалуйста, установите</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled3">и поместите его над</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled4">Желаете загрузить мод сейчас?</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled1">One or more dependencies are missing:</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled2">Please install the missing dependencies</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled3">and place them above</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled4">Would you like to download the mod(s) now?</system:String>
 
 </ResourceDictionary>

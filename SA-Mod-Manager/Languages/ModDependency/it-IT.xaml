@@ -15,9 +15,9 @@
 	<system:String x:Key="ModDependency.Dependency.EnabledOrder">needs to be placed above</system:String>
 	<system:String x:Key="ModDependency.Dependency.DisabledOrder1">is not enabled.</system:String>
 	<system:String x:Key="ModDependency.Dependency.DisabledOrder2">Please enable the mod and place it above</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled1">is not installed.</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled2">Please install</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled3">and place it above</system:String>
-	<system:String x:Key="ModDependency.Dependency.NotInstalled4">Would you like to download this mod now?</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled1">One or more dependencies are missing:</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled2">Please install the missing dependencies</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled3">and place them above</system:String>
+    <system:String x:Key="ModDependency.Dependency.NotInstalled4">Would you like to download the mod(s) now?</system:String>
 
 </ResourceDictionary>

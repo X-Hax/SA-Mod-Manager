@@ -58,7 +58,7 @@ namespace SAModManager
         public List<CodeData> codesSearch { get; set; }
         public bool suppressEvent = false;
         private bool manualModUpdate;
-        readonly Updater.ModUpdater modUpdater = new();
+        public readonly Updater.ModUpdater modUpdater = new();
         private DebugSettings gameDebugSettings = new();
 
         private bool displayedManifestWarning;
@@ -207,16 +207,21 @@ namespace SAModManager
             Refresh();
         }
 
-        private void SaveAndPlayButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveAndPlayButton_Click(object sender, RoutedEventArgs e)
         {
             Save();
             Refresh();
 
 
-            if (App.CurrentGame.id == GameEntry.GameType.Unsupported || ModDependency.CheckDependencies(EnabledMods, mods))
+            if (App.CurrentGame.id == GameEntry.GameType.Unsupported)
                 return;
 
-            StartGame();
+            bool res = await ModDependency.CheckDependencies(EnabledMods, mods);
+
+            if (res == false)
+            {
+                StartGame();
+            }
         }
 
         #region Form: Mods Tab Functions
