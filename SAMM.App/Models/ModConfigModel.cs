@@ -2,10 +2,9 @@
 using ReactiveUI;
 using SAMM.Configuration.Mods;
 using SAMM.Utilities.INI;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using IniConfig = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, string>>;
 
 namespace SAMM.App.Models
@@ -40,11 +39,15 @@ namespace SAMM.App.Models
 		public object Value
 		{
 			get => val;
-			set => this.RaiseAndSetIfChanged(ref val, value);
+			set
+			{
+				IsValueDefault = (value == DefaultValue);
+				this.RaiseAndSetIfChanged(ref val, value);
+			}
 		}
 
-		private string defaultValue = string.Empty;
-		public string DefaultValue
+		private object defaultValue = new object();
+		public object DefaultValue
 		{
 			get => defaultValue;
 			set => this.RaiseAndSetIfChanged(ref defaultValue, value);
@@ -57,15 +60,15 @@ namespace SAMM.App.Models
 			set => this.RaiseAndSetIfChanged(ref alwaysInclude, value);
 		}
 
-		private string minValue = string.Empty;
-		public string MinimumValue
+		private object minValue = new object();
+		public object MinimumValue
 		{
 			get => minValue;
 			set => this.RaiseAndSetIfChanged(ref minValue, value);
 		}
 
-		private string maxValue = string.Empty;
-		public string MaximumValue
+		private object maxValue = new object();
+		public object MaximumValue
 		{
 			get => maxValue;
 			set => this.RaiseAndSetIfChanged(ref maxValue, value);
@@ -85,25 +88,108 @@ namespace SAMM.App.Models
 			set => this.RaiseAndSetIfChanged(ref useSlider, value);
 		}
 
-		public bool IsValueDefault
+		private bool isValueDefault = true;
+		public bool IsValueDefault 
 		{
-			get => (Value.ToString().ToLowerInvariant() == DefaultValue.ToLowerInvariant());
+			get => isValueDefault;
+			set => this.RaiseAndSetIfChanged(ref isValueDefault, value);
+		}
+
+		public List<ModConfigEnumMemberModel> Items { get; private set; } = null;
+
+		public override string ToString()
+		{
+			if (DisplayName.Length > 0)
+				return DisplayName;
+			else
+				return Name;
 		}
 
 		public ModConfigPropertyModel() { }
 
-		public ModConfigPropertyModel(ConfigSchemaProperty prop)
+		public ModConfigPropertyModel(ConfigSchemaProperty prop, AvaloniaDictionary<string, ObservableCollection<ModConfigEnumMemberModel>> items = null)
 		{
 			Name = prop.Name;
 			DisplayName = prop.DisplayName;
 			Type = prop.Type;
-			DefaultValue = prop.DefaultValue;
 			AlwaysInclude = prop.AlwaysInclude;
-			MinimumValue = prop.MinValue;
-			MaximumValue = prop.MaxValue;
 			HelperText = prop.HelpText;
 			UseSlider = prop.Slider;
-			Value = GetPropertyDefaultValue();
+
+			DefaultValue = StringPropertyToObject(prop.DefaultValue);
+			MinimumValue = StringPropertyToObject(prop.MinValue, true);
+			MaximumValue = StringPropertyToObject(prop.MaxValue, false);
+			if (items.ContainsKey(Type))
+				Items = items[Type].ToList();
+
+			Value = DefaultValue;
+		}
+
+		private object StringPropertyToObject(string propValue, bool isMinValue = false)
+		{
+			switch (Type)
+			{
+				case "int":
+					if (!string.IsNullOrEmpty(propValue))
+						return int.Parse(propValue);
+					else
+					{
+						if (isMinValue)
+							return int.MinValue;
+						else
+							return int.MaxValue;
+					}
+				case "float":
+					if (!string.IsNullOrEmpty(propValue))
+						return float.Parse(propValue);
+					else
+					{
+						if (isMinValue)
+							return float.MinValue;
+						else
+							return float.MaxValue;
+					}
+				case "bool":
+					if (!string.IsNullOrEmpty(propValue))
+						return bool.Parse(propValue);
+					else
+						return null;
+				case "string":
+					if (string.IsNullOrEmpty(propValue))
+						return propValue;
+					else
+						return null;
+				default:
+					if (Items != null)
+					{
+						int i = Items.FindIndex(x => x.Name == propValue);
+						if (i == -1)
+							i = 0;
+
+						return i;
+					}
+
+					return 0;
+				}
+		}
+
+		public bool IsEnumType()
+		{
+			switch (Type)
+			{
+				default:
+					return true;
+				case "int":
+				case "float":
+				case "bool":
+				case "string":
+					return false;
+			}
+		}
+
+		public string GetEnumValue()
+		{
+			return Items[(int)Value].Name;
 		}
 
 		public object GetPropertyValue()
@@ -122,43 +208,11 @@ namespace SAMM.App.Models
 			}
 		}
 
-		public object GetPropertyDefaultValue()
-		{
-			switch (type)
-			{
-				case "bool":
-					return bool.Parse(DefaultValue);
-				case "string":
-				default:
-					return (string)DefaultValue;
-				case "int":
-					return int.Parse(DefaultValue);
-				case "float":
-					return float.Parse(DefaultValue);
-			}
-		}
-
-		private object GetConfigValue(string input)
-		{
-			switch (type)
-			{
-				case "bool":
-					return bool.Parse(input);
-				case "string":
-				default:
-					return (string)input;
-				case "int":
-					return int.Parse(input);
-				case "float":
-					return float.Parse(input);
-			}
-		}
-
 		public void UpdateFromConfigFile(Dictionary<string, string> config)
 		{
 			if (config.ContainsKey(Name))
 			{
-				Value = GetConfigValue(config[Name]);
+				Value = StringPropertyToObject(config[Name]);
 			}
 		}
 	}
@@ -182,6 +236,14 @@ namespace SAMM.App.Models
 			set => this.RaiseAndSetIfChanged(ref displayName, value);
 		}
 
+		public override string ToString()
+		{
+			if (DisplayName.Length > 0)
+				return DisplayName;
+			else
+				return Name;
+		}
+
 		private ObservableCollection<ModConfigPropertyModel> properties = new ObservableCollection<ModConfigPropertyModel>();
 		public ObservableCollection<ModConfigPropertyModel> Properties
 		{
@@ -191,13 +253,13 @@ namespace SAMM.App.Models
 
 		public ModConfigGroupModel() { }
 
-		public ModConfigGroupModel(ConfigSchemaGroup group)
+		public ModConfigGroupModel(ConfigSchemaGroup group, AvaloniaDictionary<string, ObservableCollection<ModConfigEnumMemberModel>> items = null)
 		{
 			Name = group.Name;
 			DisplayName = group.DisplayName;
 			foreach (var property in group.Properties)
 			{
-				Properties.Add(new ModConfigPropertyModel(property));
+				Properties.Add(new ModConfigPropertyModel(property, items));
 			}
 		}
 	}
@@ -219,6 +281,14 @@ namespace SAMM.App.Models
 		{
 			get => displayName;
 			set => this.RaiseAndSetIfChanged(ref displayName, value);
+		}
+
+		public override string ToString()
+		{
+			if (DisplayName.Length > 0)
+				return DisplayName;
+			else 
+				return Name;
 		}
 
 		public ModConfigEnumMemberModel() { }
@@ -253,11 +323,6 @@ namespace SAMM.App.Models
 
 		public ModConfigModel(ConfigSchema configSchema)
 		{
-			foreach(var group in configSchema.Groups)
-			{
-				Groups.Add(new ModConfigGroupModel(group));
-			}
-
 			foreach (var group in configSchema.Enums)
 			{
 				ObservableCollection<ModConfigEnumMemberModel> conv = new ObservableCollection<ModConfigEnumMemberModel>();
@@ -267,6 +332,11 @@ namespace SAMM.App.Models
 				}
 
 				Enums.Add(group.Name, conv);
+			}
+
+			foreach (var group in configSchema.Groups)
+			{
+				Groups.Add(new ModConfigGroupModel(group, Enums));
 			}
 		}
 
@@ -281,7 +351,11 @@ namespace SAMM.App.Models
 				{
 					if (prop.AlwaysInclude || (!prop.IsValueDefault))
 					{
-						configProps.Add(prop.Name, prop.Value.ToString());
+						string writeProp = prop.Value.ToString();
+						if (prop.IsEnumType())
+							writeProp = prop.GetEnumValue();
+
+						configProps.Add(prop.Name, writeProp);
 						hasProps = true;
 					}
 				}
@@ -290,8 +364,7 @@ namespace SAMM.App.Models
 					config.Add(group.Name, configProps);
 			}
 
-			if (config.Count > 0)
-				IniFile.Save(config, filePath);
+			IniFile.Save(config, filePath);
 		}
 
 		public void RevertOptions()
@@ -300,7 +373,7 @@ namespace SAMM.App.Models
 			{
 				foreach (var prop in group.Properties)
 				{
-					prop.Value = prop.GetPropertyDefaultValue();
+					prop.Value = prop.DefaultValue;
 				}
 			}
 		}

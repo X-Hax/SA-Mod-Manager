@@ -21,14 +21,18 @@ namespace SAMM.App.Selectors
 			if (Templates.ContainsKey(key.Type.ToLowerInvariant()))
 				return Templates[key.Type.ToLowerInvariant()].Build(param);
 			else
-				throw new NotImplementedException();
+				return Templates["enum"].Build(param);
 		}
 
 		public bool Match(object? data)
 		{
 			var key = data as ModConfigPropertyModel;
 
-			return data is ModConfigPropertyModel && !string.IsNullOrEmpty(key.Type) && Templates.ContainsKey(key.Type.ToLowerInvariant());
+			bool retVal = data is ModConfigPropertyModel && !string.IsNullOrEmpty(key.Type) && Templates.ContainsKey(key.Type.ToLowerInvariant());
+			if (!retVal)
+				retVal = data is ModConfigPropertyModel && Templates.ContainsKey("enum");
+			
+			return retVal;
 		}
 	}
 }

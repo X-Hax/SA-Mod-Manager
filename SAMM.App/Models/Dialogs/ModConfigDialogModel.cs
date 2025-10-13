@@ -1,8 +1,8 @@
 ﻿using ReactiveUI;
 using SAMM.Configuration.Mods;
 using SAMM.Utilities.INI;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using IniConfig = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, string>>;
 
 namespace SAMM.App.Models.Dialogs
@@ -43,6 +43,14 @@ namespace SAMM.App.Models.Dialogs
 						}
 					}
 				}
+			}
+		}
+
+		public void RunPropertySearch(string filter)
+		{
+			if (filter.Length > 0)
+			{
+				
 			}
 		}
 

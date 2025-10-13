@@ -11,7 +11,8 @@
              x:Class="SAMM.App.Controls.Dialogs.ModConfigDialog">
 	<UserControl.Resources>
 		<converters:ConfigDisplayNameConverter x:Key="NameConverter"/>
-		<converters:FontWeightBoolConverter x:Key="FontWeightConverter" FalseWeight="Regular" TrueWeight="Bold"/>
+		<converters:ConfigEnumMembersConverter x:Key="EnumConverter"/>
+		<converters:FontWeightBoolConverter x:Key="FontWeightConverter" FalseWeight="Bold" TrueWeight="Regular"/>
 	</UserControl.Resources>
 	
 	<Border CornerRadius="{DynamicResource ADVTheme.CornerRadius}" BorderThickness="2" BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}"
@@ -36,50 +37,119 @@
 									<ItemsControl.DataTemplates>
 										<selectors:ConfigPropertyTemplateSelector>
 											<DataTemplate x:Key="bool" DataType="config:ModConfigPropertyModel">
-												<Border Background="{DynamicResource ADVTheme.Brush.Controls.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
+												<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
 													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
-														<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}, Mode=TwoWay}">
-															<TextBlock.Text>
-																<MultiBinding Converter="{StaticResource NameConverter}">
-																	<Binding Path="Name"/>
-																	<Binding Path="DisplayName"/>
-																</MultiBinding>
-															</TextBlock.Text>
-														</TextBlock>
+														<Grid ColumnDefinitions="Auto,Auto" Grid.Column="0" ColumnSpacing="5">
+															<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}, Mode=TwoWay}">
+																<TextBlock.Text>
+																	<MultiBinding Converter="{StaticResource NameConverter}">
+																		<Binding Path="Name"/>
+																		<Binding Path="DisplayName"/>
+																	</MultiBinding>
+																</TextBlock.Text>
+															</TextBlock>
+															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelperText}" IsVisible="{Binding HelperText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+																<Path Margin="5" Data="{StaticResource ADVTheme.Icon.Information}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}"/>
+															</Border>
+														</Grid>
 														
 														<ToggleSwitch Grid.Column="1" HorizontalAlignment="Right" IsChecked="{Binding Value}"/>
 													</Grid>
 												</Border>
 											</DataTemplate>
 											<DataTemplate x:Key="int" DataType="config:ModConfigPropertyModel">
-												<Border Background="{DynamicResource ADVTheme.Brush.Controls.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
+												<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
 													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
-														<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}}">
-															<TextBlock.Text>
-																<MultiBinding Converter="{StaticResource NameConverter}">
-																	<Binding Path="Name"/>
-																	<Binding Path="DisplayName"/>
-																</MultiBinding>
-															</TextBlock.Text>
-														</TextBlock>
+														<Grid ColumnDefinitions="Auto,Auto" Grid.Column="0" ColumnSpacing="5">
+															<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}, Mode=TwoWay}">
+																<TextBlock.Text>
+																	<MultiBinding Converter="{StaticResource NameConverter}">
+																		<Binding Path="Name"/>
+																		<Binding Path="DisplayName"/>
+																	</MultiBinding>
+																</TextBlock.Text>
+															</TextBlock>
+															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelperText}" IsVisible="{Binding HelperText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+																<Path Margin="5" Data="{StaticResource ADVTheme.Icon.Information}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}"/>
+															</Border>
+														</Grid>
 
-														<NumericUpDown Grid.Column="1" HorizontalAlignment="Right" Width="230" Value="{Binding Value}" Minimum="{Binding MinimumValue}" Maximum="{Binding MaximumValue}" Increment="1" FormatString="0"/>
+														<Grid Grid.Column="1">
+															<NumericUpDown IsVisible="{Binding !UseSlider}" HorizontalAlignment="Right" Width="230" Maximum="{Binding MaximumValue}" Minimum="{Binding MinimumValue}" Value="{Binding Value}" FormatString="0" Increment="1"/>
+															<Grid IsVisible="{Binding UseSlider}" ColumnDefinitions="*,5,50">
+																<Slider Grid.Column="0" Maximum="{Binding MaximumValue}" Minimum="{Binding MinimumValue}" Value="{Binding Value}" TickPlacement="TopLeft" TickFrequency="10"/>
+																<TextBlock Grid.Column="2" Text="{Binding Value}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+															</Grid>
+														</Grid>
 													</Grid>
 												</Border>
 											</DataTemplate>
 											<DataTemplate x:Key="float" DataType="config:ModConfigPropertyModel">
-												<Border Background="{DynamicResource ADVTheme.Brush.Controls.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
+												<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
 													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
-														<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}}">
-															<TextBlock.Text>
-																<MultiBinding Converter="{StaticResource NameConverter}">
-																	<Binding Path="Name"/>
-																	<Binding Path="DisplayName"/>
-																</MultiBinding>
-															</TextBlock.Text>
-														</TextBlock>
+														<Grid ColumnDefinitions="Auto,Auto" Grid.Column="0" ColumnSpacing="5">
+															<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}, Mode=TwoWay}">
+																<TextBlock.Text>
+																	<MultiBinding Converter="{StaticResource NameConverter}">
+																		<Binding Path="Name"/>
+																		<Binding Path="DisplayName"/>
+																	</MultiBinding>
+																</TextBlock.Text>
+															</TextBlock>
+															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelperText}" IsVisible="{Binding HelperText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+																<Path Margin="5" Data="{StaticResource ADVTheme.Icon.Information}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}"/>
+															</Border>
+														</Grid>
+														
+														<Grid Grid.Column="1">
+															<NumericUpDown IsVisible="{Binding !UseSlider}" HorizontalAlignment="Right" Width="230" Maximum="{Binding MaximumValue}" Minimum="{Binding MinimumValue}" Value="{Binding Value}" FormatString="0.00" Increment="0.1"/>
+															<Grid IsVisible="{Binding UseSlider}" ColumnDefinitions="*,5,50">
+																<Slider Grid.Column="0" Maximum="{Binding MaximumValue}" Minimum="{Binding MinimumValue}" Value="{Binding Value}"/>
+																<TextBlock Grid.Column="2" Text="{Binding Value}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+															</Grid>
+														</Grid>
+													</Grid>
+												</Border>
+											</DataTemplate>
+											<DataTemplate x:Key="string" DataType="config:ModConfigPropertyModel">
+												<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
+													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
+														<Grid ColumnDefinitions="Auto,Auto" Grid.Column="0" ColumnSpacing="5">
+															<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}, Mode=TwoWay}">
+																<TextBlock.Text>
+																	<MultiBinding Converter="{StaticResource NameConverter}">
+																		<Binding Path="Name"/>
+																		<Binding Path="DisplayName"/>
+																	</MultiBinding>
+																</TextBlock.Text>
+															</TextBlock>
+															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelperText}" IsVisible="{Binding HelperText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+																<Path Margin="5" Data="{StaticResource ADVTheme.Icon.Information}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}"/>
+															</Border>
+														</Grid>
 
-														<NumericUpDown Grid.Column="1" HorizontalAlignment="Right" Width="230" Value="{Binding Value}" Minimum="{Binding MinimumValue}" Maximum="{Binding MaximumValue}" Increment="0.1" FormatString="0.00"/>
+														<TextBox Grid.Column="1" Width="230" HorizontalAlignment="Right" Text="{Binding Value}"/>
+													</Grid>
+												</Border>
+											</DataTemplate>
+											<DataTemplate x:Key="enum" DataType="config:ModConfigPropertyModel">
+												<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
+													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
+														<Grid ColumnDefinitions="Auto,Auto" Grid.Column="0" ColumnSpacing="5">
+															<TextBlock Grid.Column="0" VerticalAlignment="Center" FontWeight="{Binding IsValueDefault, Converter={StaticResource FontWeightConverter}, Mode=TwoWay}">
+																<TextBlock.Text>
+																	<MultiBinding Converter="{StaticResource NameConverter}">
+																		<Binding Path="Name"/>
+																		<Binding Path="DisplayName"/>
+																	</MultiBinding>
+																</TextBlock.Text>
+															</TextBlock>
+															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelperText}" IsVisible="{Binding HelperText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+																<Path Margin="5" Data="{StaticResource ADVTheme.Icon.Information}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}"/>
+															</Border>
+														</Grid>
+
+														<ComboBox Grid.Column="1" ItemsSource="{Binding Items}" SelectedIndex="{Binding Value}"/>
 													</Grid>
 												</Border>
 											</DataTemplate>
