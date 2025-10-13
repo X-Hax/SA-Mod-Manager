@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="680" d:DesignHeight="730"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="750"
 		xmlns:models="clr-namespace:SAMM.App.Models;assembly=SAMM.App"
 		x:DataType="models:MainWindowViewModel" MinHeight="420" MinWidth="800"
 		Height="{Binding ManagerSettings.ManagerHeight}" Width="{Binding ManagerSettings.ManagerWidth}"
@@ -91,7 +91,6 @@
 										<Path Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Border.Light}"/>
 									</Button>
 									<ComboBox Grid.Column="3"/>
-
 								</Grid>
 								<DataGrid x:Name="ModList" Grid.Row="1" ItemsSource="{Binding ModEntries}" Margin="2,2,7,2" IsReadOnly="True" GridLinesVisibility="All"
 										  CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserSortColumns="True" CellTheme="{StaticResource ModEntryCell}"
