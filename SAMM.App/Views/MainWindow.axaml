@@ -68,7 +68,7 @@
 		</ControlTheme>
 	</Window.Resources>
 
-	<dialogHostAvalonia:DialogHost x:Name="MainWindowDialogHost" CloseOnClickAway="True" BlurBackground="True">
+	<dialogHostAvalonia:DialogHost x:Name="MainWindowDialogHost" Identifier="MainWindowDialogHost" CloseOnClickAway="True" BlurBackground="True">
 		<dialogHostAvalonia:DialogHost.DialogContent>
 			<Border x:Name="PART_DialogHost" Width="{Binding Path=$parent.Bounds.Width, Converter={StaticResource DialogHostSizeConverter}}"
 					Height="{Binding Path=$parent.Bounds.Height, Converter={StaticResource DialogHostSizeConverter}}">
@@ -90,7 +90,7 @@
 									<Button x:Name="ProfileQuickAdd" Grid.Column="2" Width="30" Height="30" ToolTip.Tip="{DynamicResource MainWindow.Mods.ProfileQuickAdd.ToolTip}">
 										<Path Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Border.Light}"/>
 									</Button>
-									<ComboBox Grid.Column="3"/>
+									<ComboBox Grid.Column="3" ItemsSource="{Binding UserProfiles.Profiles}" SelectedIndex="{Binding UserProfiles.ProfileIndex}"/>
 								</Grid>
 								<DataGrid x:Name="ModList" Grid.Row="1" ItemsSource="{Binding ModEntries}" Margin="2,2,7,2" IsReadOnly="True" GridLinesVisibility="All"
 										  CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserSortColumns="True" CellTheme="{StaticResource ModEntryCell}"
@@ -168,12 +168,13 @@
 									<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="5" Margin="5" Grid.Row="1">
 										<Grid ColumnDefinitions="*,*" Grid.Row="0" HorizontalAlignment="Stretch">
 											<TextBlock Text="{DynamicResource Common.Language}" Grid.Column="0" VerticalAlignment="Center"/>
-											<ComboBox Grid.Column="1" SelectedIndex="{Binding ManagerSettings.Language, Converter={StaticResource LanguageKeyConverter}, ConverterParameter={Binding SupportedLanguages}, Mode=TwoWay}" ItemsSource="{Binding SupportedLanguages}" DisplayMemberBinding="{Binding Value}"
+											<ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedLanguage}" ItemsSource="{Binding SupportedLanguages}" DisplayMemberBinding="{Binding Value}"
 													  ToolTip.Tip="{DynamicResource MainWindow.Settings.Language.ToolTip}"/>
 										</Grid>
 										<Grid ColumnDefinitions="*,*" Grid.Row="1">
 											<TextBlock Text="{DynamicResource Common.Theme}" Grid.Column="0" VerticalAlignment="Center"/>
-											<ComboBox Grid.Column="1" ToolTip.Tip="{DynamicResource MainWindow.Settings.Theme.ToolTip}"/>
+											<ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedTheme}" ItemsSource="{Binding SupportedThemes}" DisplayMemberBinding="{Binding Value}" 
+													  ToolTip.Tip="{DynamicResource MainWindow.Settings.Theme.ToolTip}"/>
 										</Grid>
 										<Grid ColumnDefinitions="*,*" Grid.Row="2">
 											<TextBlock Text="{DynamicResource MainWindow.Settings.UpdateChannel}" Grid.Column="0" VerticalAlignment="Center"/>

@@ -1,10 +1,12 @@
-﻿using ReactiveUI;
+﻿using DynamicData;
+using ReactiveUI;
 using SAMM.Configuration;
 using SAMM.Configuration.Mods;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -18,13 +20,50 @@ namespace SAMM.App.Models
 		{
 			{ "en-US", "English (US)" },
 		};
-
 		public ReadOnlyDictionary<string, string> SupportedLanguages { get { return new ReadOnlyDictionary<string,string>(supportedLanguages); } }
+
+		private Dictionary<string, string> supportedThemes = ADVTheme.ADVTheme.ThemeVariants;
+		public ReadOnlyDictionary<string, string> SupportedThemes {  get { return new ReadOnlyDictionary<string, string>(supportedThemes); } }
 
 		public ManagerSettings ManagerSettings { get; set; } = new ManagerSettings();
 
-		private GameConfig gameConfig = new GameConfig();
+		public int SelectedLanguage
+		{
+			get
+			{
+				int i = SupportedLanguages.Keys.IndexOf(ManagerSettings.Language);
+				if (i < 0)
+					i = 0;
 
+				return i;
+			}
+			set
+			{
+				ManagerSettings.Language = SupportedLanguages.ElementAt(value).Key;
+				ADVTheme.ADVTheme.SetLanguage(ManagerSettings.Language);
+				this.RaisePropertyChanged(nameof(SelectedLanguage));
+			}
+		}
+
+		public int SelectedTheme
+		{
+			get
+			{
+				int i = SupportedThemes.Keys.IndexOf(ManagerSettings.Theme);
+				if (i < 0)
+					i = 0;
+
+				return i;
+			}
+			set
+			{
+				ManagerSettings.Theme = SupportedThemes.ElementAt(value).Key;
+				ADVTheme.ADVTheme.SetTheme(ManagerSettings.Theme);
+				this.RaisePropertyChanged(nameof(SelectedTheme));
+			}
+		}
+
+		private GameConfig gameConfig = new GameConfig();
 		public GameConfig GameConfig 
 		{ 
 			get { return gameConfig; } 
@@ -32,6 +71,8 @@ namespace SAMM.App.Models
 		}
 
 		public GameSettings? GameSettings { get; set; }
+
+		public UserProfiles? UserProfiles { get; set; }
 
 		private ObservableCollection<ModEntry> modEntries = new ObservableCollection<ModEntry>();
 
@@ -71,6 +112,16 @@ namespace SAMM.App.Models
 				LoadModEntries();
 		}
 
+		public void LoadGameSettings()
+		{
+
+		}
+
+		public void LoadUserProfiles()
+		{
+			UserProfiles = UserProfiles.LoadProfiles(Path.Combine(GameConfig.GameModsFolder, ".modloader", "profiles"));
+		}
+
 		#endregion
 
 		#region Constructors
@@ -90,6 +141,7 @@ namespace SAMM.App.Models
 			ManagerSettings.CurrentSetGame = 0;
 			LoadGameConfig();
 			LoadModEntries();
+			LoadUserProfiles();
 		}
 
 		#endregion

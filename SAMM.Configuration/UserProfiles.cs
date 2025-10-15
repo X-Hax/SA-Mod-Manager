@@ -1,7 +1,10 @@
-﻿using System;
+﻿using SAMM.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -23,11 +26,14 @@ namespace SAMM.Configuration
 		/// <summary>
 		/// Full path to the file storing the user profile information.
 		/// </summary>
+		[JsonIgnore]
 		public string Filepath { get { return Path.Combine(Filename); } }
 
 		#endregion
 
 		#region Constructors
+		public UserProfile() { }
+
 		public UserProfile(string name, string filename)
 		{
 			Name = name;
@@ -35,6 +41,11 @@ namespace SAMM.Configuration
 		}
 
 		#endregion
+
+		public override string ToString()
+		{
+			return Name;
+		}
 	}
 
 	public class UserProfiles
@@ -48,8 +59,31 @@ namespace SAMM.Configuration
 		/// <summary>
 		/// List of all profiles the user currently has saved.
 		/// </summary>
-		[JsonPropertyName("ProfileList")]
+		[JsonPropertyName("ProfilesList")]
 		public List<UserProfile> Profiles { get; set; } = new List<UserProfile>();
+
+		#endregion
+
+		#region Constructors
+		public UserProfiles() { }
+
+		#endregion
+
+		public void Save(string profilePath)
+		{
+			
+		}
+
+		#region Static
+		public static UserProfiles LoadProfiles(string profilePath)
+		{
+			UserProfiles profiles = new UserProfiles();
+			profilePath = Path.Combine(profilePath, "Profiles.json");
+			if (File.Exists(profilePath))
+				return JSON.Deserialize<UserProfiles>(profilePath);
+
+			return profiles;
+		}
 
 		#endregion
 	}

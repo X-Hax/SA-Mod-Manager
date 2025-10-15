@@ -133,8 +133,8 @@ namespace SAMM.Configuration
 		/// <summary>
 		/// The set Theme for the Manager.
 		/// </summary>
-		[DefaultValue(0)]
-		public int Theme { get; set; } = 0;         // SADXLoaderInfo.Theme
+		[DefaultValue("Dark")]
+		public string Theme { get; set; } = "Dark";         // SADXLoaderInfo.Theme
 
 		/// <summary>
 		/// The set Language for the Manager.
