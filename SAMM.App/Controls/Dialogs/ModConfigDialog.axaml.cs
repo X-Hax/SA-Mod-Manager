@@ -1,8 +1,9 @@
-using Avalonia;
+using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using SAMM.Configuration.Mods;
 using SAMM.App.Models.Dialogs;
+using DialogHostAvalonia;
 
 namespace SAMM.App.Controls.Dialogs;
 
@@ -14,7 +15,14 @@ public partial class ModConfigDialog : UserControl
     {
         InitializeComponent();
 
-        DataContext = new ModConfigDialogModel(entry);
+        try
+        {
+			DataContext = new ModConfigDialogModel(entry);
+		}
+        catch (Exception ex)
+        {
+            PART_Root.Child = new ExceptionHandlerDialog(ex);
+        }
     }
 
 	private void SaveButton(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -26,4 +34,9 @@ public partial class ModConfigDialog : UserControl
     {
         modConfig.ResetConfig();
     }
+
+	private void CloseButton(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+	{
+        DialogHost.Close("MainWindowDialogHost");
+	}
 }

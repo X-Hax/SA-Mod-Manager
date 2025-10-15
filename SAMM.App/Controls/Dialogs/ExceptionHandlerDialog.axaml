@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:models="clr-namespace:SAMM.App.Models.Dialogs;assembly=SAMM.App"
+             x:Class="SAMM.App.Controls.Dialogs.ExceptionHandlerDialog" x:DataType="models:ExceptionHandlerModel"
+			 xmlns:advconv="clr-namespace:ADVTheme.Converters;assembly=ADVTheme">
+	<UserControl.Resources>
+		<advconv:DoubleIncrementConverter x:Key="TitleSizing" ModifierMethod="Add" ModifierValue="6"/>
+	</UserControl.Resources>
+	<Border>
+		<Grid RowDefinitions="50,*,40" RowSpacing="5">
+			<TextBlock Margin="5" Text="{DynamicResource ExceptionDialog.HasCrashed}" FontSize="{Binding $parent[UserControl].FontSize, Converter={StaticResource TitleSizing}}" VerticalAlignment="Center" HorizontalAlignment="Center"/> 
+			<Border Grid.Row="1" Margin="20,5" Background="{DynamicResource ADVTheme.Brush.Controls.Dark}" BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}" BorderThickness="2" CornerRadius="{DynamicResource ADVTheme.CornerRadius}">
+				<ScrollViewer>
+					<TextBlock x:Name="ReportText" Margin="5" Text="{Binding ExceptionReport}" TextWrapping="Wrap"/>
+				</ScrollViewer>
+			</Border>
+			<Grid Grid.Row="2" ColumnDefinitions="*,*,*" ColumnSpacing="5" Margin="5">
+				<Button Grid.Column="0" Content="{DynamicResource ExceptionDialog.SendReport}" ToolTip.Tip="{DynamicResource ExceptionDialog.SendReport.ToolTip}" Click="SendReportButton"/>
+				<Button Grid.Column="1" Content="{DynamicResource ExceptionDialog.CopyReport}"  ToolTip.Tip="{DynamicResource ExceptionDialog.CopyReport.ToolTip}" Click="CopyReportButton"/>
+				<Button Grid.Column="2" Content="{DynamicResource ExceptionDialog.CloseDialog}"  ToolTip.Tip="{DynamicResource ExceptionDialog.CloseDialog.ToolTip}" Click="CloseButton"/>
+			</Grid>
+		</Grid>
+	</Border>
+</UserControl>

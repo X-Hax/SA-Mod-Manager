@@ -116,17 +116,21 @@ namespace SAMM.App.Models
 			HelperText = prop.HelpText;
 			UseSlider = prop.Slider;
 
+			if (items.ContainsKey(Type))
+				Items = items[Type].ToList();
+
 			DefaultValue = StringPropertyToObject(prop.DefaultValue);
 			MinimumValue = StringPropertyToObject(prop.MinValue, true);
 			MaximumValue = StringPropertyToObject(prop.MaxValue, false);
-			if (items.ContainsKey(Type))
-				Items = items[Type].ToList();
 
 			Value = DefaultValue;
 		}
 
 		private object StringPropertyToObject(string propValue, bool isMinValue = false)
 		{
+			if (propValue == null)
+				return new object();
+
 			switch (Type)
 			{
 				case "int":
@@ -155,7 +159,7 @@ namespace SAMM.App.Models
 					else
 						return null;
 				case "string":
-					if (string.IsNullOrEmpty(propValue))
+					if (propValue.Length > 0)
 						return propValue;
 					else
 						return null;

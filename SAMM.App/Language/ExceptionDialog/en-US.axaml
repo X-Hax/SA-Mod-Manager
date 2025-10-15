@@ -1,0 +1,17 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					x:ClassModifier="public">
+	<x:String x:Key="ExceptionDialog.HasCrashed">The Mod Manager has crashed!</x:String>
+	
+	<x:String x:Key="ExceptionDialog.SendReport">Submit Crash Report</x:String>
+	<x:String x:Key="ExceptionDialog.SendReport.ToolTip">This will open an issue on the Mod Manager repository with your crash report.</x:String>
+
+	<x:String x:Key="ExceptionDialog.CopyReport">Copy Crash Report</x:String>
+	<x:String x:Key="ExceptionDialog.CopyReport.ToolTip">Copies the crash report to your clipboard.</x:String>
+
+	<x:String x:Key="ExceptionDialog.CloseDialog">Close Dialog</x:String>
+	<x:String x:Key="ExceptionDialog.CloseDialog.ToolTip">Closes the crash report dialog and returns to the program.</x:String>
+
+	<x:String x:Key="ExceptionDialog.CloseProgram">Close Program</x:String>
+	<x:String x:Key="ExceptionDialog.CloseProgram.ToolTip">Closes the entire program.</x:String>
+</ResourceDictionary>
