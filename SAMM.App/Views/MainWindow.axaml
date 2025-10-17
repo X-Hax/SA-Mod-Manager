@@ -27,7 +27,7 @@
 		<Image x:Key="WindowIcon" Source="avares://SAMM.App/Assets/Icons/SADXModManager.ico"/>
 
 		<ControlTheme x:Key="ModListTheme" TargetType="ListBox">
-			<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Background.Base}" />
+			<Setter Property="Background" Value="{DynamicResource ADVTheme.Brush.Border.Base}" />
 			<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Border.Base}" />
 			<Setter Property="BorderThickness" Value="2" />
 			<Setter Property="CornerRadius" Value="{DynamicResource ADVTheme.CornerRadius}"/>
@@ -68,7 +68,7 @@
 		</ControlTheme>
 	</Window.Resources>
 
-	<dialogHostAvalonia:DialogHost x:Name="MainWindowDialogHost" Identifier="MainWindowDialogHost" CloseOnClickAway="True" BlurBackground="True">
+	<dialogHostAvalonia:DialogHost x:Name="MainWindowDialogHost" Identifier="MainWindowDialogHost" CloseOnClickAway="True" BlurBackground="True" Background="Transparent">
 		<dialogHostAvalonia:DialogHost.DialogContent>
 			<Border x:Name="PART_DialogHost" Width="{Binding Path=$parent.Bounds.Width, Converter={StaticResource DialogHostSizeConverter}}"
 					Height="{Binding Path=$parent.Bounds.Height, Converter={StaticResource DialogHostSizeConverter}}">
@@ -96,7 +96,7 @@
 										  CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserSortColumns="True" CellTheme="{StaticResource ModEntryCell}"
 										  BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}" BorderThickness="2" CornerRadius="{DynamicResource ADVTheme.CornerRadius}">
 									<DataGrid.Columns>
-										<DataGridTemplateColumn HeaderPointerPressed="DataGridTemplateColumn_HeaderPointerPressed" >
+										<DataGridTemplateColumn HeaderPointerPressed="DataGridTemplateColumn_HeaderPointerPressed">
 											<DataGridTemplateColumn.Header>
 												<Path Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Red.Base}"/>
 											</DataGridTemplateColumn.Header>
@@ -202,7 +202,7 @@
 															<Template>
 																<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
 																	<Path Width="24" Data="{StaticResource ADVTheme.Icon.Install}" Fill="{DynamicResource ADVTheme.Brush.Green.Base}"/>
-																	<TextBlock Text="{DynamicResource MainWindow.Settings.InstallLoader}}" VerticalAlignment="Center"/>
+																	<TextBlock Text="{DynamicResource MainWindow.Settings.InstallLoader}" VerticalAlignment="Center"/>
 																</StackPanel>
 															</Template>
 														</Setter>
@@ -213,7 +213,7 @@
 															<Template>
 																<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
 																	<Path Width="24" Data="{StaticResource ADVTheme.Icon.Uninstall}" Fill="{DynamicResource ADVTheme.Brush.Red.Base}"/>
-																	<TextBlock Text="{DynamicResource MainWindow.Settings.UninstallLoader}}" VerticalAlignment="Center"/>
+																	<TextBlock Text="{DynamicResource MainWindow.Settings.UninstallLoader}" VerticalAlignment="Center"/>
 																</StackPanel>
 															</Template>
 														</Setter>
