@@ -13,7 +13,7 @@
 			}
 			catch (UnauthorizedAccessException ex)
 			{
-				//new MessageWindow(Lang.GetString("MessageWindow.Errors.PermissionTitle"), string.Format(Lang.GetString("MessageWindow.Errors.FolderPermission"), path) + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
+				ExceptionHandler.Throw(ex);
 			}
 		}
 

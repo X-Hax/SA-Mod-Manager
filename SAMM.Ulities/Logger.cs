@@ -1,13 +1,17 @@
-﻿namespace SAMM.Utilities
+﻿using System.Runtime.CompilerServices;
+
+namespace SAMM.Utilities
 {
 	public static class Logger
 	{
+		
+
 		private static readonly string logFilePath = "application.log";
 
 		private static bool logEnabled = false;
 
-		public static void InitLogger() 
-		{ 
+		public static void InitLogger()
+		{
 			logEnabled = true;
 			File.WriteAllText(logFilePath, string.Empty);
 		}
@@ -24,7 +28,7 @@
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Error writing to log file: {ex.Message}");
+				ExceptionHandler.Throw(ex);
 			}
 		}
 	}

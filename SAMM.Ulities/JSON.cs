@@ -18,19 +18,33 @@ namespace SAMM.Utilities
 		/// <returns></returns>
 		public static T Deserialize<T>(string filePath)
 		{
-			if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+			try
 			{
-				string json = File.ReadAllText(filePath);
-				return JsonSerializer.Deserialize<T>(json);
-			}
+				if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+				{
+					string json = File.ReadAllText(filePath);
+					return JsonSerializer.Deserialize<T>(json);
+				}
 
-			return default(T);
+				return default(T);
+			}
+			catch (Exception ex)
+			{
+				ExceptionHandler.Throw(ex);
+			}
 		}
 
 		public static void Serialize<T>(string filePath, T obj)
 		{
-			string json = JsonSerializer.Serialize<T>(obj);
-			File.WriteAllText(filePath, json);
+			try
+			{
+				string json = JsonSerializer.Serialize<T>(obj);
+				File.WriteAllText(filePath, json);
+			}
+			catch (Exception ex)
+			{
+				ExceptionHandler.Throw(ex);
+			}
 		}
 	}
 }
