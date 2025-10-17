@@ -15,14 +15,7 @@ public partial class ModConfigDialog : UserControl
     {
         InitializeComponent();
 
-        try
-        {
-			DataContext = new ModConfigDialogModel(entry);
-		}
-        catch (Exception ex)
-        {
-            PART_Root.Child = new ExceptionHandlerDialog(ex);
-        }
+		DataContext = new ModConfigDialogModel(entry);
     }
 
 	private void SaveButton(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
