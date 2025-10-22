@@ -4,8 +4,6 @@ namespace SAMM.Utilities
 {
 	public static class Logger
 	{
-		
-
 		private static readonly string logFilePath = "application.log";
 
 		private static bool logEnabled = false;
