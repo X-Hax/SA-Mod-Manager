@@ -1,5 +1,6 @@
 ﻿
 using SAModManager.Controls;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -50,6 +51,17 @@ namespace SAModManager.UI
         {
             btn.IsEnabled = false;
             btn.Opacity = LowOpacityBtn;
+        }
+
+        public static async void TempDisableSaveAndPlayButton(int ms)
+        {
+            var saveBtn = ((MainWindow)Application.Current.MainWindow)?.SaveAndPlayButton;
+            if (saveBtn != null)
+            {
+                DisableButton(ref saveBtn);
+                await Task.Delay(ms);
+                EnableButton(ref saveBtn);
+            }
         }
 
         public static void EnableElement(ref UIElement elem)

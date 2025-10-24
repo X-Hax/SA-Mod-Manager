@@ -96,10 +96,10 @@ namespace SAModManager.ModsCommon
                 foreach (string dep in mod.Dependencies)
                 {
                     // This variable is used to check if the mod was validated before running further checks after checking the enabled mods list.
-                    bool validated = false;
+           
                     ModDependency dependency = new(dep);
 
-
+                    bool validated = false;
                     // Loop through enabled mods for dependency matching and verify their placement in the list is higher than the current mod.
                     foreach (SAModInfo enabledMod in enabledModInfoList)
                     {
@@ -111,7 +111,6 @@ namespace SAModManager.ModsCommon
                             if (depIndex < modIndex)
                             {
                                 validated = true;
-                                break;
                             }
                             else
                             {
@@ -123,9 +122,9 @@ namespace SAModManager.ModsCommon
                         }
                     }
 
-                    // If the dependency was validated in the previous check, we can exit this current loop.
+                    // If the dependency was validated in the previous check, we can move to the next dependency check.
                     if (validated)
-                        break;
+                        continue;
 
                     // Loop through disabled mods and check for the dependency.
                     foreach (SAModInfo disabledMod in disabledModInfoList)
@@ -159,7 +158,6 @@ namespace SAModManager.ModsCommon
 
                 }
 
-
                 if (countMissing > 0)
                 {
 
@@ -169,17 +167,29 @@ namespace SAModManager.ModsCommon
                     MessageWindow dg = new(Lang.GetString("ModDependency.Dependency.Header"), sb.ToString(), button: MessageWindow.Buttons.YesNo);
                     dg.ShowDialog();
 
-
                     if (dg.isYes)
                     {
+                        
                         string[] lines = new string[countMissing];
 
-                        for (int i = 0; i < countMissing; i++) 
+                        for (int i = 0; i < countMissing; i++)
                         {
+                            if (dependenciesMissing[i].Link.Contains("git"))
+                            {
+                                var ps = new ProcessStartInfo(dependenciesMissing[i].Link)
+                                {
+                                    UseShellExecute = true,
+                                    Verb = "open"
+                                };
+
+                                Process.Start(ps);
+                                continue;
+                            }
 
                             lines[i] += dependenciesMissing[i].Link;
                         }
 
+                        UIHelper.TempDisableSaveAndPlayButton(2000);
                         await DownloadModUrls.Download(lines);
                     }
                     return true;
