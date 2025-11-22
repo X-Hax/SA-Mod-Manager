@@ -38,7 +38,7 @@ namespace SAMM.Configuration.Mods
 
 		public ConfigSchemaGroup()
 		{
-			Name = string.Empty;
+			Name = "Group";
 			DisplayName = string.Empty;
 		}
 
