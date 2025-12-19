@@ -1,0 +1,24 @@
+﻿<ResourceDictionary 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+>
+
+  <system:String x:Key="ModDependency.Duplicate.Header">重复的模组 ID</system:String>
+  <system:String x:Key="ModDependency.Duplicate.DuplicatesFound1">检测到重复的模组 ID！</system:String>
+  <system:String x:Key="ModDependency.Duplicate.DuplicatesFound2">请移除重复的模组，或者确保模组 ID 不会在多个模组之间共用。</system:String>
+
+  <system:String x:Key="ModDependency.Dependency.Header">依赖错误</system:String>
+
+  <!--For translators, the following strings are all partial string and are used in tandem with information given in the ModDependency Class.-->
+  <!--Usage in the ModDependency class begins in the checks at the bottom of the ModDependency.cs file if you need a reference.-->
+  <!--In most cases, the partials have a mod name or ID in front of them and a mod name at the end of the string.-->
+  <system:String x:Key="ModDependency.Dependency.EnabledOrder">须被放在更高处。</system:String>
+  <system:String x:Key="ModDependency.Dependency.DisabledOrder1">未开启。</system:String>
+  <system:String x:Key="ModDependency.Dependency.DisabledOrder2">请启动模组并放置在上方。</system:String>
+  <system:String x:Key="ModDependency.Dependency.NotInstalled1">缺失一个或多个依赖：</system:String>
+  <system:String x:Key="ModDependency.Dependency.NotInstalled2">请安装缺失的依赖项目</system:String>
+  <system:String x:Key="ModDependency.Dependency.NotInstalled3">并将它们放在上方。</system:String>
+  <system:String x:Key="ModDependency.Dependency.NotInstalled4">您想马上下载这些模组吗？</system:String>
+
+</ResourceDictionary>

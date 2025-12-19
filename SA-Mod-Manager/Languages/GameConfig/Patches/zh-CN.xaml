@@ -1,0 +1,64 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+>
+  <system:String x:Key="GamePatches.Title">补丁</system:String>
+  <system:String x:Key="GamePatches.HRTFSound">允许 HRTF 3D 音效</system:String>
+  <system:String x:Key="GamePatches.KeepCamSettings">修复视角设置</system:String>
+  <system:String x:Key="GamePatches.FixVertexColorRendering">修复顶点颜色</system:String>
+  <system:String x:Key="GamePatches.MaterialColorFix">修复材质颜色</system:String>
+  <system:String x:Key="GamePatches.NodeLimit">提升点上限</system:String>
+  <system:String x:Key="GamePatches.FOVFix">修复 FOV</system:String>
+  <system:String x:Key="GamePatches.SkyChaseResolutionFix">修复空中追击</system:String>
+  <system:String x:Key="GamePatches.Chaos2CrashFix">修复卡奥斯 2 崩溃</system:String>
+  <system:String x:Key="GamePatches.ChunkSpecularFix">修复区块高光</system:String>
+  <system:String x:Key="GamePatches.E102NGonFix">修复伽马头灯</system:String>
+  <system:String x:Key="GamePatches.ChaoPanelFix">修复查欧状态面板屏幕尺寸</system:String>
+  <system:String x:Key="GamePatches.PixelOffSetFix">修复 2D 渲染</system:String>
+  <system:String x:Key="GamePatches.LightFix">修复光照</system:String>
+  <system:String x:Key="GamePatches.KillGBIX">禁用材质全局索引（实验性功能）</system:String>
+  <system:String x:Key="GamePatches.DisableCDCheck">禁用 CD 检查</system:String>
+  <system:String x:Key="GamePatches.ExtendedSaveSupport">扩展存档支持</system:String>
+  <system:String x:Key="GamePatches.CrashGuard">崩溃守卫</system:String>
+  <system:String x:Key="GamePatches.XInputFix">修复 XInput</system:String>
+
+  <system:String x:Key="GamePatches.HRTFSoundDesc">将 DirectSound 设置为使用更高级的算法来处理 3D 环绕声。当启用 BASS 作为音效时，无需使用此补丁。</system:String>
+  <system:String x:Key="GamePatches.KeepCamSettingsDesc">修复了一个原版程序缺陷，该缺陷会导致在死亡或加载区域 / 关卡时，自由视角的设置无法正确保存。</system:String>
+  <system:String x:Key="GamePatches.FixVertexColorRenderingDesc" xml:space="preserve">原版 SADX 刻意忽略了网格提供的顶点颜色，反而使用全局顶点颜色，即便在不该使用的时候也是如此。&#x0a;&#x0a;此补丁重新实现了相关功能，以正确处理这种情况，并使用网格提供的顶点颜色。</system:String>
+  <system:String x:Key="GamePatches.MaterialColorFixDesc" xml:space="preserve">将遍历游戏中的所有模型，并将它们的材质颜色替换为白色。&#x0a;&#x0a;这修复了各种不一致的问题，使模型看起来更接近游戏的 GameCube 和 Dreamcast 版本中的样子。</system:String>
+  <system:String x:Key="GamePatches.NodeLimitDesc" xml:space="preserve">SADX 最初对每个角色的模型和动画有 111 个节点的限制。&#x0a;&#x0a;此补丁将该限制提高到 255 个，这能使更现代、更复杂的模型能够整合到游戏中。</system:String>
+  <system:String x:Key="GamePatches.FOVFixDesc">改善了视野（FOV），并支持竖屏分辨率。</system:String>
+  <system:String x:Key="GamePatches.SkyChaseResolutionFixDesc" xml:space="preserve">使 “空中追击” 在所有屏幕分辨率下的运行方式保持一致。此修复解决了龙卷风号与准星的移动，以及敌人射速的问题。&#x0a;&#x0a;打开此补丁后，在高于 640x480 的分辨率下获取徽章要求的分数比在原版游戏中更容易。</system:String>
+  <system:String x:Key="GamePatches.Chaos2CrashFixDesc">修复了一个原版程序缺陷，该缺陷会导致击败卡奥斯 2 后重新开始该头目战会导致游戏崩溃的问题。</system:String>
+  <system:String x:Key="GamePatches.ChunkSpecularFixDesc">修复区块模型上的高光效果。</system:String>
+  <system:String x:Key="GamePatches.E102NGonFixDesc">使用三角形条带顶点缓存修复伽马头上的灯的多边形。</system:String>
+  <system:String x:Key="GamePatches.ChaoPanelFixDesc">修复查欧状态的展示框界面，使其正常显示。</system:String>
+  <system:String x:Key="GamePatches.PixelOffSetFixDesc">修复了大多数 2D 元素在较高分辨率下可能会出现的亚像素错位问题。</system:String>
+  <system:String x:Key="GamePatches.LightFixDesc">修复了光照在地形表上的错误应用，并启用了保留队列中的模型的光照类型的功能。</system:String>
+  <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">全局索引（GBIX）是游戏纹理缓存系统中使用的一个值。SADX 中的每个纹理都有一个全局索引。&#x0a;在游戏加载新纹理之前，它会将新纹理的 GBIX 值与已加载的其他纹理的索引进行比较。&#x0a;如果找到匹配项，游戏会重用已加载的纹理，而不是去加载新纹理。&#x0a;&#x0a;此补丁会禁用游戏中的大部分 GBIX 系统，以减少纹理错误与冲突。（少数例外情况，如游戏内的仪表界面元素。）</system:String>
+  <system:String x:Key="GamePatches.DisableCDCheckDesc">关闭游戏的 CD 校验程序。</system:String>
+  <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">支持 Steam 版本的存档，并允许自定义存档名称（最多 48 个字母）。</system:String>
+  <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">防止因缺少纹理和二进制文件而导致的常见崩溃。&#x0a;&#x0a;这并不代表所有的游戏崩溃都将不会发生。</system:String>
+  <system:String x:Key="GamePatches.XInputFixDesc" xml:space="preserve">修复了使用原版程序的操作设置中 XInput 控制器导致的视角旋转问题。</system:String>
+
+  <!--#region SA2 Patches-->
+  <system:String x:Key="GamePatchesSA2.FramerateLimiter">锁定帧率</system:String>
+  <system:String x:Key="GamePatchesSA2.DisableExitPrompt">禁用退出确认框</system:String>
+  <system:String x:Key="GamePatchesSA2.SyncLoad">禁用读取动画</system:String>
+  <system:String x:Key="GamePatchesSA2.ExtendVertexBuffer">提升顶点缓冲区限制</system:String>
+  <system:String x:Key="GamePatchesSA2.EnvMapFix">修复环境映射</system:String>
+  <system:String x:Key="GamePatchesSA2.ScreenFadeFix">修复屏幕淡出</system:String>
+  <system:String x:Key="GamePatchesSA2.CECarFix">修复城市逃亡的车</system:String>
+  <system:String x:Key="GamePatchesSA2.ParticlesFix">修复粒子效果</system:String>
+
+  <system:String x:Key="GamePatchesSA2.FramerateLimiterDesc">将帧率锁定在 60 FPS，这能解决游戏在刷新率更高的显示器上运行速度过快的问题。</system:String>
+  <system:String x:Key="GamePatchesSA2.DisableExitPromptDesc">关闭游戏时禁用警告提示框。</system:String>
+  <system:String x:Key="GamePatchesSA2.SyncLoadDesc">禁用玩具查欧的加载动画，这可能降低游戏启动时的崩溃概率。</system:String>
+  <system:String x:Key="GamePatchesSA2.ExtendVertexBufferDesc">将顶点缓冲区限制提高到 32k，这样就能在游戏中整合更高多边形的模型，这对于某些模组的正常运行是必不可少的。</system:String>
+  <system:String x:Key="GamePatchesSA2.EnvMapFixDesc">修复了环境映射的一个条件错误（主要在查欧世界），以实现更好的渲染效果。</system:String>
+  <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">修复了关卡结算界面中屏幕淡出的一个程序缺陷。</system:String>
+  <system:String x:Key="GamePatchesSA2.CECarFixDesc">修复了城市逃亡中臭名昭著的有轨电车故障。（英特尔显卡）</system:String>
+  <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">修复了粒子效果（神秘旋律的传送门等）在英特尔显卡上不显示的问题。</system:String>
+  <!--#endregion-->
+</ResourceDictionary>

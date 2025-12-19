@@ -1,0 +1,29 @@
+﻿<ResourceDictionary 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+>
+
+  <system:String x:Key="Advancedwindow.Title">进阶设置</system:String>
+
+  <!--#region Settings-->
+  <system:String x:Key="AdvancedWindow.Option.PortableMode">打开便携模式</system:String>
+  <system:String x:Key="AdvancedWindow.Option.PortableMode.Description" xml:space="preserve">打开后将启动便携模式，在此模式下，SA 模组管理器的用户设置将存储在与程序同一目录下一个名为 SAManager 的文件夹中。&#x0a;&#x0a;这能让该程序可以在同一台电脑的不同用户账户下运行，更便于通过外部驱动器运行而不必担心丢失设置，并且可能有助于在非 Windows 系统上运行该程序。</system:String>
+
+  <!--#endregion-->
+  
+  <!--#region Buttons-->
+  <system:String x:Key="AdvancedWindow.Buttons.OpenSettings">打开管理器设置目录</system:String>
+  <system:String x:Key="AdvancedWindow.Buttons.OpenSettings.ToolTip">打开当前用于存放模组管理器的设置信息的文件夹。</system:String>
+
+  <system:String x:Key="Advancedwindow.Buttons.BackupSettings">备份管理器设置</system:String>
+  <system:String x:Key="Advancedwindow.Buttons.BackupSettings.ToolTip">为当前的管理器设置创建一份 7z 格式归档文件，保存至指定的位置。</system:String>
+
+  <system:String x:Key="AdvancedWindow.Buttons.ImportSettings">导入管理器设置</system:String>
+  <system:String x:Key="AdvancedWindow.Buttons.ImportSettings.ToolTip">导入用户提供的 7z 备份文件。将对内容进行有效性检查，且不会安装无效设置项目。此操作将重启本程序。</system:String>
+  
+  <system:String x:Key="AdvancedWindow.Buttons.DeleteSettings">删除管理器设置</system:String>
+  <system:String x:Key="AdvancedWindow.Buttons.DeleteSettings.ToolTip">删除所有管理器设置。此操作将重启本程序。</system:String>
+
+  <!--#endregion-->
+</ResourceDictionary>
