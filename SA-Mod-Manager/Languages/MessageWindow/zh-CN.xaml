@@ -108,7 +108,7 @@
   <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">管理器无法切换到语言 {0}。&#x0a;若问题持续存在，请在 X-Hax 服务器提交反馈。&#x0a;&#x0a;错误代码：{1}</system:String>
   <system:String x:Key="MessageWindow.Errors.PermissionTitle">访问被拒绝</system:String>
   <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">无法创建目录，程序无权限在以下路径写入文件：{0}&#x0a;&#x0a;请以管理员权限重新启动模组管理器。</system:String>
-  <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">在 {1} 路径下未找到 {0} 游戏。&#x0a;若你已将游戏目录移动到其他位置，请在「管理器配置」标签页重新设置游戏路径。</system:String>
+  <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">在 {1} 路径下未找到 {0} 游戏。&#x0a;若你已将游戏目录移动到其他位置，请在“管理器配置”标签页重新设置游戏路径。</system:String>
 
   <system:String x:Key="MessageWindow.Errors.ConnectionFailed.Title">连接失败</system:String>
   <system:String x:Key="MessageWindow.Errors.ConnectionFailed.Message" xml:space="preserve">无法连接到 GitHub API。&#x0a;&#x0a;可能原因包括：触发 GitHub API 调用限制、网络服务提供商问题、防火墙设置限制或杀毒软件拦截。&#x0a;&#x0a;请稍后重试。若问题持续存在，请检查网络连接或防火墙设置。</system:String>
