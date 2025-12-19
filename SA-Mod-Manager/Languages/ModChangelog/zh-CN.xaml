@@ -17,6 +17,6 @@
   <system:String x:Key="ModChangelog.Tabs.Files">文件变化</system:String>
   <system:String x:Key="ModChangelog.Tabs.Files.Filename">文件名</system:String>
   <system:String x:Key="ModChangelog.Tabs.Files.Status">状态</system:String>
-  <system:String x:Key="ModChangelog.Buttons.DownloadNow">马上下载</system:String>
+  <system:String x:Key="ModChangelog.Buttons.DownloadNow">立刻下载</system:String>
   <system:String x:Key="ModChangelog.Buttons.DownloadLater">稍后下载</system:String>
 </ResourceDictionary>

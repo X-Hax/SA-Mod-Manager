@@ -7,5 +7,5 @@
   <system:String x:Key="InfoManagerUpdate.Title">模组管理器有新版本</system:String>
   <system:String x:Key="InfoLoaderUpdate.Title">{0} 有新版本</system:String> <!--This is a placeholder for the Loader name (ie "New SADX Mod Loader Update"...)!-->
   <system:String x:Key="InfoManagerUpdate.Changelog">更新日志：</system:String>
-  <system:String x:Key="InfoManagerUpdate.DLQuestion">你要下载这些更新吗？</system:String>
+  <system:String x:Key="InfoManagerUpdate.DLQuestion">你要下载更新吗？</system:String>
 </ResourceDictionary>

@@ -19,6 +19,6 @@
   <system:String x:Key="ModDependency.Dependency.NotInstalled1">缺失一个或多个依赖：</system:String>
   <system:String x:Key="ModDependency.Dependency.NotInstalled2">请安装缺失的依赖项目</system:String>
   <system:String x:Key="ModDependency.Dependency.NotInstalled3">并将它们放在上方。</system:String>
-  <system:String x:Key="ModDependency.Dependency.NotInstalled4">您想马上下载这些模组吗？</system:String>
+  <system:String x:Key="ModDependency.Dependency.NotInstalled4">你想立刻下载这些模组吗？</system:String>
 
 </ResourceDictionary>

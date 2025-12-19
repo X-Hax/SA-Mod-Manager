@@ -180,8 +180,8 @@
   <system:String x:Key="TSCutscene274">蛋头母舰变形（塔尔斯篇）</system:String>
   <system:String x:Key="TSCutscene275">塔尔斯在空中甲板入口</system:String>
   <system:String x:Key="TSCutscene276">塔尔斯进入蛋头母舰内部（“就这？”）</system:String>
-  <system:String x:Key="TSCutscene288">母舰变形了 (纳克尔斯)</system:String>
-  <system:String x:Key="TSCutscene289">母舰再次变形了 (纳克尔斯)</system:String>
+  <system:String x:Key="TSCutscene288">母舰变形了 (纳克尔斯篇)</system:String>
+  <system:String x:Key="TSCutscene289">母舰再次变形了 (纳克尔斯篇)</system:String>
   <system:String x:Key="TSCutscene290">纳克尔斯在蛋头母舰感应到翡翠碎片</system:String>
   <system:String x:Key="TSCutscene304">艾咪在打刺猬房间</system:String>
   <system:String x:Key="TSCutscene305">艾咪在打刺猬中获胜</system:String>
@@ -193,7 +193,7 @@
   <system:String x:Key="TSCutscene357">索尼克获得水晶手环</system:String>
   <system:String x:Key="TSCutscene358">索尼克获得耀光鞋</system:String>
   <system:String x:Key="TSCutscene359">索尼克获得上古之光</system:String>
-  <system:String x:Key="TSCutscene360">塔尔斯获得喷漆鞋跟</system:String>
+  <system:String x:Key="TSCutscene360">塔尔斯获得喷气鞋跟</system:String>
   <system:String x:Key="TSCutscene361">塔尔斯获得律动胸针</system:String>
   <system:String x:Key="TSCutscene362">纳克尔斯获得拳击手套</system:String>
   <system:String x:Key="TSCutscene363">纳克尔斯获得挖掘爪</system:String>
@@ -202,7 +202,7 @@
   <system:String x:Key="TSCutscene366">伽马获得叁式激光枪</system:String>
   <system:String x:Key="TSCutscene367">伽马获得推进器</system:String>
   <system:String x:Key="TSCutscene368">比格获得强力鱼竿</system:String>
-  <system:String x:Key="TSCutscene369">比格救生腰带</system:String>
+  <system:String x:Key="TSCutscene369">比格获得救生腰带</system:String>
   <system:String x:Key="TSCutscene374">冰之石出现（索尼克篇）</system:String>
   <system:String x:Key="TSCutscene375">冰之石出现（塔尔斯篇）</system:String>
   <system:String x:Key="TSCutscene376">冰之石出现（比格篇）</system:String>
@@ -225,7 +225,7 @@
   <system:String x:Key="SA2EventName08">蛋头威胁总统</system:String>
   <system:String x:Key="SA2EventName09">找到蛋头的金字塔基地</system:String>
   <system:String x:Key="SA2EventName10">纳克尔斯寻找大门钥匙</system:String>
-  <system:String x:Key="SA2EventName11">蛋头伏击于秘密基地</system:String>
+  <system:String x:Key="SA2EventName11">蛋头于秘密基地伏击</system:String>
   <system:String x:Key="SA2EventName12">索尼克小队到达方舟</system:String>
   <system:String x:Key="SA2EventName13">索尼克收到蛋头的绑架通知</system:String>
   <system:String x:Key="SA2EventName14">纳克尔斯与露姬对决后（英雄篇）</system:String>

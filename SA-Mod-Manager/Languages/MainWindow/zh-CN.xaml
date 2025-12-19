@@ -87,14 +87,14 @@
   <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">贡献者</system:String>
   <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">模组管理器源码</system:String>
   <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">模组加载器源码</system:String>
-  <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">汇报漏洞（请使用英语）</system:String>
+  <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">汇报漏洞（仅支持英语）</system:String>
   <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">打开 SA Docs（仅英语）</system:String>
   <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.AdvancedOptions">进阶设置</system:String>
   <!--#endregion-->
 
   <!--#region Tooltips-->
   <!--#region Main Window Tool Tips-->
-  <system:String x:Key="MainWindow.Tips.Tab.Mods">选择、编辑、配置您的模组。</system:String>
+  <system:String x:Key="MainWindow.Tips.Tab.Mods">选择、编辑、配置你的模组。</system:String>
   <system:String x:Key="MainWindow.Tips.Tab.Codes">选择游玩时生效的代码。</system:String>
   <system:String x:Key="MainWindow.Tips.Tab.GameConfig">配置游戏选项，包括画面和声音。</system:String>
   <system:String x:Key="MainWindow.Tips.Tab.TestSpawn">通过启动选项快速启动游戏，可使用任意角色进入任意关卡。</system:String>

@@ -4,5 +4,5 @@
   xmlns:system="clr-namespace:System;assembly=mscorlib"
 >
   <system:String x:Key="ManifestGen.WindowTitle">生成清单</system:String>
-  <system:String x:Key="ManifestGen.Header">请选择您需要加入清单的文件。</system:String>
+  <system:String x:Key="ManifestGen.Header">请选择你需要加入清单的文件。</system:String>
 </ResourceDictionary>

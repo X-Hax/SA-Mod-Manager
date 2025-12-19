@@ -8,9 +8,9 @@
   <system:String x:Key="ExceptionHandler.Header">管理器发生了一个错误</system:String>
   <system:String x:Key="ExceptionHandler.Copy">复制错误日志</system:String>
   <system:String x:Key="ExceptionHandler.Ignore">无视并关闭</system:String>
-  <system:String x:Key="ExceptionHandler.Report">上报错误（请使用英文）</system:String>
+  <system:String x:Key="ExceptionHandler.Report">上报错误（仅支持英文）</system:String>
 
   <system:String x:Key="ExceptionHandler.ToolTip.Copy">将错误日志连同 markdown 格式一起复制到剪贴板。</system:String>
   <system:String x:Key="ExceptionHandler.ToolTip.Ignore">无视错误并关闭此窗口，管理器也将关闭。</system:String>
-  <system:String x:Key="ExceptionHandler.ToolTip.Report">到 GitHub 上的管理器的仓库中创建一个问题，用提供好的模板，编写您提供额外信息和异常报告的复制内容。</system:String>
+  <system:String x:Key="ExceptionHandler.ToolTip.Report">到 GitHub 上的管理器的仓库中创建一个问题，用提供好的模板，编写你提供额外信息和异常报告的复制内容。</system:String>
 </ResourceDictionary>

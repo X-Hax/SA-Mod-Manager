@@ -80,7 +80,7 @@
   <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">更新 D3D8to9</system:String>
   <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">下载 DXVK</system:String>
   <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">使用下方的按钮可以下载 DXVK。这个程序能够提升 SA2 的性能和稳定性。点击后只会下载该程序，不会进行安装。</system:String>
-  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">等您下载了该压缩包，只需从中取出 d3d9.dll，并将其放入存有 sonic2app.exe 的游戏文件夹中。</system:String>
+  <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">等你下载了该压缩包，只需从中取出 d3d9.dll，并将其放入存有 sonic2app.exe 的游戏文件夹中。</system:String>
 
   <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend">渲染后端：</system:String>
   <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip">将渲染后端设置为使用 SADX（2004）中的默认值，即 Direct3D 8。</system:String>
