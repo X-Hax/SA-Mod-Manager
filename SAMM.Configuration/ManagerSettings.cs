@@ -251,38 +251,27 @@ namespace SAMM.Configuration
 		/// <returns></returns>
 		public static ManagerSettings Deserialize(string path)
 		{
-			try
+			if (File.Exists(path))
 			{
-				if (File.Exists(path))
+				string jsonContent = File.ReadAllText(path);
+
+				ManagerSettings settings = Utilities.JSON.Deserialize<ManagerSettings>(jsonContent);
+
+				// Switch case to bump settings version. Allows for manual adjustment if needed for any version bumps.
+				switch (settings.SettingsVersion)
 				{
-					string jsonContent = File.ReadAllText(path);
-
-					ManagerSettings settings = JsonSerializer.Deserialize<ManagerSettings>(jsonContent);
-
-					// Switch case to bump settings version. Allows for manual adjustment if needed for any version bumps.
-					switch (settings.SettingsVersion)
-					{
-						default:
-							if (settings.SettingsVersion < (int)(ManagerSettingsVersions.MAX - 1))
-								settings.SettingsVersion = (int)(ManagerSettingsVersions.MAX - 1);
-							break;
-					}
-
-					return settings;
-				}
-				else
-				{
-					return new();
+					default:
+						if (settings.SettingsVersion < (int)(ManagerSettingsVersions.MAX - 1))
+							settings.SettingsVersion = (int)(ManagerSettingsVersions.MAX - 1);
+						break;
 				}
 
+				return settings;
 			}
-			catch (Exception ex)
+			else
 			{
-				Utilities.ExceptionHandler.Throw(ex);
-
+				return new();
 			}
-
-			return new();
 		}
 
 		/// <summary>
@@ -291,16 +280,7 @@ namespace SAMM.Configuration
 		/// <param name="path"></param>
 		public void Serialize(string path)
 		{
-			try
-			{
-				//App.CreateConfigFolder();
-				string jsonContent = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
-				File.WriteAllText(path, jsonContent);
-			}
-			catch
-			{
-
-			}
+			Utilities.JSON.Serialize(path, this);
 		}
 
 		#endregion
