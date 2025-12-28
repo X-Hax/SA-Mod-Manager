@@ -13,7 +13,8 @@
 		xmlns:advcontrols="using:ADVTheme.Controls"
 		xmlns:sammconverters="clr-namespace:SAMM.App.Converters"
 		xmlns:behaviors="clr-namespace:SAMM.App.Behaviors;assembly=SAMM.App"
-		xmlns:i="using:Avalonia.Xaml.Interactivity">
+		xmlns:i="using:Avalonia.Xaml.Interactivity"
+		Closing="Window_Closing">
 	<Window.Resources>
 		<advconverter:DoubleIncrementConverter x:Key="DialogHostSizeConverter" ModifierMethod="Multiply" ModifierValue="0.8"/>
 		<advconverter:DoubleIncrementConverter x:Key="TabWidth" ModifierMethod="Multiply" ModifierValue="1"/>

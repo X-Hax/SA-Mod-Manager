@@ -25,15 +25,21 @@ namespace SAMM.Utilities
 					string json = File.ReadAllText(filePath);
 					return JsonSerializer.Deserialize<T>(json);
 				}
-
-				return default(T);
 			}
 			catch (Exception ex)
 			{
 				ExceptionHandler.Throw(ex);
 			}
+
+			return default(T);
 		}
 
+		/// <summary>
+		/// Serializes a provided object to the provided filepath.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="filePath"></param>
+		/// <param name="obj"></param>
 		public static void Serialize<T>(string filePath, T obj)
 		{
 			try

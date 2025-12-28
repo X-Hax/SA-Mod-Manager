@@ -115,6 +115,13 @@ namespace SAMM.Configuration
 		#endregion
 	}
 
+	public class AdvancedSettings
+	{
+		public bool IsLocal { get; set; } = false;
+
+		public AdvancedSettings() { }
+	}
+
 	public class ManagerSettings
 	{
 		#region Variables
@@ -134,12 +141,14 @@ namespace SAMM.Configuration
 		/// The set Theme for the Manager.
 		/// </summary>
 		[DefaultValue("Dark")]
+		[JsonPropertyName("ThemeString")]
 		public string Theme { get; set; } = "Dark";         // SADXLoaderInfo.Theme
 
 		/// <summary>
 		/// The set Language for the Manager.
 		/// </summary>
 		[DefaultValue("en-US")]
+		[JsonPropertyName("LanguageString")]
 		public string Language { get; set; } = "en-US";      // SADXLoaderInfo.Language
 
 		/// <summary>
@@ -167,7 +176,7 @@ namespace SAMM.Configuration
 		/// <summary>
 		/// Advanced Settings for the Manager.
 		/// </summary>
-		//public AdvancedSettings AdvancedSettings { get; set; } = new();
+		public AdvancedSettings AdvancedSettings { get; set; } = new();
 
 		/// <summary>
 		/// List of installed games.
@@ -269,7 +278,7 @@ namespace SAMM.Configuration
 			}
 			catch (Exception ex)
 			{
-				//new MessageWindow(Lang.GetString("MessageWindow.DefaultTitle.Error"), Lang.GetString("MessageWindow.Errors.ProfileLoad") + "\n\n" + ex.Message, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error).ShowDialog();
+				Utilities.ExceptionHandler.Throw(ex);
 
 			}
 

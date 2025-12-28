@@ -2,6 +2,7 @@
 using ReactiveUI;
 using SAMM.Configuration;
 using SAMM.Configuration.Mods;
+using SAMM.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -96,9 +97,8 @@ namespace SAMM.App.Models
 			if (clearEntries && ModEntries.Count > 0)
 				ModEntries.Clear();
 
+			Logger.Log($"Loading Mod Entries");
 			ModEntries = new ObservableCollection<ModEntry>(ModEntry.GetModEntries(GameConfig.GameDirectory));
-
-			int i = 0;
 		}
 
 		#endregion
@@ -107,6 +107,7 @@ namespace SAMM.App.Models
 		public void LoadGameConfig(bool loadEntries = false)
 		{
 			GameEntry gameEntry = ManagerSettings.GetCurrentGameEntry();
+			Logger.Log($"Loading {gameEntry.Name}");
 			GameConfig = GameConfig.GetGameConfig(gameEntry.ID, gameEntry.Directory);
 			if (loadEntries)
 				LoadModEntries();
@@ -119,7 +120,14 @@ namespace SAMM.App.Models
 
 		public void LoadUserProfiles()
 		{
+			Logger.Log($"Loading User Profiles");
 			UserProfiles = UserProfiles.LoadProfiles(Path.Combine(GameConfig.GameModsFolder, ".modloader", "profiles"));
+		}
+
+		public void SaveManagerSettings()
+		{
+			string settings = Path.Combine(FolderManager.GetAppFolder(ManagerSettings.AdvancedSettings.IsLocal), "Manager.json");
+			ManagerSettings.Serialize(settings);
 		}
 
 		#endregion
@@ -127,18 +135,8 @@ namespace SAMM.App.Models
 		#region Constructors
 		public MainWindowViewModel()
 		{
-			// The following code is essentially a unit test for the visual component of the SAMM for development.
-			// This will all be removed once the UI is mostly complete for the MainWindow and replaced with a proper initializer system.
-			string sadx_path = "D:\\SteamLibrary\\steamapps\\common\\Sonic Adventure DX\\sonic.exe";
-			string sa2_path = "D:\\SteamLibrary\\steamapps\\common\\Sonic Adventure 2\\sonic2app.exe";
-			GameEntry sa1entry = new GameEntry();
-			sa1entry.Create(sadx_path);
-			ManagerSettings.GameEntries.Add(sa1entry);
-			GameEntry sa2entry = new GameEntry();
-			sa2entry.Create(sa2_path);
-			ManagerSettings.GameEntries.Add(sa2entry);
-			ManagerSettings.Language = "en-US";
-			ManagerSettings.CurrentSetGame = 0;
+			string settings = Path.Combine(FolderManager.GetAppFolder(), "Manager.json");
+			ManagerSettings = ManagerSettings.Deserialize(settings);
 			LoadGameConfig();
 			LoadModEntries();
 			LoadUserProfiles();

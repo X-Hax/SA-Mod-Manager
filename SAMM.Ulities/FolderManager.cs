@@ -2,6 +2,16 @@
 {
 	public static class FolderManager
 	{
+		private static string appFolder = "SAManager";
+		private static string tempFolder = ".satemp";
+
+		private static string userFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+		#region Directory Management
+		/// <summary>
+		/// Creates a directory at the provided path. 
+		/// </summary>
+		/// <param name="path"></param>
 		public static void CreateSafeDirectory(string path)
 		{
 			try
@@ -9,7 +19,9 @@
 				if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
 				{
 					Directory.CreateDirectory(path);
+					Logger.Log($"{path} successfully created!");
 				}
+				Logger.Log($"{path} already exists!");
 			}
 			catch (UnauthorizedAccessException ex)
 			{
@@ -17,132 +29,255 @@
 			}
 		}
 
-		public static void DeleteReadOnlyDirectory(string dir)
+		/// <summary>
+		/// Deletes a ReadOnly directory from a <see cref="DirectoryInfo"/>.
+		/// </summary>
+		/// <param name="dir"></param>
+		public static Task DeleteReadOnlyDirectory(DirectoryInfo dir)
 		{
-			if (Directory.Exists(dir))
-				DeleteReadOnlyDirectory(new DirectoryInfo(dir));
-		}
-
-		public static void DeleteReadOnlyDirectory(DirectoryInfo dir)
-		{
-			// Recursively perform this function 
-			foreach (var subDir in dir.GetDirectories())
-				DeleteReadOnlyDirectory(subDir);
-
-			// Delete all files in the directory and remove readonly
-			foreach (var file in dir.GetFiles())
+			return Task.Run(() => 
 			{
+				// Recursively perform this function 
+				foreach (var subDir in dir.GetDirectories())
+					DeleteReadOnlyDirectory(subDir);
+
+				// Delete all files in the directory and remove readonly
 				try
 				{
-					file.Attributes = FileAttributes.Normal;
-					file.Delete();
+					foreach (var file in dir.GetFiles())
+					{
+						file.Attributes = FileAttributes.Normal;
+						file.Delete();
+						Logger.Log($"Deleted {file}");
+					}
+
+					dir.Attributes = FileAttributes.Normal;
+					dir.Delete();
+					Logger.Log($"Deleted {dir}");
 				}
-				catch { }
-			}
-
-			try
-			{
-				// remove readonly from the directory
-				dir.Attributes = FileAttributes.Normal;
-				// Delete the directory
-				dir.Delete();
-			}
-			catch { }
-		}
-
-		public static void ClearTempFolder()
-		{
-			//DeleteReadOnlyDirectory(App.tempFolder);
-			//if (Directory.Exists(".SATemp")) //temp support for previous version but no longer used
-			//	DeleteReadOnlyDirectory(".SATemp");
-		}
-
-		public static void CopyFolder(string origin, string dest, bool dllCheck = false)
-		{
-			DirectoryInfo sourceDirectory = new(origin);
-			DirectoryInfo destinationDirectory = new(dest);
-
-			if (!destinationDirectory.Exists)
-			{
-				destinationDirectory.Create();
-			}
-
-			foreach (FileInfo file in sourceDirectory.GetFiles())
-			{
-				string destinationFilePath = Path.Combine(dest, file.Name);
-				if (dllCheck)
+				catch (Exception ex)
 				{
-					string ext = Path.GetExtension(destinationFilePath);
-					if (ext.ToLower() == ".dll")
-						file.CopyTo(destinationFilePath, true);
+					ExceptionHandler.Throw(ex);
 				}
-
-			}
-
-			foreach (DirectoryInfo subDir in sourceDirectory.GetDirectories())
-			{
-				string destinationSubDir = Path.Combine(dest, subDir.Name);
-				CopyFolder(subDir.FullName, destinationSubDir);
-			}
+			});
 		}
 
-		public static void MoveDirectory(string sourcePath, string destinationPath)
+		/// <summary>
+		/// Deletes a provided directory path.
+		/// </summary>
+		/// <param name="dir"></param>
+		public static Task DeleteReadOnlyDirectory(string dir)
 		{
-
-			CreateSafeDirectory(destinationPath);
-
-			foreach (string file in Directory.GetFiles(sourcePath))
+			return Task.Run(() =>
 			{
-				string destFile = Path.Combine(destinationPath, Path.GetFileName(file));
-				File.Copy(file, destFile, true); // Set overwrite to true to allow overwriting if the file already exists
-			}
-
-			foreach (string subDirectory in Directory.GetDirectories(sourcePath))
-			{
-				string destDirectory = Path.Combine(destinationPath, Path.GetFileName(subDirectory));
-				MoveDirectory(subDirectory, destDirectory);
-			}
-
-			Directory.Delete(sourcePath, true);
+				if (Directory.Exists(dir))
+					DeleteReadOnlyDirectory(new DirectoryInfo(dir));
+			});
 		}
 
-		public static bool MoveAllFilesAndSubfolders(string sourceFolderPath, string destinationFolderPath, string exception = null)
+		/// <summary>
+		/// Copies a folder's content from one directory to another. Creates the destination directory if it doesn't exist.
+		/// </summary>
+		/// <param name="sourceFolder"></param>
+		/// <param name="dest"></param>
+		/// <param name="dllCheck"></param>
+		public static Task CopyFolder(string sourceFolder, string destinationFolder, string searchPattern = "", bool recursive = false)
 		{
-			// Move all files in the current folder to the destination subfolder
-			string[] files = Directory.GetFiles(sourceFolderPath);
-			foreach (string file in files)
+			return Task.Run(() =>
 			{
-				if (exception is not null && exception.ToLower().Contains(file.ToLower()))
-					continue;
+				DirectoryInfo sourceDirectory = new(sourceFolder);
+				DirectoryInfo destinationDirectory = new(destinationFolder);
 
-				string fileName = Path.GetFileName(file);
-				string destinationFilePath = Path.Combine(destinationFolderPath, fileName);
+				CreateSafeDirectory(destinationFolder);
+				Logger.Log($"Copying files from {sourceFolder} to {destinationFolder}.");
 
-				File.Move(file, destinationFilePath, true);
-			}
-
-			// Move all subfolders in the current folder to the destination subfolder
-			string[] subfolders = Directory.GetDirectories(sourceFolderPath);
-			foreach (string subfolder in subfolders)
-			{
-				if (exception is not null && exception.ToLower().Contains(subfolder.ToLower()))
-					continue;
-
-				string subfolderName = Path.GetFileName(subfolder);
-				string destinationSubfolderPath = Path.Combine(destinationFolderPath, subfolderName);
-
-				// Recursively move the subfolder and its contents to the destination subfolder
-				if (Directory.Exists(destinationSubfolderPath))
+				List<FileInfo> files = sourceDirectory.GetFiles(searchPattern).ToList();
+				Parallel.ForEach(files, file =>
 				{
-					MoveAllFilesAndSubfolders(subfolder, destinationSubfolderPath, destinationSubfolderPath);
+					string destFilepath = Path.Combine(destinationDirectory.FullName, file.Name);
+					Logger.Log($"Copying {file.Name}");
+					file.CopyTo(destFilepath, true);
+				});
+
+				List<DirectoryInfo> subdirectories = sourceDirectory.GetDirectories().ToList();
+				Parallel.ForEach(subdirectories, subDirectory =>
+				{
+					string destSubDirectory = Path.Combine(destinationDirectory.FullName, subDirectory.Name);
+					CopyFolder(subDirectory.FullName, destSubDirectory, searchPattern);
+				});
+			});
+		}
+
+		/// <summary>
+		/// Moves a directory's contents to a destination directory.
+		/// </summary>
+		/// <param name="sourceFolder"></param>
+		/// <param name="destinationFolder"></param>
+		/// <returns></returns>
+		public static Task MoveDirectory(string sourceFolder, string destinationFolder)
+		{
+			return Task.Run(() =>
+			{
+				DirectoryInfo sourceDirectory = new(sourceFolder);
+				DirectoryInfo destinationDirectory = new(destinationFolder);
+
+				CreateSafeDirectory(destinationFolder);
+				Logger.Log($"Moving files from {sourceFolder} to {destinationFolder}.");
+
+				sourceDirectory.MoveTo(destinationFolder);
+			});
+		}
+
+		/// <summary>
+		/// Moves a directory's contents if the match the supplied <paramref name="searchPattern"/>.
+		/// </summary>
+		/// <param name="sourceFolder"></param>
+		/// <param name="destinationFolder"></param>
+		/// <param name="searchPattern"></param>
+		/// <param name="recursive"></param>
+		/// <returns></returns>
+		public static Task MoveDirectory(string sourceFolder, string destinationFolder, string searchPattern = "", bool recursive = false)
+		{
+			return Task.Run(() =>
+			{
+				DirectoryInfo sourceDirectory = new(sourceFolder);
+				DirectoryInfo destinationDirectory = new(destinationFolder);
+
+				CreateSafeDirectory(destinationFolder);
+				Logger.Log($"Copying files from {sourceFolder} to {destinationFolder}.");
+
+				List<FileInfo> files = sourceDirectory.GetFiles(searchPattern).ToList();
+				Parallel.ForEach(files, file =>
+				{
+					string destFilepath = Path.Combine(destinationDirectory.FullName, file.Name);
+					Logger.Log($"Copying {file.Name}");
+					file.CopyTo(destFilepath, true);
+				});
+
+				List<DirectoryInfo> subdirectories = sourceDirectory.GetDirectories().ToList();
+				Parallel.ForEach(subdirectories, subDirectory =>
+				{
+					string destSubDirectory = Path.Combine(destinationDirectory.FullName, subDirectory.Name);
+					CopyFolder(subDirectory.FullName, destSubDirectory, searchPattern);
+				});
+			});
+		}
+
+		#endregion
+
+		#region Variable Folders
+		private static Task<bool> CreateLocalOrUserFolder(string path, bool localMode = false)
+		{
+			return Task.Run(() =>
+			{
+				if (localMode)
+				{
+					Logger.Log($"Creating local folder: {path}");
+					CreateSafeDirectory(path);
+					if (Directory.Exists(path))
+					{
+						Logger.Log($"{path} successfully created!");
+						return true;
+					}
+					else
+						return false;
 				}
 				else
 				{
-					MoveDirectory(subfolder, destinationSubfolderPath);
+					string userPath = Path.Combine(userFolder, path);
+					CreateSafeDirectory(userPath);
+					if (Directory.Exists(userPath))
+						return true;
+					else
+						return false;
+				}
+			});
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="localMode"></param>
+		/// <returns></returns>
+		public static Task<bool> CreateAppFolder(bool localMode = false)
+		{
+			return CreateLocalOrUserFolder(appFolder, localMode);
+		}
+
+		/// <summary>
+		/// Returns the full path to the App Folder. Creates the App Folder if it does not exist.
+		/// </summary>
+		/// <param name="localMode"></param>
+		/// <returns></returns>
+		public static string GetAppFolder(bool localMode = false)
+		{
+			if (CreateAppFolder(localMode).Result)
+			{
+				if (localMode)
+					return Path.GetFullPath(appFolder);
+				else
+					return Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), appFolder));
+			}
+			else
+				return null;
+		}
+
+		/// <summary>
+		/// Moves the App Folder from being in the User folder to a local folder or vice versa.
+		/// </summary>
+		/// <param name="movingToLocal"></param>
+		public static async void MoveAppFolder(bool movingToLocal)
+		{
+			string localPath = Path.GetFullPath(appFolder);
+			string userPath = Path.GetFullPath(Path.Combine(userFolder, appFolder));
+
+			if (movingToLocal)
+			{
+				if (Directory.Exists(userPath))
+				{
+					await CreateAppFolder();
+					await MoveDirectory(userPath, localPath);
 				}
 			}
-
-			return true;
+			else
+			{
+				if (Directory.Exists(localPath))
+				{
+					await CreateAppFolder(true);
+					await MoveDirectory(localPath, userPath);
+				}
+			}
 		}
+
+		/// <summary>
+		/// Creates the temporary folder for downloads.
+		/// </summary>
+		/// <returns>True if the folder exists after creation, false if not.</returns>
+		public static Task<bool> CreateTempFolder()
+		{
+			return CreateLocalOrUserFolder(tempFolder, true);
+		}
+
+		/// <summary>
+		/// Returns the full path to the temporary folder. Creates it if it does not exist.
+		/// </summary>
+		/// <returns></returns>
+		public static string GetTempFolder()
+		{
+			if (CreateTempFolder().Result)
+				return Path.GetFullPath(tempFolder);
+			else
+				return null;
+		}
+
+		/// <summary>
+		/// Deletes the temporary folder.
+		/// </summary>
+		public static void DeleteTempFolder()
+		{
+			DeleteReadOnlyDirectory(tempFolder);
+		}
+
+		#endregion
 	}
 }

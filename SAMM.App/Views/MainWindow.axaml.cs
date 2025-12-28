@@ -92,4 +92,9 @@ public partial class MainWindow : Window
 			ExceptionHandler.Throw(ex);
 		}
 	}
+
+	private void Window_Closing(object? sender, Avalonia.Controls.WindowClosingEventArgs e)
+	{
+		ViewModel.SaveManagerSettings();
+	}
 }
