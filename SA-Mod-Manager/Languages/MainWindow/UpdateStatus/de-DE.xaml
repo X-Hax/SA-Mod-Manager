@@ -27,8 +27,8 @@
     <system:String x:Key="UpdateStatus.LoaderUpdateManual">Mod Loader lokal aktualisiert.</system:String>
     <system:String x:Key="UpdateStatus.LoaderInstalled">Mod Loader wurde erfolgreich installiert</system:String>
     <system:String x:Key="UpdateStatus.LoaderUninstalled">Mod Loader wurde erfolgreich deinstalliert</system:String>
-    <system:String x:Key="UpdateStatus.TotalMods">{0} Mods geladen</system:String>
-    <system:String x:Key="UpdateStatus.TotalCodes">{0} Codes geladen</system:String>
+    <system:String x:Key="UpdateStatus.TotalMods">{0} Mod/s geladen</system:String>
+    <system:String x:Key="UpdateStatus.TotalCodes">{0} Code/s geladen</system:String>
 
 
 

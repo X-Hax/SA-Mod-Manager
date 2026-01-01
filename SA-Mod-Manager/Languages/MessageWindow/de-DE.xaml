@@ -3,59 +3,59 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 	<system:String x:Key="MessageWindow.DefaultTitle">SA Mod Manager</system:String>
-	<system:String x:Key="MessageWindow.DefaultTitle.Error">Error</system:String>
-	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Warning</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle.Error">Fehler</system:String>
+	<system:String x:Key="MessageWindow.DefaultTitle.Warning">Warnung</system:String>
 	
 	<!--#region Errors-->
-	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">There is a mod.ini in the mods folder.</system:String>
-	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Each mod must be placed in a subfolder in the mods folder. Do not extract mods directly to the mods folder.</system:String>
-	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Move or delete mod.ini in the mods folder and run the Mod Manager again.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder0">Da ist eine »mod.ini«-Datei im Mod-Ordner.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder1" xml:space="preserve">&#x0a;&#x0a;Jede Mod muss in einem eigenen Unterordner zu finden sein. Extrahiere sie bitte nicht direkt im Mod-Ordner.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModWithoutFolder2" xml:space="preserve">&#x0a;&#x0a;Verschiebe, oder lösche die »mod.ini«-Datei und starte den Mod Manager erneut.</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">The following mods could not be found:&#x0a;&#x0a;</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Die folgenden Mods konnten nicht gefunden werden:&#x0a;&#x0a;</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Failed to set Game Path</system:String>
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Failed to detect a supported game, make sure to select a folder where a game is installed. If you renamed the original exe, the game detection won't work.</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Der Spielepfad konnte nicht gesetzt werden</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Es konnte kein unterstütztes Spiel erkannt werden. Stell sicher, dass du einen Ordner ausgewählt hast, in dem ein Spiel installiert ist. Wenn du die ursprüngliche .exe-Datei umbenannt hast, funktioniert die Spielerkennung nicht.</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">"Mod already exists"</system:String>
-	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">A mod with that name already exists.&#x0a;Please choose a different name or rename the existing one.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">„Mod existiert bereits“</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists" xml:space="preserve">Eine Mod mit dem Namen existiert bereits.&#x0a;Bitte wähle einen anderen Namen aus, oder benenne die vorhandene Mod um.</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.ModCreationFailed.Title">"Mod Creation Error"</system:String>
+	<system:String x:Key="MessageWindow.Errors.ModCreationFailed.Title">„Moderstellungsfehler“</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.NoModName.Title">Invalid mod name</system:String>
-	<system:String x:Key="MessageWindow.Errors.NoModName">You cannot have a mod without a name.</system:String>
+	<system:String x:Key="MessageWindow.Errors.NoModName.Title">Ungültiger Modname</system:String>
+	<system:String x:Key="MessageWindow.Errors.NoModName">Du kannst keine Mod ohne Namen erstellen.</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.MissingLoaderDLL" xml:space="preserve">The file SADXModLoader.dll couldn't be found, Mod Loader won't work.&#x0a;&#x0a;Please re download the Mod Manager.</system:String>
+	<system:String x:Key="MessageWindow.Errors.MissingLoaderDLL" xml:space="preserve">»SADXModLoader.dll« konnte nicht gefunden werden, damit wird der Mod Loader nicht funktionieren.&#x0a;&#x0a;Bitte lade den Mod Manager erneut runter.</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.DontDoThat">Hm... no, you don't want to do that. :)</system:String>
+	<system:String x:Key="MessageWindow.Errors.DontDoThat">Hm... Nope, das willst du nicht machen :)</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.InvalidFramerate.Title">Invalid Setting</system:String>
-	<system:String x:Key="MessageWindow.Errors.InvalidFramerate">Invalid framerate setting detected.</system:String>
+	<system:String x:Key="MessageWindow.Errors.InvalidFramerate.Title">Ungültige Einstellung</system:String>
+	<system:String x:Key="MessageWindow.Errors.InvalidFramerate">Ungültige Bildfrequenzeinstellung erkannt.</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Error Loading Code</system:String>
-	<system:String x:Key="MessageWindow.Errors.CodesListFailed">Error loading code list</system:String>
+	<system:String x:Key="MessageWindow.Errors.CodesListFailed.Title">Fehler beim Laden des Codes</system:String>
+	<system:String x:Key="MessageWindow.Errors.CodesListFailed">Fehler beim Laden der Codeliste</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Update Errors</system:String>
-	<system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">The following Errors occurred while checking for updates:&#x0a;&#x0a;</system:String>
-    <system:String x:Key="MessageWindow.Errors.D3D8Update">Unable to update d3d8.dll</system:String>
-    <system:String x:Key="MessageWindow.Errors.D3D8UpdateCheck">Unable to check d3d8to9 version</system:String>
+	<system:String x:Key="MessageWindow.Errors.CheckUpdateError.Title">Aktualisierungsfehler</system:String>
+	<system:String x:Key="MessageWindow.Errors.CheckUpdateError" xml:space="preserve">Die folgenden Fehler sind bei der Suche nach Updates aufgetreten:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.D3D8Update">»d3d8.dll« kann nicht aktualisiert werden</system:String>
+    <system:String x:Key="MessageWindow.Errors.D3D8UpdateCheck">Die d3d8to9-Version kann nicht überprüft werden.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.MissingManifest.Title">Missing mod.manifest</system:String>
-    <system:String x:Key="MessageWindow.Errors.MissingManifest">None of the selected mods have manifests, so they cannot be verified.</system:String>
+    <system:String x:Key="MessageWindow.Errors.MissingManifest.Title">Fehlende mod.manifest-Datei</system:String>
+    <system:String x:Key="MessageWindow.Errors.MissingManifest">Keiner der ausgewählten Mods verfügt über Manifeste, sodass sie nicht überprüft werden können.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ModFailedVerif.Title">Integrity Fail</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModFailedVerif0" xml:space="preserve">The following mods failed verification:&#x0a;</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModFailedVerif1">files(s)</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModFailedVerif2" xml:space="preserve">&#x0a;&#x0a;Would you like to attempt repairs?</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif.Title">Integritätsfehler</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif0" xml:space="preserve">Die folgenden Mods konnten nicht überprüft werden:&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif1">Datei(en)</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModFailedVerif2" xml:space="preserve">&#x0a;&#x0a;Möchtest du versuchen sie zu reparieren?</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.URIParseFail.Title">URI Parse Failure</system:String>
-    <system:String x:Key="MessageWindow.Errors.URIParseFail0">Malformed One-Click Install URI</system:String>
-    <system:String x:Key="MessageWindow.Errors.URIParseFail1" xml:space="preserve">caused parse failure:&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail.Title">URI-Parsing-Fehler</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail0">Fehlerhafte URI für die One-Click-Installation</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail1" xml:space="preserve">verursachte folgende Parsing-Fehler:&#x0a;</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.GBAPIFail.Title">GameBanana API Failure</system:String>
-    <system:String x:Key="MessageWindow.Errors.GBAPIFail">GameBanana API query failed:</system:String>
+    <system:String x:Key="MessageWindow.Errors.GBAPIFail.Title">Fehler bei der GameBanana-API</system:String>
+    <system:String x:Key="MessageWindow.Errors.GBAPIFail">GameBanana-API-Abfrage fehlgeschlagen:</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.URIParseFailFields0">One-Click Install URI</system:String>
-    <system:String x:Key="MessageWindow.Errors.URIParseFailFields1">did not contain required fields.</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields0">One-Click-Installations URI</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields1">beinhaltete nicht alle benötigten Felder.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail.Title">Directory Deletion Failed</system:String>
     <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail0">Failed to remove temporary update directory</system:String>

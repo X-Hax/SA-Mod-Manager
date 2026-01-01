@@ -6,7 +6,7 @@
 	<system:String x:Key="InstallModOptions.Radio.Archive">Aus einem Archiv installieren</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Folder">Aus einem Ordner installieren</system:String>
     <system:String x:Key="InstallModOptions.Radio.Url">Aus dem Internet installieren</system:String>
-    <system:String x:Key="InstallModOptions.Radio.New">Neue Mod (Für Entwickelnde)</system:String>
+    <system:String x:Key="InstallModOptions.Radio.New">Neue Mod (Für Entwickler)</system:String>
 
     <system:String x:Key="InstallModUrl.Radio.Header">Kopiere und füge hier die Webseiten-URL der Mod ein:</system:String>
     
