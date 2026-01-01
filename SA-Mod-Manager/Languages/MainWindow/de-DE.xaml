@@ -3,68 +3,68 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 	<!--#region Main Window Strings-->
-	<system:String x:Key="Manager.Buttons.SaveAndPlay">Save &amp; Play</system:String>
+	<system:String x:Key="Manager.Buttons.SaveAndPlay">Sichern &amp; Spielen</system:String>
 	<system:String x:Key="Manager.Tabs.Mods">Mods</system:String>
 	<system:String x:Key="Manager.Tabs.Codes">Codes</system:String>
-	<system:String x:Key="Manager.Tabs.GameConfig">Game Config</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig">Manager Config</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig">Spieleinstellungen</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig">Managereinstellungen</system:String>
 	<system:String x:Key="Manager.Tabs.TestSpawn">Test Spawn</system:String>
 	<!--#endregion-->
 
 	<!--#region Mods Tab Strings-->
-	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">Refresh</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">Configure Mod</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">Add Mod</system:String>
-    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">No Mod Selected.</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">Aktualisieren</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">Mod konfigurieren</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">Mod hinzufügen</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">Keine Mod Selectedausgewählt.</system:String>
 
     <!--Mods Context Menu-->
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Check For Updates</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Verify Integrity</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Force Update</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">Configure Mod</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Edit Mod</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Delete Mod</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Developer</system:String>
-	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Generate Manifest</system:String>	
-    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Disable Updates</system:String>
-    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Enable Updates</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Nach Updates prüfen</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Integrität prüfen</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Update erzwingen</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">Mod konfigurieren</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Mod bearbeiten</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Mod löschen</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Entwickler</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Manifest generieren</system:String>	
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Updates deaktivieren</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Updates aktivieren</system:String>
     <!--#endregion-->
 
 	<!--#region Codes Tab Strings-->
-	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">New Code</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Edit Code</system:String>
-    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Delete Code</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">Neuer Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Code bearbeiten</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Code löschen</system:String>
     <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Code</system:String>
-	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Made by</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Von</system:String>
 	<!--#endregion-->
 
 
     <!--Game-->
-    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <system:String x:Key="Manager.Buttons.AddGame">Spiel hinzufügen...</system:String>
     <!--#endregion-->
 
     <!--#region Manager Config Tab Strings-->
 	<!--Options-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Game Settings</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Theme:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Update Channel:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Language:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profile:</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Game Directory:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Spieleinstellungen</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Design:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Update-Kanal:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Sprache:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profil:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Spielverzeichnis:</system:String>
 
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Enable 1-Click Install</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Disable 1-Click Install</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Open Game Directory</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">1-Klick-Installation aktivieren</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">1-Klick-Installation deaktivieren</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Spielverzeichnis öffnen</system:String>
 
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Install Mod Loader</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Uninstall Mod Loader</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Mod-Loader installieren</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Mod-Loader deaktivieren</system:String>
 
 	<!--Updates-->
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Update Settings</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Check for Mod Manager Updates on Startup</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Check for Mod Loader Updates on Startup</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Check for Mod Updates on Startup</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Check For Updates</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Update-Einstellungen</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Suche nach Updates für den Mod-Manager beim Starten</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Suche nach Updates für den Mod-Loader beim Starten</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Suche nach Updates für Mods beim Starten</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Nach Updates suchen</system:String>
 
 	<!--Debug Features-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Manager Settings</system:String>
