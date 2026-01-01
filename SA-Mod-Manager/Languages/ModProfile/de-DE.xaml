@@ -3,11 +3,11 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 	
 	<system:String x:Key="ManagerProfile.Title">Profile verwalten</system:String>
-	<system:String x:Key="ManagerProfile.Buttons.Rename">Profil umbennenen</system:String>
+	<system:String x:Key="ManagerProfile.Buttons.Rename">Profil umbenennen</system:String>
 	<system:String x:Key="ManagerProfile.Buttons.Create">Profil erstellen</system:String>
 	<system:String x:Key="ManagerProfile.Buttons.Migrate">Importieren</system:String>
 	<system:String x:Key="ManagerProfile.Path">Dateipfad</system:String>
-	<system:String x:Key="ManagerProfile.ContextMenu.Rename">Umbennen</system:String>
+	<system:String x:Key="ManagerProfile.ContextMenu.Rename">Umbenennen</system:String>
 	<system:String x:Key="ManagerProfile.ContextMenu.Duplicate">Duplizieren</system:String>
 	<system:String x:Key="ManagerProfile.ContextMenu.Delete">Löschen</system:String>
 	<system:String x:Key="ManagerProfile.Errors.Unexpected">Unerwarteter Fehler; Profil konnte nicht umbenannt werden.</system:String>

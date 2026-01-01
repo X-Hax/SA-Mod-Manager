@@ -35,8 +35,8 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r960">1280x960</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1024">1280x1024</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Nativ</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">1/2x Nativ</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">2x Nativ</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">1/2x nativ</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">2x nativ</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r720">720p</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1080">1080p</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r4K">4K</system:String>
@@ -44,7 +44,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Einstellungen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">4:3 Verhältnis</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">V-Sync aktivieren</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausieren wenn nicht aktiv</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausieren, wenn nicht aktiv</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Puffer dynamisch zuweisen</system:String>
     <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Bildwiederholfrequenz:</system:String>
 
@@ -77,13 +77,13 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap">Mipmapping erzwingen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">UI-Skalierung aktivieren</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">D3D8to9 aktivieren</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">D3D8to9 aktuallisieren</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">D3D8to9 aktualisieren</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">DXVK herunterladen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Mit diesem Knopf kannst du DXVK herunterladen. Dadurch kann die Leistung und Stabilität von SA2 verbessert werden. Das Programm wird nur heruntergeladen, nicht installiert.</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Sobald das Archiv heruntergeladen ist, musst du einfach »d3d9.dll« in den Spieleordner, wo auch »sonic2app.exe« ist, reinkopieren.</system:String>
 
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend">Render-Backend:</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip">Setzt den Render-Backend auf den Standard von SADX (2004), Direct3D 8.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip">Setzt das Render-Backend auf den Standard von SADX (2004), Direct3D 8.</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D9.ToolTip">Nutzt Direct3D 9 als Render-Backend durch d3d8to9 shim.</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D11.ToolTip">Nutzt Direct3D 11 als Render-Backend durch d3d8to11 shim.</system:String>
     <!--#endregion-->
@@ -97,12 +97,12 @@
     
     <!--Input Tab Strings-->
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input">Eingabeeinstellungen</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Stanrdard-Eingabe (DInput)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Standard-Eingabe (DInput)</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Bessere Eingabe (SDL2)</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Standard-Eingabe konfigurieren</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Maus</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Ziehen und halten</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Ziehen zum beschleunigen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Ziehen zum Beschleunigen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn">Linke Maustaste</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn">Rechte Maustaste</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn">Mittlere Maustaste</system:String>
@@ -116,12 +116,12 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Abbrechen/Angriff</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Start/Setzen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Kamera nach links</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Rotate nach rechts</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Kamera nach rechts</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Flöte</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2">Bessere Eingabe Konfiguration</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">AppLauncher öffnen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">AppLauncher erhalten</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Das Bessere Eingabe-System ist eine Implementierung von SDL2 in SADX. Es wird für das Spielen empfohlen, da es Probleme mit dem ursprünglichen DInput-System behebt.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Das bessere Eingabe-System ist eine Implementierung von SDL2 in SADX. Es wird für das Spielen empfohlen, da es Probleme mit dem ursprünglichen DInput-System behebt.</system:String>
     <!--#endregion-->
 
     <!--Sound Tab Strings-->
@@ -132,7 +132,7 @@
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">Musik aktivieren</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Sounds aktivieren</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">3D Sound aktivieren</system:String>
-	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Musiclautstärke:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Musiklautstärke:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Sprachlautstärke:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">SFX-Lautstärke:</system:String>
 	<!--#endregion-->

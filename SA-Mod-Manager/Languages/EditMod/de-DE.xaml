@@ -15,25 +15,25 @@
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Hauptspeicher</system:String>
 	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Chao-Speicher</system:String>
     <system:String x:Key="EditMod.Tabs.Btn.Advanced">Erweitert</system:String>
-    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Verzeichnise einschließen:</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Verzeichnisse einschließen:</system:String>
 
     <system:String x:Key="EditMod.Tabs.Updates">Informationen</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Method">Platform</system:String>
-    <system:String x:Key="EditMod.Tabs.Updates.SelfHosted">Selbstgehostet</system:String>
-    <system:String x:Key="EditMod.Tabs.Updates.GitHub">Github-Einstellungen</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Method">Plattform</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.SelfHosted">Selbst gehostet</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GitHub">GitHub-Einstellungen</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Autor und Repo:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Asset freigeben:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB">Gamebanana-Einstellungen</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">Mod-ID:</system:String>
     <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">Mod-Typ:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self">Selbsthosten-Einstellungen</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self">Selbsthost-Einstellungen</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL für das Änderungsprotokoll:</system:String>
 
 	<system:String x:Key="EditMod.Tabs.Dependencies">Abhängigkeiten</system:String>
-	<system:String x:Key="EditMod.Tabs.Dependencies.Warning">Das Abhängigkeitensystem sollte nur genutzt werden, wenn du eine Mod erstellt hast, die ohne Ausnahme eine andere Mod braucht, um richtig zu funktionieren.</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Warning">Das Abhängigkeitssystem sollte nur genutzt werden, wenn du eine Mod erstellt hast, die ohne Ausnahme eine andere Mod braucht, um richtig zu funktionieren.</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Add">Abhängigkeiten hinzufügen</system:String>
-	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Remove">Abhänigkeiten entfernen</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Remove">Abhängigkeiten entfernen</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.ID">ID</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Folder">Ordner</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Column">Download-Link</system:String>

@@ -6,10 +6,10 @@
     <!--Dependencies-->
     <system:String x:Key="Updater.DL.Dep.Download">Herunterladen</system:String>
     <system:String x:Key="Updater.DL.Dep.Install">Installieren</system:String>
-    <system:String x:Key="Updater.DL.Dep.Update">Aktuallisierung</system:String>
+    <system:String x:Key="Updater.DL.Dep.Update">Aktualisierung</system:String>
     <system:String x:Key="Updater.DL.Dep.Downloading">Wird heruntergeladen</system:String>
     <system:String x:Key="Updater.DL.Dep.Installing">Wird installiert</system:String>
-    <system:String x:Key="Updater.DL.Dep.Updating">Wird aktuallisiert</system:String>
+    <system:String x:Key="Updater.DL.Dep.Updating">Wird aktualisiert</system:String>
     <system:String x:Key="Updater.DL.Dep.Completed">Abgeschlossen.</system:String>
     <system:String x:Key="Updater.DL.Dep.Copying">Kopiervorgang...</system:String>
 
@@ -19,12 +19,12 @@
 
     <!--Mod Update-->
     <system:String x:Key="Updater.DL.Mod.Init">Download wird vorbereitet, bitte warten...</system:String>
-    <system:String x:Key="Updater.DL.Mod.Extracting">Axtraktionsvorgang...</system:String>
+    <system:String x:Key="Updater.DL.Mod.Extracting">Extraktionsvorgang...</system:String>
     <system:String x:Key="Updater.DL.Mod.ParsingManifest">Manifest wird analysiert...</system:String>
     <system:String x:Key="Updater.DL.Mod.ApplyingManifest">Manifest wird angewandt...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadingFile">Dateien werden heruntergeladen</system:String>
     <system:String x:Key="Updater.DL.Mod.of">VON</system:String> <!-- "of" files to download-->
-    <system:String x:Key="Updater.DL.Mod.UpdatingMod">Mod wird aktuallisiert</system:String>
+    <system:String x:Key="Updater.DL.Mod.UpdatingMod">Mod wird aktualisiert</system:String>
     <system:String x:Key="Updater.DL.Mod.StartingDownload">Starte Download...</system:String>
     <system:String x:Key="Updater.DL.Mod.DownloadComplete">Download abgeschlossen.</system:String>
 

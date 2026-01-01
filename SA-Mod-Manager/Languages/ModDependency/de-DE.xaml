@@ -7,7 +7,7 @@
 	<system:String x:Key="ModDependency.Duplicate.DuplicatesFound1">Doppelte Mod-ID entdeckt!</system:String>
 	<system:String x:Key="ModDependency.Duplicate.DuplicatesFound2">Bitte entferne die doppelte Mod-ID, oder sorge dafür, dass jede Mod eine eigene ID hat.</system:String>
 	
-	<system:String x:Key="ModDependency.Dependency.Header">Dependency Error</system:String>
+	<system:String x:Key="ModDependency.Dependency.Header">Abhängigkeitsfehler</system:String>
 	
 	<!--For translators, the following strings are all partial string and are used in tandem with information given in the ModDependency Class.-->
 	<!--Usage in the ModDependency class begins in the checks at the bottom of the ModDependency.cs file if you need a reference.-->

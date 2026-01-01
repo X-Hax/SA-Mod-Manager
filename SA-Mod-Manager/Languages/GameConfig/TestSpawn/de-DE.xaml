@@ -21,7 +21,7 @@
     <system:String x:Key="TSCutscene21">Sonic sieht Zero und Amy am Bahnhof</system:String>
     <system:String x:Key="TSCutscene22">Sonic sieht, wie Zero auf den Egg Carrier gebracht wird</system:String>
     <system:String x:Key="TSCutscene23">Sonic holt zu Tails mit dem Tornado 2 auf</system:String>
-    <system:String x:Key="TSCutscene26">Sonic sieht, wie Eggman den Emerald von Birdie ansich nimmt</system:String>
+    <system:String x:Key="TSCutscene26">Sonic sieht, wie Eggman den Emerald vom Vögelchen an sich nimmt</system:String>
     <system:String x:Key="TSCutscene27">Sonic besiegt Gamma</system:String>
     <system:String x:Key="TSCutscene28">Sonic findet Chaos 6</system:String>
     <system:String x:Key="TSCutscene29">Sonic springt vom Egg Carrier in den Dschungel</system:String>
@@ -60,7 +60,7 @@
     <system:String x:Key="TSCutscene78">Tails folgt Eggman</system:String>
     <system:String x:Key="TSCutscene80">Tails stellt sich dem Egg Walker</system:String>
     <system:String x:Key="TSCutscene81">Tails besiegt den Egg Walker</system:String>
-    <system:String x:Key="TSCutscene82">Das Ende von Tails Story</system:String>
+    <system:String x:Key="TSCutscene82">Das Ende von Tails' Story</system:String>
     <system:String x:Key="TSCutscene83">Fehler</system:String>
     <system:String x:Key="TSCutscene84">Tails und Sonic landen auf dem Egg Carrier</system:String>
     <system:String x:Key="TSCutscene85">Tails und Froggy gehen in die Vergangenheit</system:String>
@@ -75,14 +75,14 @@
     <system:String x:Key="TSCutscene102">Amy flieht aus Hot Shelter</system:String>
     <system:String x:Key="TSCutscene103">Amy findet sichselbst in der Vergangenheit wieder</system:String>
     <system:String x:Key="TSCutscene104">Amy trifft Tikal</system:String>
-    <system:String x:Key="TSCutscene105">Amy sieht, wie Eggman Birdies Emerald nimmt</system:String>
+    <system:String x:Key="TSCutscene105">Amy sieht, wie Eggman das Vögelchen den Emerald abnimmt</system:String>
     <system:String x:Key="TSCutscene106">Amy und Tails fliehen aus dem Egg Carrier</system:String>
     <system:String x:Key="TSCutscene107">Fehler</system:String>
     <system:String x:Key="TSCutscene108">Amy kehrt in die Vergangenheit zurück</system:String>
-    <system:String x:Key="TSCutscene109">Amy entschließt sich, Birdies Familie zu finden</system:String>
+    <system:String x:Key="TSCutscene109">Amy entschließt sich, die Familie des Vögelchens zu finden</system:String>
     <system:String x:Key="TSCutscene110">Amy entdeckt die Final Egg Basis</system:String>
     <system:String x:Key="TSCutscene111">Amy wird in Final Egg von Zero gejagt</system:String>
-    <system:String x:Key="TSCutscene112">Amy und Birdie kehrten zum Egg Carrier zurück</system:String>
+    <system:String x:Key="TSCutscene112">Amy und das Vögelchen kehren zum Egg Carrier zurück</system:String>
     <system:String x:Key="TSCutscene113">Amy wird von Zero konfrontiert</system:String>
     <system:String x:Key="TSCutscene114">Das Ende von Amys Story</system:String>
     <system:String x:Key="TSCutscene117">Amy wird in die Mystic Ruins entführt</system:String>
