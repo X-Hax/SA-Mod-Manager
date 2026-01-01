@@ -143,7 +143,7 @@
 	<system:String x:Key="TestSpawn.Time">Zeit:</system:String>
 	<system:String x:Key="TestSpawn.Act">Act:</system:String>
 	<system:String x:Key="TestSpawn.Check.Mode">Spielmodus:</system:String>
-	<system:String x:Key="TestSpawn.Check.Save">Speicherdatei umleiten:</system:String>
+	<system:String x:Key="TestSpawn.Check.Save">Speicherdatei auswählen:</system:String>
 	<system:String x:Key="TestSpawn.Check.Event">Event:</system:String>
 	<system:String x:Key="TestSpawn.Warning">Ein Level, oder Charakter im Event zu überschreiben kann zum Absturz führen.</system:String>
 	<system:String x:Key="TestSpawn.Buttons.Launch">Spiel starten</system:String>

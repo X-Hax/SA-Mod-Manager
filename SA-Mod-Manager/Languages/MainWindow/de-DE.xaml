@@ -102,10 +102,10 @@
 
 	<!--#region Mods Tab Tool Tips-->
 	<system:String x:Key="MainWindow.Tips.Tab.Mods.Refresh">Modliste aktualisieren.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveCeiling">Bewegt die ausgewählte Mod an die Spitze der Liste.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveCeiling">Bewegt die ausgewählte Mod ganz nach oben.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveUp">Bewegt die ausgewählte Mod einen Platz nach oben.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveDown">Bewegt die ausgewählte Mod einen Platz nach unten.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveFloor">Bewegt die ausgewählte Mod an den Boden der Listen.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveFloor">Bewegt die ausgewählte Mod ganz nach unten.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.SelectAll">Wählt alle Mods in der Liste aus. Es kann passieren, dass das Spiel bei zu vielen Mods abstürzt.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.DeselectAll">Wählt alle Mods in der Liste ab.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Mods.NewMod">Öffnet das neue Mod-Fenster, wo du eine Mod manuell installieren, oder eine Neue erstellen kannst.</system:String>
