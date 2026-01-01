@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="ModChangelog.Title">Mods aktuallisieren</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Notes">Update-Hinweis</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details">Update-Informationen</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.DownloadDetails">Download-Informationen</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.PublishedDate">Veröffentlichungsdatum:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.FileSize">Dateigröße:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.FileCount">Dateianzahl:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.UpdateName">Update-Titel:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.Tag">Tag:</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Details.Buttons.OpenBrowser">Update im Browser öffnen</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Files">Dateiänderungen</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Files.Filename">Dateiname</system:String>
+	<system:String x:Key="ModChangelog.Tabs.Files.Status">Status</system:String>
+	<system:String x:Key="ModChangelog.Buttons.DownloadNow">Jetzt herunterladen</system:String>
+	<system:String x:Key="ModChangelog.Buttons.DownloadLater">Später herunterladen</system:String>
+</ResourceDictionary>

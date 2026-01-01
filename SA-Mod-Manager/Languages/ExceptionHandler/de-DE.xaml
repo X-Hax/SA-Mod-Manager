@@ -1,0 +1,15 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+	
+	<system:String x:Key="ExceptionHandler.Title">Absturz</system:String>
+	<system:String x:Key="ExceptionHandler.Header">Es ist ein Fehler aufgetreten</system:String>
+	<system:String x:Key="ExceptionHandler.Copy">Fehlerprotokoll kopieren</system:String>
+	<system:String x:Key="ExceptionHandler.Ignore">Ignorieren und Schließen</system:String>
+	<system:String x:Key="ExceptionHandler.Report">Fehler melden (Nur auf Englisch)</system:String>
+
+	<system:String x:Key="ExceptionHandler.ToolTip.Copy">Kopiert das Fehlerprotokoll mitsamt Markdown-Formatierung in deine Zwischenablage.</system:String>
+	<system:String x:Key="ExceptionHandler.ToolTip.Ignore">Ignoriert den Fehler, dadurch wird dieses Fenster und der Manager geschlossen.</system:String>
+	<system:String x:Key="ExceptionHandler.ToolTip.Report">Öffnet ein Ticket im Repository des Managers auf GitHub mit einer Vorlage, in der du weitere Informationen und eine Kopie des Ausnahmeberichts eintragen kannst.</system:String>
+</ResourceDictionary>

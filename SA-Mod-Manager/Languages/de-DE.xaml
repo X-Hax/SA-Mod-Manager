@@ -1,0 +1,75 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="AboutMod/de-DE.xaml"/>
+		<ResourceDictionary Source="EditMod/de-DE.xaml"/>
+		<ResourceDictionary Source="GameConfig/de-DE.xaml"/>
+		<ResourceDictionary Source="GameConfig/Patches/de-DE.xaml"/>
+		<ResourceDictionary Source="GameConfig/TestSpawn/de-DE.xaml"/>
+		<ResourceDictionary Source="HealthProgress/de-DE.xaml"/>
+		<ResourceDictionary Source="InfoManagerUpdate/de-DE.xaml"/>
+		<ResourceDictionary Source="InstallModOptions/de-DE.xaml"/>
+		<ResourceDictionary Source="MainWindow/de-DE.xaml"/>
+		<ResourceDictionary Source="ManifestChanges/de-DE.xaml"/>
+		<ResourceDictionary Source="MessageWindow/de-DE.xaml"/>
+		<ResourceDictionary Source="ModChangelog/de-DE.xaml"/>
+		<ResourceDictionary Source="ModConfig/de-DE.xaml"/>
+		<ResourceDictionary Source="ModDependency/de-DE.xaml"/>
+		<ResourceDictionary Source="ModProfile/de-DE.xaml"/>
+		<ResourceDictionary Source="NewCode/de-DE.xaml"/>
+		<ResourceDictionary Source="SelectDependencies/de-DE.xaml"/>
+		<ResourceDictionary Source="SplashScreen/de-DE.xaml"/>
+        <ResourceDictionary Source="Updater/de-DE.xaml"/>
+        <ResourceDictionary Source="MainWindow/UpdateStatus/de-DE.xaml"/>
+		<ResourceDictionary Source="ExceptionHandler/de-DE.xaml"/>
+		<ResourceDictionary Source="AdvancedSettingsWindow/de-DE.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+    
+    <!--Region Common UI-->
+    <system:String x:Key="CommonStrings.OK">Okay</system:String>
+    <system:String x:Key="CommonStrings.Cancel">Abbrechen</system:String>
+	<system:String x:Key="CommonStrings.Yes">Ja</system:String>
+	<system:String x:Key="CommonStrings.No">Nein</system:String>
+	<system:String x:Key="CommonStrings.Retry">Nochmal</system:String>
+	<system:String x:Key="CommonStrings.Warning">Warnung</system:String>
+	<system:String x:Key="CommonStrings.Error">Fehler</system:String>
+    <system:String x:Key="CommonStrings.Reset">Zurücksetzen</system:String>
+    <system:String x:Key="CommonStrings.Create">Erstellen</system:String>
+	<system:String x:Key="CommonStrings.SelectAll">Alles auswählen</system:String>
+	<system:String x:Key="CommonStrings.DeselectAll">Auswahl aufheben</system:String>
+	<system:String x:Key="CommonStrings.Name">Name</system:String>
+	<system:String x:Key="CommonStrings.Status">Status</system:String>
+	<system:String x:Key="CommonStrings.Save">Speichern</system:String>
+	<system:String x:Key="CommonStrings.Author">Autor</system:String>
+	<system:String x:Key="CommonStrings.Version">Version</system:String>
+	<system:String x:Key="CommonStrings.Category">Kategorie</system:String>
+	<system:String x:Key="CommonStrings.Description">Beschreibung:</system:String>
+	<system:String x:Key="CommonStrings.Search">Suche</system:String>
+	<system:String x:Key="CommonStrings.Credits">Mitwirkende</system:String>
+	<system:String x:Key="CommonStrings.Download">Herunterladen</system:String>
+	<system:String x:Key="CommonStrings.OpenFolder">Ordner öffnen</system:String>
+    <system:String x:Key="CommonStrings.None">Nichts</system:String>
+    <system:String x:Key="CommonStrings.Enabled">Aktiviert</system:String>
+    <system:String x:Key="CommonStrings.Disabled">Deaktiviert</system:String>
+    <system:String x:Key="CommonStrings.Success">Erfolg!</system:String>
+    <system:String x:Key="CommonStrings.Failed">Versagt</system:String>
+	<system:String x:Key="CommonStrings.ID">ID</system:String>
+	<system:String x:Key="CommonStrings.Dependency">Abhänigkeiten</system:String>
+
+    <!--Region Create Code-->
+    <system:String x:Key="CommonStrings.Type">Typ</system:String>
+    <system:String x:Key="CommonStrings.TypeCode">Code</system:String>
+    <system:String x:Key="CommonStrings.TypePatch">Patch</system:String>
+    <system:String x:Key="CommonStrings.IsRequired">Von Nöten</system:String>
+
+    <!--Window Tips-->
+	<system:String x:Key="Window.Tips.Minimize">Minimieren</system:String>
+	<system:String x:Key="Window.Tips.Maximize">Maximieren</system:String>
+	<system:String x:Key="Window.Tips.Restore">Fenster wiederherstellen</system:String>
+	<system:String x:Key="Window.Tips.Close">Beenden</system:String>
+
+</ResourceDictionary>

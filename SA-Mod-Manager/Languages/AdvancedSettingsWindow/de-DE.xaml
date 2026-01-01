@@ -1,0 +1,28 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<system:String x:Key="Advancedwindow.Title">Erweiterte Einstellungen</system:String>
+
+	<!--#region Settings-->
+	<system:String x:Key="AdvancedWindow.Option.PortableMode">Portablen Modus aktivieren</system:String>
+	<system:String x:Key="AdvancedWindow.Option.PortableMode.Description" xml:space="preserve">Damit wird der portable Modus aktiviert, mit dem die Nutzereinstellungen für den SA Mod Manager in einem Extraordner namens »SAManager« gespeichert werden. Dieser Ordner befindet sich im selben Verzeichnis, wo auch das Programm gestartet wurde.&#x0a;&#x0a;Somit ist es möglich, dass Programm über mehrere Nutzerkonten hinweg auf dem selben Computer zu nutzen; Es ist einfacher, das Programm auf einer externen Festplatte zu nutzen, ohne den Verlust von Daten zu befürchten und es kann helfen, auf Nicht-Windows-Betriebssystemem ausgeführt zu werden.</system:String>
+
+	<!--#endregion-->
+	
+	<!--#region Buttons-->
+	<system:String x:Key="AdvancedWindow.Buttons.OpenSettings">Managereinstellungsordner öffnen</system:String>
+	<system:String x:Key="AdvancedWindow.Buttons.OpenSettings.ToolTip">Damit öffnest du den Ordner, in dem deine Managereinstellungen gespeichert sind.</system:String>
+
+	<system:String x:Key="Advancedwindow.Buttons.BackupSettings">Managereinstellungen exportieren</system:String>
+	<system:String x:Key="Advancedwindow.Buttons.BackupSettings.ToolTip">Damit wird ein 7z-Archiv der aktuellen Managereinstellungen an einem von dir ausgewählten Speicherort erstellt.</system:String>
+
+	<system:String x:Key="AdvancedWindow.Buttons.ImportSettings">Managereinstellungen importieren</system:String>
+	<system:String x:Key="AdvancedWindow.Buttons.ImportSettings.ToolTip">Damit kannst du eine Backup-7z-Datei importieren, wodurch die gespeicherten Einstellungen installiert werden. Die Einstellungen werden dabei überprüft und ungültige Einstellungen werden nicht installiert. Das Programm wird dadurch neugestartet.</system:String>
+	
+	<system:String x:Key="AdvancedWindow.Buttons.DeleteSettings">Managereinstellungen löschen</system:String>
+	<system:String x:Key="AdvancedWindow.Buttons.DeleteSettings.ToolTip">Damit werden alle Managereinstellungen gelöscht und das Programm wird neugestartet.</system:String>
+
+	<!--#endregion-->
+</ResourceDictionary>
