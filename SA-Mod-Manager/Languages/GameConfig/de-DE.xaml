@@ -20,7 +20,7 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Fenster</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Standard Fenstermodus.</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Exklusiver Vollbildmodus</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Nicht empfohlen. Fenster wird die Monitorauflösung aktuallsieren. Es kann zu absturze kommen, wennd as Fenster nicht fokkusiert ist.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Nicht empfohlen. Fenster wird die Monitorauflösung aktualisieren. Es kann zu Abstürzen kommen, wenn das Fenster nicht im Fokus ist.</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Rahmenloser Vollbildmodus</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Empfohlener Modus. Erlaubt es das Spiel in verschiedenen Auflösungen zu rendern und behebt den »Alt-Tab-Bug«.</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Benutzerdefiniertes Fenster</system:String>
@@ -78,9 +78,9 @@
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">UI-Skalierung aktivieren</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">D3D8to9 aktivieren</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">D3D8to9 aktuallisieren</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">DXV herunterladen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">DXVK herunterladen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Mit diesem Knopf kannst du DXVK herunterladen. Dadurch kann die Leistung und Stabilität von SA2 verbessert werden. Das Programm wird nur heruntergeladen, nicht installiert.</system:String>
-	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Sobald das Archiv heruntergeladen ist, musst du einfach »d3d9.dll« in den Spieleordner, wo auch »sonic2app.exe« ist, kopieren.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Sobald das Archiv heruntergeladen ist, musst du einfach »d3d9.dll« in den Spieleordner, wo auch »sonic2app.exe« ist, reinkopieren.</system:String>
 
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend">Render-Backend:</system:String>
 	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip">Setzt den Render-Backend auf den Standard von SADX (2004), Direct3D 8.</system:String>

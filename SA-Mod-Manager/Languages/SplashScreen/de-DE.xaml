@@ -6,18 +6,18 @@
     <system:String x:Key="SplashScreen.Title">Willkommen</system:String>
 	<system:String x:Key="SplashScreen.Welcome">Willkommen zum SA Mod Manager</system:String>
 
-	<system:String x:Key="SplashScreen.Intro" xml:space="preserve">You have been upgraded to the SA Mod Manager!&#x0a;&#x0a;This new Manager comes with quality of life improvements, new features, and some minor updates to the Mod Loader. All existing mods will continue to work as intended. Below you'll find a relatively complete list of all the major changes.</system:String>
+	<system:String x:Key="SplashScreen.Intro" xml:space="preserve">Du wurdest auf den SA Mod Manager aktualisiert!&#x0a;&#x0a;Dieser neue Manager kommt mit einigen Qualitätsverbesserungen, neuen Funktionen und auch ein paar kleinen Anpassungen des Mod Loaders daher. Alle bereits existierenden Mods werden ohne Probleme weiterhin funktionieren. Unten findest du eine relativ vollständige Liste mit allen wichtigen Veränderungen.</system:String>
 
-	<system:String x:Key="SplashScreen.QOL">Quality of Life Improvements</system:String>
-	<system:String x:Key="SplashScreen.QOL.Themes">The Manager now supports themes! These can be changed in the Manager "Config" tab.</system:String>
-	<system:String x:Key="SplashScreen.QOL.Languages">The Manager now supports different languages! These can be changed in the Manager "Config" tab.</system:String>
-	<system:String x:Key="SplashScreen.QOL.Manager">The Manager's executable no longer needs to be placed in the game's installation folder! If you are seeing this screen after updating the old manager, the manager's executable is currently in your game's installation folder. You are free to move this wherever you want!</system:String>
-	<system:String x:Key="SplashScreen.QOL.Profiles">Profiles have been migrated to a new system and have a dedicated management tool in the Management Config tab. There is also a button for migrating older profiles to the new system if you have older profiles you want to continue using.</system:String>
-	<system:String x:Key="SplashScreen.QOL.Config">Game Settings and Manager settings have been separated into two tabs. Debug options (Console Printing, Log Files, Crash Dumps, etc) are found in the Manager's "Config" tab. All game related options are found in the "Game's Config" Tab.</system:String>
-	<system:String x:Key="SplashScreen.QOL.KeepOpen">A new checkbox has been added that allows the manager to stay open when pressing the Play. This is enabled by default.</system:String>
+	<system:String x:Key="SplashScreen.QOL">Qualitätsverbesserungen</system:String>
+	<system:String x:Key="SplashScreen.QOL.Themes">Der Manager unterstützt nun Designs! Du kannst sie einfach im »Managereinstellungen«-Reiter anpassen.</system:String>
+	<system:String x:Key="SplashScreen.QOL.Languages">Der Manager unterstüzt nun verschiedene Sprachen! Wähle deine Lieblingssprache einfach im »Managereinstellungs«-Reiter aus.</system:String>
+	<system:String x:Key="SplashScreen.QOL.Manager">Die ausführbare Datei des Managers muss nicht mehr im Spielverzeichnis platziert werden! Wenn du diese Nachricht siehst, nachdem du vom alten Manager upgegradet bist, befindet sich die Datei noch im Spielverzeichnis. Du kannst sie jetzt dahinverschieben, wohin du willst!</system:String>
+	<system:String x:Key="SplashScreen.QOL.Profiles">Profile nutzen nun ein neues System und besitzen in den Managereinstellungen ein eigenes Tool. Außerdem ist da ein Knopf, mit dem du ein altes Profil in das neue Format bringen kannst, wenn du es weiterhin nutzen möchtest.</system:String>
+	<system:String x:Key="SplashScreen.QOL.Config">Spieleinstellungen und Managereinstellungen besitzen nun zwei separate Reiter. Debug-Einstellungen (Konsolenausgabe, Protokolldateien, Fehlerberichte, etc.) befinden sich jetzt alle in den »Managereinstellungen«. Alles, was mit dem Spiel zu tun hat, befindet sich im Reiter »Spieleinstellungen«.</system:String>
+	<system:String x:Key="SplashScreen.QOL.KeepOpen">Eine neue Auswahlbox wurde hinzugefügt, mit der der Manager geöffnet bleibt, während das Spiel ausgeführt wird. Diese Einstellung ist automatisch aktiviert.</system:String>
 
-	<system:String x:Key="SplashScreen.Features">New Features</system:String>
-	<system:String x:Key="SplashScreen.Features.AddMod">The New Mod button has changed to the Add Mod button. It now allows for both mod creation and manual mod installation. Installation works from folders and archives.</system:String>
+	<system:String x:Key="SplashScreen.Features">Neue Funktionen</system:String>
+	<system:String x:Key="SplashScreen.Features.AddMod">Der »Neue Mod«-Knopf wurde in den »Mod hinzufügen«-Knopf umgewandelt. Damit ist es nun möglich, eine Mod zu erstellen und zu installieren. Du kannst eine Mod manuell per Ordner, Archiv, oder dem Internet installieren.</system:String>
 	<system:String x:Key="SplashScreen.Features.About">Mods and Codes now have an About window if you double click them. Mods also now support URLs for the author and for the source code. These will be displayed in the About Mod window if they exist for the mod.</system:String>
 	<system:String x:Key="SplashScreen.Features.HealthCheck">A "Game Health Check" feature has been implemented. It can detect if specific files have been modified or if you have files missing. Please note that modified files are often not an issue, and the Manager will not repair your game install.</system:String>
 	<system:String x:Key="SplashScreen.Features.Search">Mods and Codes now have a Search feature. When in the Mods or Codes tab, you can open it by pressing Ctrl+F.</system:String>
