@@ -17,18 +17,18 @@
     <system:String x:Key="EditMod.Tabs.Btn.Advanced">Erweitert</system:String>
     <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Verzeichnise einschließen:</system:String>
 
-    <system:String x:Key="EditMod.Tabs.Updates">Infos aktuallisieren</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Method">Method aktuallisieren</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates">Informationen</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Method">Platform</system:String>
     <system:String x:Key="EditMod.Tabs.Updates.SelfHosted">Selbstgehostet</system:String>
-    <system:String x:Key="EditMod.Tabs.Updates.GitHub">Github-Update-Einstellungen</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GitHub">Github-Einstellungen</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Autor und Repo:</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Asset freigeben:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.GB">Gamebanana-Update-Einstellungen</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GB">Gamebanana-Einstellungen</system:String>
 	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">Mod-ID:</system:String>
     <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">Mod-Typ:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self">Update-Einstellungen zum Selbsthosten</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">Update-URL:</system:String>
-	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">Änderungsprotokoll-URL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self">Selbsthosten-Einstellungen</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL für das Änderungsprotokoll:</system:String>
 
 	<system:String x:Key="EditMod.Tabs.Dependencies">Abhängigkeiten</system:String>
 	<system:String x:Key="EditMod.Tabs.Dependencies.Warning">Das Abhängigkeitensystem sollte nur genutzt werden, wenn du eine Mod erstellt hast, die ohne Ausnahme eine andere Mod braucht, um richtig zu funktionieren.</system:String>

@@ -2,10 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 	
-	<system:String x:Key="InstallModOptions.Title">Neue Mod installieren, oder erstellen.</system:String>
+	<system:String x:Key="InstallModOptions.Title">Neue Mod installieren oder erstellen.</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Archive">Aus einem Archiv installieren</system:String>
 	<system:String x:Key="InstallModOptions.Radio.Folder">Aus einem Ordner installieren</system:String>
-    <system:String x:Key="InstallModOptions.Radio.Url">Von einer URL installieren</system:String>
+    <system:String x:Key="InstallModOptions.Radio.Url">Aus dem Internet installieren</system:String>
     <system:String x:Key="InstallModOptions.Radio.New">Neue Mod (Für Entwickelnde)</system:String>
 
     <system:String x:Key="InstallModUrl.Radio.Header">Kopiere und füge hier die Webseiten-URL der Mod ein:</system:String>

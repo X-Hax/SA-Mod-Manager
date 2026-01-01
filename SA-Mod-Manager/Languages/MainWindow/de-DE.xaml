@@ -1,0 +1,231 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<!--#region Main Window Strings-->
+	<system:String x:Key="Manager.Buttons.SaveAndPlay">Save &amp; Play</system:String>
+	<system:String x:Key="Manager.Tabs.Mods">Mods</system:String>
+	<system:String x:Key="Manager.Tabs.Codes">Codes</system:String>
+	<system:String x:Key="Manager.Tabs.GameConfig">Game Config</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig">Manager Config</system:String>
+	<system:String x:Key="Manager.Tabs.TestSpawn">Test Spawn</system:String>
+	<!--#endregion-->
+
+	<!--#region Mods Tab Strings-->
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">Refresh</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">Configure Mod</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">Add Mod</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">No Mod Selected.</system:String>
+
+    <!--Mods Context Menu-->
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Check For Updates</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.VerifyIntegrity">Verify Integrity</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.ForceUpdate">Force Update</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Configure">Configure Mod</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Edit">Edit Mod</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Delete">Delete Mod</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer">Developer</system:String>
+	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.Manifest">Generate Manifest</system:String>	
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate">Disable Updates</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.ContextMenu.Developer.EnableUpdate">Enable Updates</system:String>
+    <!--#endregion-->
+
+	<!--#region Codes Tab Strings-->
+	<system:String x:Key="Manager.Tabs.Codes.Buttons.NewCode">New Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.EditCode">Edit Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.Buttons.DeleteCode">Delete Code</system:String>
+    <system:String x:Key="Manager.Tabs.Codes.CodeHeader">Code</system:String>
+	<system:String x:Key="Manager.Tabs.Codes.MadeBy">Made by</system:String>
+	<!--#endregion-->
+
+
+    <!--Game-->
+    <system:String x:Key="Manager.Buttons.AddGame">Add Game...</system:String>
+    <!--#endregion-->
+
+    <!--#region Manager Config Tab Strings-->
+	<!--Options-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options">Game Settings</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Theme">Theme:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.UpdateChannel">Update Channel:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Lang">Language:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Profile">Profile:</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.GameDirectory">Game Directory:</system:String>
+
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.EnableOneClick">Enable 1-Click Install</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">Disable 1-Click Install</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Open Game Directory</system:String>
+
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Install Mod Loader</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Uninstall Mod Loader</system:String>
+
+	<!--Updates-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Update Settings</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Check for Mod Manager Updates on Startup</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Check for Mod Loader Updates on Startup</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Check for Mod Updates on Startup</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Check For Updates</system:String>
+
+	<!--Debug Features-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Manager Settings</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Keep Mod Manager Open after launching game</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintain Mod Order</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Enable Developer Options</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Enable Console Window</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Print Debug in Game Window</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Log Debug Info to File</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Create Crash Dumps</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Check Game Health</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.UseSoftwareRendering">Disable Hardware Acceleration</system:String>
+	
+	<!--About-->
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">About</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">About</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Description">The SA Mod Manager is a program that allows you to easily manage mods in the Sonic Adventure titles.</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Credits">Contributors</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.Source">Mod Manager Source Code</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Mod Loader Source Code</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Report a Bug (English only)</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Open SA Docs (English only)</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.AdvancedOptions">Advanced Options</system:String>
+	<!--#endregion-->
+	
+	<!--#region Tooltips-->
+	<!--#region Main Window Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Mods">Select, edit, and configure your mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes">Select codes to use when playing.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig">Configure Game Options including Graphics and Sound.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn">Selectable options to quick boot into the game with any character in any level.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options">Configure Manager Options, including Themes and Language settings.</system:String>
+	<system:String x:Key="MainWindow.Tips.SaveAndPlay">Save selected settings and launch the game.</system:String>
+	<system:String x:Key="MainWindow.Tips.Save">Save selected settings.</system:String>
+
+	<!--#region Mods Tab Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.Refresh">Refreshes the mods list.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveCeiling">Moves the selected mod to the top of the list.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveUp">Moves the selected mod up one in the list.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveDown">Moves the selected mod down one in the list.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.MoveFloor">Moves the selected mod to the bottom of the list.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.SelectAll">Selects all mods in the list. Launching the game with all mods selected may crash the game.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.CommonStrings.DeselectAll">Deselects all mods in the list.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Mods.NewMod">Opens the New Mod Window where you can install a mod manually or begin creating one.</system:String>
+	<!--#endregion-->
+
+	<!--#region Codes Tab Tool Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.SelectAll">Selects all available codes.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.CommonStrings.DeselectAll">Deselects all available codes.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Codes.NewCode">Opens the Create a Code window.</system:String>
+	<!--#endregion-->
+
+	<!--#region Game Config Tab -->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics">Modify Graphics Options.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input">Modify game input options.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound">Modify game sound settings.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches">Enable or Disable game patches.</system:String>
+
+	<!--#region Graphics Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Screen">Select the monitor that the game will load on.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Resolution">Set a custom resolution, or select from a list of preset resolutions.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.43Ratio">Forces the game to a 4:3 aspect ratio despite the set resolution.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.VSync">Enables V-Sync.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Pause">If enabled, when the game window is not focused, the game will be paused.</system:String> 
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Borderless">Sets the fullscreen game window to borderless.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ScaleScreen">Scales the game window in Fullscreen to render to the selected display's size.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Windowed">Game window will boot in windowed mode.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ResizeWindow">Allows the game window to be resized while open.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.ShowMouse">Shows mouse cursor in full screen mode.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.StretchToWindow">Stretches the game's rendered output to match the game's window size. Can cause a stretched image.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DisableBorderImage">Disables the Border Image from being loaded and rendered.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.MaintainAspect">Maintains the aspect ratio from the set resolution when setting a custom window size.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.CustomWindow">Sets the window size separate from the resolution. E.g., it allows you to play at 4K resolution in a smaller window.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Framerate">Sets the game's framerate.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Fog">Sets the emulation type with the renderer. Auto is recommended. Only use emulated if working with a very old graphics card/chipset.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Sets the texture filter type for all model textures.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Sets the texture filtering type for all GUI related textures.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Sets the detail level for the draw distance.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill" xml:space="preserve">Sets the scaling mode for backgrounds&#x0a;Stretch: The backgrounds will be stretched without maintaining the aspect ratio.&#x0a;Fit: The backgrounds will be displayed with borders.&#x0a;Fill: The backgrounds will be cropped and zoomed in to display without borders.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Sets the fill method when the game is performing FMV playback.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Generated MipMaps for all textures that do not have them.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Enables use of the D3D8to9 Shim, allowing the game to make use of D3D9 features. Required for some mods.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Enables the UI to scale properly depending on the game resolution.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Checks for, and downloads any, updates to d3d8to9.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Sets the refresh rate, be aware that the game doesn't support more than 60 fps and there is a patch which locks the framerate, change this at your own risk.</system:String>
+    <!--#endregion-->
+
+	<!--#region Input Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Vanilla">Uses the original input system built into SADX. This system is prone to problems, most commonly the spinning camera. It's recommended to not use this option.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.BetterInput">Implements an SDL2 based system that replaces the original input system. This is the recommended Input method.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseHold">Sets the Mouse Movement mode to dragging and holding to move the player.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.MouseAccelerate">Sets the Mouse Movement mode to where dragging will accelerate the player.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Jump">This button accepts in menus or is used to jump, most commonly assigned to Cross or A.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Action">This button is the standard action button for each character, commonly assigned to Square or X.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Cancel">This button cancels in menus or is another button for attacking in game, most commonly assigned to Circle or B.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Start">This button is the start button. You use it to start the game and pause the game. Most commonly assigned to the Start button.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamLeft">This button moves the camera to the left, most commonly assigned to the left shoulder buttons. Cannot be assigned to a joystick.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.CamRight">This button moves the camera to the right, most commonly assigned to the right shoulder buttons. Cannot be assigned to a joystick.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Flute">This button is used for the whistle in the Chao Garden. Most commonly assigned to Triangle or Y.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.Launcher">This will open the AppLauncher and allow you to configure your controls.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Input.GetLauncher">This will open a link to where you can download the AppLauncher for configuring your controls.</system:String>
+	<!--#endregion-->
+
+	<!--#region Sound Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">Replaces the sound backend with vgmbass. This is recommended for the best experience, and many mods rely on it.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">Enables music in-game.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">Enables the 3D Sound in-game.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">Uses BASS as the backend for sound effect playback.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">Enables Sound Effects and Voices in game.</system:String>
+	<!--#endregion-->
+
+	<!--#region Patches Settings-->
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.SelectAll">Selects all patches in the list.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Patches.CommonStrings.DeselectAll">Deselects all patches in the list.</system:String>
+	<!--#endregion-->
+	<!--#endregion-->
+
+	<!--#region Test Spawn Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Character">Enables setting the character you spawn as.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Level">Enables setting the level you spawn into.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Time">Sets the time of day for Adventure fields.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Act">Sets the Act of the selected level.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Event">Enables loading into an event.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.GameMode">Enables setting the game mode to a specific type.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Save">Enables swapping the loaded save file when booting into the game.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Manual">Enables manually setting the character, level, and act. Overrides settings above when enabled.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Enables setting the start position and rotation.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Launches the game with the above settings applied.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Enables setting for player 2.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Sets the Mission of the selected level.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.EventManual">Forces a cutscene with the specified ID to play, if it exists. Overrides all settings when enabled.</system:String>
+    
+    <!--#endregion-->
+
+	<!--#region Manager Config Tips-->
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Profile">Select which profile is being used for mod list and settings.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ProfileEdit">Opens the Profile Manager where you can create and delete profiles.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.GameDirectory">Full path to the directory your game is installed in.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.DirectoryBrowse">Opens a window where you can select your game directory.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Opens the directory your game is installed in.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Sets the theme used by the Mod Manager.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Sets the language used by the Mod Manager.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Keeps the Mod Manager open when pressing Save and Play.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Checked mods will no longer be moved when saving after checking them.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Enables the Test Spawn Tab in the Mod Manager.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">When Enabled, clicking One Click links on GameBanana will open a download dialog for the mod.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">When enabled, the Mod Loader is installed and you can play with mods, patches, and cheats.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Enables automatic checking for updates to the Mod Manager on Startup.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Enables automatic checking for updates to the Mod Loader on Startup.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ModUpdates">Enables automatic checking for updates to Mods you have installed when opening the Mod Manager.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CheckUpdates">Runs a check for updates to the Mod Loader and any Mods you have installed.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ConsoleWindow">Opens a Console Window which displays debug information from the game.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Prints debug information within the game window.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Saves any debug information to a log file.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Enables logging crash dumps when the game encounters an error. These are useful in researching unexpected crashes.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Opens the Contributors and About window.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Opens a link to the GitHub repo for the Mod Manager.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Opens a link to the SA Docs website which has various information regarding modding the Adventure games.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Opens a link to the Issues on the Mod Manager's GitHub repo for reporting bugs.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Runs a health check on your game install to see if you have any missing or modified files.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.UseSoftwareRendering">Disables hardware acceleration and sets the app to render using Software Rendering. May improve performance or fix some graphical issues on some systems.</system:String>
+	<!--#endregion-->
+
+</ResourceDictionary>
