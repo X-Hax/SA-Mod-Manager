@@ -13,7 +13,7 @@
 
 	<system:String x:Key="MessageWindow.Errors.ModNotFound" xml:space="preserve">Die folgenden Mods konnten nicht gefunden werden:&#x0a;&#x0a;</system:String>
 	
-	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Der Spielepfad konnte nicht gesetzt werden</system:String>
+	<system:String x:Key="MessageWindow.Errors.GamePathFailed.Title">Der Spielpfad konnte nicht gesetzt werden</system:String>
 	<system:String x:Key="MessageWindow.Errors.GamePathFailed">Es konnte kein unterstütztes Spiel erkannt werden. Stell sicher, dass du einen Ordner ausgewählt hast, in dem ein Spiel installiert ist. Wenn du die ursprüngliche .exe-Datei umbenannt hast, funktioniert die Spielerkennung nicht.</system:String>
 	
 	<system:String x:Key="MessageWindow.Errors.ModAlreadyExists.Title">„Mod existiert bereits“</system:String>
@@ -57,128 +57,128 @@
     <system:String x:Key="MessageWindow.Errors.URIParseFailFields0">One-Click-Installations URI</system:String>
     <system:String x:Key="MessageWindow.Errors.URIParseFailFields1">beinhaltete nicht alle benötigten Felder.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail.Title">Directory Deletion Failed</system:String>
-    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail0">Failed to remove temporary update directory</system:String>
-    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail1">Would you like to retry? You can remove the directory manually later.</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail.Title">Verzeichnislöschung fehlgeschlagen</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail0">Das temporäre Update-Verzeichnis konnte nicht entfernt werden</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail1">Möchten du es erneut versuchen? Das Verzeichnis kann später noch manuell entfernen.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail.Title">Directory Creation Failed</system:String>
-    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail0">Failed to create temporary update directory</system:String>
-    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail1">Would you like to retry?</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail.Title">Verzeichnis erstellen fehlgeschlagen</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail0">Das temporäre Update-Verzeichnis konnte nicht erstellt werden</system:String>
+    <system:String x:Key="MessageWindow.Errors.DirectoryCreateFail1">Möchten du es erneut versuchen?</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Update Failed</system:String>
-    <system:String x:Key="MessageWindow.Errors.UpdateFailed">Failed to update:</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed.Title">Update fehlgeschlagen</system:String>
+    <system:String x:Key="MessageWindow.Errors.UpdateFailed">Folgendes konnte nicht aktualisiert werden:</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Failed to update mod</system:String>
-    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">Press Retry to try again, or Cancel to skip this mod.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed0">Mod-Update fehlgeschlagen</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModUpdateFailed1">Drücke auf »Wiederholen«, um es erneut zu versuchen, oder »Abbrechen«, um diese Mod zu überspringen.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Unable to retrieve update information.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ManagerUpdateFail">Aktualisierungsinformationen können nicht abgerufen werden.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.Net7Missing">SA Mod Manager cannot run without .NET 7.</system:String>
+    <system:String x:Key="MessageWindow.Errors.Net7Missing">SA Mod Manager funktioniert ohne .NET 7 nicht.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Missing VC++</system:String>
-    <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">It looks like you're missing some Visual C++ Redistributables, some mods won't work without them.&#x0a;&#x0a;Would you like to download and install them now?</system:String>
+    <system:String x:Key="MessageWindow.Errors.VCMissing.Title">Fehlendes VC++</system:String>
+    <system:String x:Key="MessageWindow.Errors.VCMissing" xml:space="preserve">Es sieht so aus, als würden dir einige Visual C++-Komponenten fehlen. Die meisten Mods funktionieren ohne diese nicht.&#x0a;&#x0a;Möchtest du sie jetzt herunterladen und installieren?</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Download Error</system:String>
-    <system:String x:Key="MessageWindow.Errors.GenericDLFail0">Failed to download</system:String>
-    <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Would you like to try again?</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail.Title">Download-Fehler</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail0">Download fehlgeschlagen</system:String>
+    <system:String x:Key="MessageWindow.Errors.GenericDLFail1">Möchten du es noch einmal versuchen?</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave.Title">Loader Info Not Saved.</system:String>
-	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">"The Mods directory does not appear to be a valid path, please ensure it is a valid path. Your current settings were not saved for the ModLoader to use."</system:String>
+	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave.Title">Loader Informationen wurden nicht gespeichert.</system:String>
+	<system:String x:Key="MessageWindow.Errors.LoaderFailedToSave">„Das Mods-Verzeichnis scheint kein gültiger Pfad zu sein. Bitte stelle sicher, dass Pfad gültig ist. Deine aktuellen Einstellungen wurden nicht gespeichert.“</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.CodeFail.Title">Invalid Code Line</system:String>
-	<system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">There is an empty line within the code writer lines.&#x0a;&#x0a;Please remove the empty line and resave.</system:String>
-	<system:String x:Key="Messagewindow.Errors.CodeFailInvalid">The written code is invalid.&#x0a;&#x0a;Please correct the error and resave.</system:String>
-    <system:String x:Key="MessageWindow.Errors.CodeBuildFail" xml:space="preserve">Failed to build {0}, this could be a permission issue.&#x0a;&#x0a;Advanced Error:&#x0a;{1}</system:String>
+	<system:String x:Key="MessageWindow.Errors.CodeFail.Title">Ungültige Codezeile</system:String>
+	<system:String x:Key="MessageWindow.Errors.CodeFailEmptyLine">Innerhalb der Codezeilen befindet sich eine leere Zeile.&#x0a;&#x0a;Bitte entferne diese und speichere erneut.</system:String>
+	<system:String x:Key="Messagewindow.Errors.CodeFailInvalid">Der geschriebene Code ist ungültig.&#x0a;&#x0a;Bitte behebe den Fehler und speichere den Code erneut ab.</system:String>
+    <system:String x:Key="MessageWindow.Errors.CodeBuildFail" xml:space="preserve">{0} konnte nicht gebaut werden, dies könnte an fehlenden Berechtigungen liegen.&#x0a;&#x0a;Erweiterter Fehler:&#x0a;{1}</system:String>
     
-    <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Unknown Error</system:String>
-	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">An unknown error has occurred.</system:String>
+    <system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError.Title">Unbekannter Fehler</system:String>
+	<system:String x:Key="MessageWindow.Errors.HealthCheck.UnknownError">Ein unbekannter Fehler ist erschienen.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">Failed to delete the mod {0}.&#x0a;Please make sure the files exist and aren't used by another program, then try again.</system:String>
-    <system:String x:Key="MessageWindow.Errors.ProfileLoad">An unexpected error occurred while loading profiles, if the problem persists, please report the issue.</system:String>
-    <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">Failed to create config folder at {0}.&#x0a;The Mod Manager won't be able to work properly.</system:String>
-    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">Failed to install or update {0}.&#x0a;If the game is open, please close it and try again.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ModDelete" xml:space="preserve">{0} konnte nicht gelöscht werden.&#x0a;Bitte stelle sicher, dass die Dateien vorhanden sind und nicht von einem anderen Programm verwendet werden, und versuche es dann erneut.</system:String>
+    <system:String x:Key="MessageWindow.Errors.ProfileLoad">Beim Laden der Profile ist ein unerwarteter Fehler aufgetreten. Sollte das Problem weiterhin bestehen bleiben, melde diesen.</system:String>
+    <system:String x:Key="MessageWindow.Errors.CreateConfigFolder" xml:space="preserve">In {0} konnte der Konfigurationsordner nicht erstellt werden.&#x0a;Der Mod Manager wird so nciht richtig funktionieren.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LoaderCopy" xml:space="preserve">{0} konnte nicht installiert, oder aktualisiert werden.&#x0a;Wenn das Spiel offen ist, schließe es und versuche es dann erneut.</system:String>
 
 
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Error Reading Ini File</system:String>
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">An unexpected error occurred while reading an ini file. Ini files cannot have the same key or group multiple times.</system:String>
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Mod Name: {0}&#x0a;Mod Author: {1}&#x0a;</system:String> <!--> this is assuming the ini file was a mod <!-->
-    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">This mod won't work. Please report this error to the mod's author so they can fix it.</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateTitle">Fehler beim Lesen der ini-Datei</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicate" xml:space="preserve">Beim Lesen einer ini-Datei ist ein unerwarteter Fehler aufgetreten. ini-Dateien dürfen denselben Schlüssel oder dieselbe Gruppe nicht mehrfach enthalten.</system:String>
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod0" xml:space="preserve">Modname: {0}&#x0a;Mod-Autor: {1}&#x0a;</system:String> <!--> this is assuming the ini file was a mod <!-->
+    <system:String x:Key="MessageWindow.Errors.IniKeyDuplicateMod1">Diese Mod funktioniert nicht. Bitte melde den Fehler beim Autor der Mod, damit er behoben werden kann.</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">The Manager couldn't select the language {0}.&#x0a;If the issue persists, please report it on the X-Hax Server.&#x0a;&#x0a;Advanced Error Code: {1}</system:String>
-    <system:String x:Key="MessageWindow.Errors.PermissionTitle">Access Denied</system:String>
-    <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Failed to create directory, the program does not have the authorization to write at this path: {0}&#x0a;&#x0a;Please restart the Manager with Administrator Privileges.</system:String>
-    <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Failed to find the game path of {0} at {1}&#x0a;If you have moved your game directory to a different location, please re set the game path in the Manager Config tab.</system:String>
+    <system:String x:Key="MessageWindow.Errors.LanguageSwitch" xml:space="preserve">Der Mod Manager konnte »{0}« nicht anwenden.&#x0a;Wenn das Problem weiterhin besteht, melde es bitte auf dem X-Hax-Server.&#x0a;&#x0a;Erweiterter Fehlercode: {1}</system:String>
+    <system:String x:Key="MessageWindow.Errors.PermissionTitle">Zugriff verweigert</system:String>
+    <system:String x:Key="MessageWindow.Errors.FolderPermission" xml:space="preserve">Das Verzeichnis konnte nicht erstellt werden, das Programm verfügt nicht über die Berechtigung, in diesem Pfad zu schreiben: {0}&#x0a;&#x0a;Bitte starte den Manager mit Administratorrechten neu.</system:String>
+    <system:String x:Key="MessageWindow.Errors.GameNoLongerFound" xml:space="preserve">Der Spielpfad von {0} konnte nicht in {1} gefunden werden.&#x0a;Wenn du das Spielverzeichnis an einen anderen Speicherort verschoben hast, lege bitte den neuen Pfad in »Managereinstellungen« fest.</system:String>
 
-	<system:String x:Key="MessageWindow.Errors.ConnectionFailed.Title">Connection Failed</system:String>
-	<system:String x:Key="MessageWindow.Errors.ConnectionFailed.Message" xml:space="preserve">A connection with GitHub's API was unable to be created.&#x0a;&#x0a;This is potentially due to hitting the GitHub API limit, an issue with your ISP, firewall settings, or due to an Anti-Virus program.&#x0a;&#x0a;Please try again later. If the issue continues, please check your internet connection or firewall settings.</system:String>
+	<system:String x:Key="MessageWindow.Errors.ConnectionFailed.Title">Verbindung fehlgeschlagen</system:String>
+	<system:String x:Key="MessageWindow.Errors.ConnectionFailed.Message" xml:space="preserve">Eine Verbindung mit der API von GitHub konnte nicht hergestellt werden.&#x0a;&#x0a;Dies kann daran liegen, dass das Limit der GitHub-API erreicht wurde, ein Problem mit deinem Internetdienstanbieter oder den Firewall-Einstellungen besteht, oder ein Antivirenprogramm eingreift.&#x0a;&#x0a;Bitte versuche es später erneut. Wenn das Problem weiterhin besteht, überprüfe bitte deine Internetverbindung oder Firewall-Einstellungen.</system:String>
     <!--#endregion-->
 	
 	<!--#region Warnings-->
-	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">This will uninstall all the selected mods:&#x0a;&#x0a;</system:String>
-    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Are you sure you wish to continue?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Dadurch werden alle ausgewählten Mods deinstalliert.s:&#x0a;&#x0a;</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Möchtest du wirklich fortfahren?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">You are about to disable save redirection for this mod. If you continue, any save in this mod folder will be deleted.&#x0a;&#x0a;Are you sure you want to proceed?</system:String>
-    <system:String x:Key="MessageWindow.Warnings.DeleteProfile">Are you sure you want to delete the selected profile(s)?</system:String>
-    <system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">This will force all selected mods to be completely re-downloaded.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Du bist dabei, die Speicherumleitung für diese Mod zu deaktivieren. Wenn du weitermachst werden alle Speicherstände in diesem Mod-Ordner gelöscht.&#x0a;&#x0a;Are you sure you want to proceed?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DeleteProfile">Möchtest du die ausgewählten Profile wirklich löschen?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Dadurch werden alle ausgewählten Mods komplett neu heruntergeladen.&#x0a;&#x0a;Möchtest du fortfahren?</system:String>
 	
-	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">This can cause MOD USER DATA (SAVE FILES, CONFIG FILES) TO BE LOST upon next update! To prevent this, you should never run this on mods you did not develop.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.GenerateManifest" xml:space="preserve">Dies kann dazu führen, dass MOD-BENUTZERDATEN (SPEICHER-/KONFIGURATIONSDATEIEN) beim nächsten Update VERLOREN gehen! Um dies zu verhindern, solltest du diese Funktion niemals auf Mods anwenden, die du nicht selbst entwickelt hast.&#x0a;&#x0a;Are you sure you wish to continue?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime is not installed!&#x0a;&#x0a;Would you like to install it now?</system:String>
-    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">This will delete all selected codes.&#x0a;&#x0a;Are you sure you want to continue?</system:String>
-    <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">You are about to disable updates for this mod. If you continue, the Manager will NEVER check update for this mod.&#x0a;Are you sure you want to proceed?</system:String>
-    <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">The Mod Manager needs 7-zip to extract mods and handle updates.&#x0a;&#x0a;Would you like to install it now?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.Net7Missing" xml:space="preserve">.NET 7.0 Desktop Runtime ist nicht installiert!&#x0a;&#x0a;Would you like to install it now?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.NewCodeDelete" xml:space="preserve">Dadurch werden alle ausgewählten Codes gelöscht.&#x0a;&#x0a;Möchtest du wirklich fortfahren?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DisableUpdates" xml:space="preserve">Du bist dabei, Updates für diese Mod zu deaktivieren. Wenn du fortfährst, wird der Manager NIEMALS nach Updates für diese Mod suchen.&#x0a;Möchtest du wirklich weitermachen?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.7zMissing" xml:space="preserve">Der Mod Manager benötigt 7-zip, um Mods zu extrahieren und Updates zu verarbeiten.&#x0a;&#x0a;Das das jetzt installiert werden?</system:String>
 
-	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Profiles Missing</system:String>
-	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">The following profiles were not found:</system:String>
-	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">They will be removed from the Profiles list and the selected profile will be defaulted to the first profile in the list.</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Title" xml:space="preserve">Fehlende Profile</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message1" xml:space="preserve">Die folgenden Profile wurden nicht gefunden:</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfilesDeleted.Message2" xml:space="preserve">Sie werden aus der Profilliste entfernt und das ausgewählte Profil wird als erstes Profil in der Liste angezeigt.</system:String>
 
-	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Title" xml:space="preserve">Automatic Profile Migration Failed</system:String>
-	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message1" xml:space="preserve">The SA Mod Manager was unable to convert your last used profile.</system:String>
-	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message2" xml:space="preserve">A new default profile will be created. You can retry conversion in the Profiles Manager.</system:String>
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Title" xml:space="preserve">Automatische Profilmigration fehlgeschlagen</system:String>
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message1" xml:space="preserve">Der SA Mod Manager konnte dein zuletzt verwendetes Profil nicht konvertieren.</system:String>
+	<system:String x:Key="MessageWindow.Warnings.FirstMigrationFail.Message2" xml:space="preserve">Es wird ein neues Standardprofil erstellt. Du kannst die Konvertierung im Profilmanager wiederholen.</system:String>
 
-	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Import Failed</system:String>
-	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">The following files failed to be imported as profiles:</system:String>
-	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Please ensure you are only using Game Profile JSON files or old Loader INI files.</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Title" xml:space="preserve">Import fehlgeschlagen</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message1" xml:space="preserve">Die folgenden Dateien konnten nicht als Profile importiert werden:</system:String>
+	<system:String x:Key="MessageWindow.Warnings.ProfileMigration.Message2" xml:space="preserve">&#x0a;&#x0a;Bitte stelle sicher, dass du nur JSON-Dateien von Spielprofilen, oder alte Loader ini-Dateien verwendest.</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">The new Mod Manager update requires at least .NET 8.0.7 Desktop Runtime to work.&#x0a;&#x0a;Would you like to install it now?</system:String>
-    <system:String x:Key="MessageWindow.Warnings.ASLRDetected" xml:space="preserve">It looks like you have the Windows settings ASLR enabled, this can prevent the Mod Loader to work, it is recommended to disable it.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.Net8Missing" xml:space="preserve">Das neue Mod Manager-Update erfordert mindestens .NET 8.0.7 Desktop Runtime, um zu funktionieren.&#x0a;&#x0a;Möchtest du es jetzt installieren?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ASLRDetected" xml:space="preserve">Es sieht so aus, als hättest du ASLR in den Windowseinstellungen aktiviert. Dies kann dazu führen, dass der Mod Loader nicht funktioniert. Es wird empfohlen, diese Einstellung zu deaktivieren.</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.ChannelReleaseSwap" xml:space="preserve">You are about to switch to the current release version of the Manager.&#x0a;Do you want to continue? The Manager will restart to switch channels.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ChannelReleaseSwap" xml:space="preserve">Du bist dabei, zur aktuellen Release-Version des Managers zu wechseln.&#x0a;Möchtest du fortfahren? Der Manager wird neu gestartet, um den Kanal zu wechseln.</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.ChannelDevSwap" xml:space="preserve">You are about to switch to the development build of the Manager. This version may contain untested features and bugs.&#x0a;Do you want to continue? The Manager will restart to switch channels.</system:String>
+    <system:String x:Key="MessageWindow.Warnings.ChannelDevSwap" xml:space="preserve">Du bist dabei, zur Entwicklungsversion des Managers zu wechseln. Diese Version kann ungetestete Funktionen und Fehler enthalten..&#x0a;Möchtest du fortfahren? Der Manager wird neu gestartet, um den Kanal zu wechseln.</system:String>
 
     <!--#endregion-->
 	
 	<!--#region Information-->
-	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">No Mod Updates Found</system:String>
-	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Mods are up to date.</system:String>
+	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates.Title">Keine Mod-Updates gefunden</system:String>
+	<system:String x:Key="MessageWindow.Information.NoAvailableUpdates">Die Mods sind auf dem neuesten Stand.</system:String>
 
-    <system:String x:Key="MessageWindow.Information.D3D8Update">The version of d3d8.dll in SADX folder differs from the one included with the Mod Loader. Would you like to update the installed copy?</system:String>
+    <system:String x:Key="MessageWindow.Information.D3D8Update">Die Version von d3d8.dll im SADX-Ordner unterscheidet sich von der im Mod Loader enthaltenen Version. Möchtest du die installierte Version aktualisieren?</system:String>
 
-    <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Integrity Pass</system:String>
-    <system:String x:Key="MessageWindow.Information.ModPassedVerif">All selected mods passed verification.</system:String>
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif.Title">Integrität bestanden</system:String>
+    <system:String x:Key="MessageWindow.Information.ModPassedVerif">Alle ausgewählten Mods haben die Überprüfung bestanden..</system:String>
 
-    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Game found</system:String>
-    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">{0} game has been detected at '{1}'&#x0a;&#x0a;Would you like to download and install the Mod Loader?</system:String>
-    <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Would you like to download and install the Mod Installer to convert your game to the 2004 version? (Your saves will be converted as well).</system:String>
-    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX game folder has been found at '{0}', but it appears to be the Steam version.&#x0a;The Mod Loader can only work with the PC 2004 Version.&#x0a;&#x0a;Please download and install SADX Mod Installer to convert your game to 2004. (Your saves will be converted as well).</system:String>
-	<system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Health Check</system:String>
-	<system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">You are about to run the Game Health check. This will verify all game files except audio files.&#x0a;&#x0a;Do you wish to continue?</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected.Title">Spiel gefunden</system:String>
+    <system:String x:Key="MessageWindow.Information.GameDetected" xml:space="preserve">{0} wurde in »{1}« gefunden&#x0a;&#x0a;Möchtest du den Mod Loader herunterladen und installieren?</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">SADX wurde in »{1}« gefunden, allerdings scheint es sich dabei um die Steamversion zu handeln.&#x0a;Der Mod Loader funktioniert nur mit der PC Version von 2004.&#x0a;&#x0a;Möchtest du den Mod Installer herunterladen und installieren, um dein Spiel auf die Version von 2004 umzustellen? (Deine Speicherstände werden ebenfalls konvertiert).</system:String>
+    <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX wurde in »{1}« gefunden, allerdings scheint es sich dabei um die Steamversion zu handeln.&#x0a;Der Mod Loader funktioniert nur mit der PC Version von 2004.&#x0a;&#x0a;Bitte lade den SADX Mod Installer herunter, um dein Spiel auf die Version von 2004 umzustellen. (Deine Speicherstände werden ebenfalls konvertiert).</system:String>
+	<system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Gesundheitscheck</system:String>
+	<system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Du bist gerade dabei den Gesundheitscheck auszuführen. Dabei werden die Spieldateien überpürft. Damit werden alle Dateien, mit der Ausnahme von Audio-Dateien überprüft.&#x0a;&#x0a;Möchtest du weitermachen?</system:String>
 
-	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">File Issues Found</system:String>
-	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">The following issues were found with your game files:</system:String>
-	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles2">Please be aware that if your game is working as intended, the above issues are not affecting your game.</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">Dateiprobleme gefunden</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">Die folgenden Probleme wurden in den Spieldateien festgestellt:</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles2">Bitte beachte, dass die oben genannten Probleme dein Spiel nicht beeinträchtigen, wenn es wie vorgesehen funktioniert.</system:String>
 
-	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Verification Complete</system:String>
-	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified">All checked files have been verified.</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified.Title">Überprüfung abgeschlossen</system:String>
+	<system:String x:Key="MessageWindow.Information.HealthCheck.Verified">Alle ausgewählten Dateien wurden verifiziert.</system:String>
 
-	<system:String x:Key="MessageWindow.Information.Exception.Title">Include Settings</system:String>
-	<system:String x:Key="MessageWindow.Information.Exception.Message">Would you like to copy your Manager and Profile settings to your clipboard to provide in your report?&#x0a;&#x0a;This is not necessary, but it can assist in resolving problems.</system:String>
+	<system:String x:Key="MessageWindow.Information.Exception.Title">Einstellungen einbeziehen</system:String>
+	<system:String x:Key="MessageWindow.Information.Exception.Message">Möchtest du deine Manager- und Profileinstellungen in die Zwischenablage kopieren, um sie in deinem Bericht einzufügen?&#x0a;&#x0a;Dies ist nicht notwendig, kann jedoch bei der Lösung von Problemen hilfreich sein.</system:String>
 
-	<system:String x:Key="MessageWindow.Information.BugReport.Title">Report Bug</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message1" xml:space="preserve">You are about to submit a bug report for the Mod Manager.&#x0a;&#x0a;This is NOT for troubleshooting issues with the games or mods.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message2" xml:space="preserve">&#x0a;Please ensure the following:&#x0a;- Your Manager is up to date.&#x0a;- You can provide screenshots or videos.</system:String>
-    <system:String x:Key="MessageWindow.Information.BugReport.Message3" xml:space="preserve">&#x0a;Are you sure you want to continue?</system:String>
+	<system:String x:Key="MessageWindow.Information.BugReport.Title">Fehler melden</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message1" xml:space="preserve">Du bist dabei, einen Fehlerbericht für den Mod Manager einzureichen.&#x0a;&#x0a;Dies dient NICHT zur Fehlerbehebung bei Problemen mit den Spielen oder Mods.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message2" xml:space="preserve">&#x0a;Bitte stelle folgendes sicher:&#x0a;- Dein Manager ist auf dem aktuellen Stand.&#x0a;- Du kannst Screenshots oder Videos bereitstellen.</system:String>
+    <system:String x:Key="MessageWindow.Information.BugReport.Message3" xml:space="preserve">&#x0a;Bist du sicher, dass du weitermachen möchtest?</system:String>
     <!--#endregion-->
 	
 </ResourceDictionary>

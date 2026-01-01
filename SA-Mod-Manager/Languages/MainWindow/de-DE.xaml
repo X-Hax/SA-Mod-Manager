@@ -15,7 +15,7 @@
 	<system:String x:Key="Manager.Tabs.Mods.Buttons.Refresh">Aktualisieren</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.Buttons.Configure">Mod konfigurieren</system:String>
 	<system:String x:Key="Manager.Tabs.Mods.Buttons.Add">Mod hinzufügen</system:String>
-    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">Keine Mod Selectedausgewählt.</system:String>
+    <system:String x:Key="Manager.Tabs.Mods.Text.NoModSelected">Keine Mod ausgewählt.</system:String>
 
     <!--Mods Context Menu-->
 	<system:String x:Key="Manager.Tabs.Mods.ContextMenu.CheckUpdate">Nach Updates prüfen</system:String>
@@ -56,13 +56,13 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.DisableOneClick">1-Klick-Installation deaktivieren</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.GameDir">Spielverzeichnis öffnen</system:String>
 
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Mod-Loader installieren</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Mod-Loader deaktivieren</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.InstallLoader">Mod Loader installieren</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Buttons.UninstallLoader">Mod Loader deaktivieren</system:String>
 
 	<!--Updates-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates">Update-Einstellungen</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Suche nach Updates für den Mod-Manager beim Starten</system:String>
-	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Suche nach Updates für den Mod-Loader beim Starten</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Manager">Suche nach Updates für den Mod Manager beim Starten</system:String>
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Loader">Suche nach Updates für den Mod Loader beim Starten</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Suche nach Updates für Mods beim Starten</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Nach Updates suchen</system:String>
 
@@ -143,13 +143,13 @@
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.TextureFiltering">Legt den Texturfiltertyp für alle Modelltexturen fest.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIFiltering">Legt den Texturfiltertyp für alle GUI-bezogenen Texturen fest.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.DetailLevel">Legt den Detailgrad für die Darstellungsentfernung fest.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill" xml:space="preserve">Legt den Skalierungsmodus für Hintergründe fest.&#x0a;Strecken: Die Hintergründe werden ohne Beibehaltung des Seitenverhältnisses gestreckt.&#x0a;Anpassen: Die Hintergründe werden mit Rahmen angezeigt.&#x0a;Füllen: Die Hintergründe werden zugeschnitten und vergrößert, damit sie ohne Ränder angezeigt werden.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">SLegt die Füllmethode fest, wenn eine FMV abgespielt wird.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">GGeneriert MipMaps für alle Texturen, die noch keine haben.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.BackgroundFill" xml:space="preserve">Legt den Skallierungsmodus für Hintergründe fest.&#x0a;Strecken: Die Hintergründe werden ohne Beibehaltung des Seitenverhältnisses gestreckt.&#x0a;Anpassen: Die Hintergründe werden mit Rahmen angezeigt.&#x0a;Füllen: Die Hintergründe werden zugeschnitten und vergrößert, damit sie ohne Ränder angezeigt werden.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.FMVFill">Legt die Füllmethode fest, wenn eine FMV abgespielt wird.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.Mipmap">Generiert MipMaps für alle Texturen, die noch keine haben.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.EnableD3D8to9">Ermöglicht die Verwendung des D3D8to9-Shims, wodurch das Spiel D3D9-Funktionen nutzen kann. Für einige Mods erforderlich.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UIScale">Ermöglicht die korrekte Skalierung der Benutzeroberfläche entsprechend der Spielauflösung.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.UpdateD3D8to9">Überprüft, ob Updates für d3d8to9 verfügbar sind, und lädt diese gegebenenfalls herunter.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Legt die Bildwiederholfrequenz fest. Beachte dass das Spiel nicht mehr als 60 fps unterstützt und es einen Patch gibt, der die Bildfrequenz sperrt. Ändern der Einstellung auf eigene Gefahr.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Graphics.RefreshRate">Legt die Bildwiederholfrequenz fest. Beachte, dass das Spiel nicht mehr als 60 fps unterstützt und es einen Patch gibt, der die Bildfrequenz sperrt. Ändern der Einstellung auf eigene Gefahr.</system:String>
     <!--#endregion-->
 
 	<!--#region Input Settings-->
@@ -194,7 +194,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Position">Damit kannst du die Startposition und die Drehung bestimmen.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Launch">Damit startet das Spiel mit den von dir angegebenen Einstellungen.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Player2">Damit werden Einstellungen für Spieler 2 aktiviert.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Damit kannst du die Mission des ausgewählten Level bestimmen.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.Mission">Damit kannst du die Mission des ausgewählten Levels bestimmen.</system:String>
     <system:String x:Key="MainWindow.Tips.Tab.TestSpawn.EventManual">Damit kannst du ein Zwischenereignis mithilfe der ID abspielen lassen, sofern sie existiert. Etwaige Einstellungen oben werden überschrieben.</system:String>
     
     <!--#endregion-->
@@ -207,7 +207,7 @@
     <system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Öffnet das Verzeichnis, in dem dein Spiel installiert ist.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Wähle das Design aus, das im Mod Manager angezeigt werden soll.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Wähle die Sprache aus, die im Modmanager genutzt werden soll.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Hält den Mod Manager öffen, wenn du auf »Sichern und Spielen« klickst.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Hält den Mod Manager öffnen, wenn du auf »Sichern und Spielen« klickst.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Ausgewählte Mods werden nicht mehr verschoben, wenn du sie nach dem Speichern auswählst.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Damit wird der »Test Spawn«-Reiter im Mod Manager aktiviert.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Wenn diese Einstellung aktiviert ist, öffnet sich beim Klicken auf One-Click-Links auf GameBanana ein Download-Dialogfeld für die Mod.</system:String>
@@ -220,7 +220,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.PrintDebug">Gibt Debug-Informationen im Spielfenster aus.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.LogDebug">Speichert alle Debug-Informationen in einer Protokolldatei..</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.CrashDumps">Aktiviert die Protokollierung von Absturzberichten, wenn im Spiel ein Fehler auftritt. Diese sind nützlich bei der Untersuchung unerwarteter Abstürze.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Öffnet das »Mitwirkende und Über« Fenster.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.Contributors">Öffnet das »Über SA Mod Manager« Fenster.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Source">Öffnet einen Link zum GitHub-Repo für den Mod Manager.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Öffnet einen Link zur SA-Dokumenten-Webseite, auf der verschiedene Informationen zum Modding der Adventure-Spiele zu finden sind.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Öffnet einen Link zu den Issues im GitHub-Repo des Mod Managers, um Fehler zu melden.</system:String>
