@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           submodules: 'recursive'
@@ -33,7 +33,7 @@ jobs:
         run: echo ${{github.sha}} > SA-Mod-Manager/Resources/Version.txt
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x' 
 
