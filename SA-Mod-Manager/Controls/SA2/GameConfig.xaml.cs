@@ -48,15 +48,15 @@ namespace SAModManager.Controls.SA2
 
             switch (box.Name)
             {
-				case "txtResX":
-					MatchCustomResToRenderRes();
-					break;
+                case "txtResX":
+                    MatchCustomResToRenderRes();
+                    break;
                 case "txtResY":
                     if (chkRatio.IsChecked == true)
                     {
                         txtResX.Value = Math.Ceiling(txtResY.Value * GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
                     }
-					MatchCustomResToRenderRes();
+                    MatchCustomResToRenderRes();
                     break;
                 case "txtCustomResY":
                     if (chkMaintainRatio.IsChecked == true)
@@ -71,14 +71,14 @@ namespace SAModManager.Controls.SA2
 
         }
 
-		private void MatchCustomResToRenderRes()
-		{
-			if (chkMaintainRatio.IsChecked == true)
-			{
-				decimal ratio = txtResX.Value / txtResY.Value;
-				txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
-			}
-		}
+        private void MatchCustomResToRenderRes()
+        {
+            if (chkMaintainRatio.IsChecked == true)
+            {
+                decimal ratio = txtResX.Value / txtResY.Value;
+                txtCustomResX.Value = Math.Ceiling(txtCustomResY.Value * ratio);
+            }
+        }
 
         private void comboScreen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -94,7 +94,7 @@ namespace SAModManager.Controls.SA2
                 Decimal roundedValue = Math.Round(resYDecimal * GraphicsManager.GetRatio(GraphicsManager.Ratio.ratio43));
                 txtResX.Value = roundedValue;
 
-				MatchCustomResToRenderRes();
+                MatchCustomResToRenderRes();
             }
         }
 
@@ -117,16 +117,16 @@ namespace SAModManager.Controls.SA2
                     if (chkRatio.IsChecked == false)
                         txtResX.Value = GraphicsManager.ResolutionPresets[index].Width;
 
-					MatchCustomResToRenderRes();
+                    MatchCustomResToRenderRes();
                     break;
 
                 case "comboCustomWindow":
                     txtCustomResY.Value = GraphicsManager.ResolutionPresets[index].Height;
 
-					if (chkMaintainRatio.IsChecked == false)
-						txtCustomResX.Value = GraphicsManager.ResolutionPresets[index].Width;
-					else
-						MatchCustomResToRenderRes();
+                    if (chkMaintainRatio.IsChecked == false)
+                        txtCustomResX.Value = GraphicsManager.ResolutionPresets[index].Width;
+                    else
+                        MatchCustomResToRenderRes();
                     break;
             }
 
@@ -135,179 +135,177 @@ namespace SAModManager.Controls.SA2
 
         private void chkMaintainRatio_Click(object sender, RoutedEventArgs e)
         {
-			MatchCustomResToRenderRes();
+            MatchCustomResToRenderRes();
         }
 
-		private void DownloadDXVK_Click(object sender, RoutedEventArgs e)
-		{
-			var ps = new ProcessStartInfo("https://github.com/doitsujin/dxvk/releases")
-			{
-				UseShellExecute = true,
-				Verb = "open"
-			};
-			Process.Start(ps);
-		}
+        private void DownloadDXVK_Click(object sender, RoutedEventArgs e)
+        {
+            var ps = new ProcessStartInfo("https://github.com/doitsujin/dxvk/releases")
+            {
+                UseShellExecute = true,
+                Verb = "open"
+            };
+            Process.Start(ps);
+        }
 
-		#endregion
+        #endregion
 
-		#region Patches Tab
-		private void InitPatches()
-		{
-			if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
-			{
-				string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
-				if (File.Exists(pathDest))
-					patchesPath = pathDest;
+        #region Patches Tab
+        private void InitPatches()
+        {
+            if (Directory.Exists(App.CurrentGame.modLoaderDirectory))
+            {
+                string pathDest = Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.json");
+                if (File.Exists(pathDest))
+                    patchesPath = pathDest;
 
-				SetPatches();
-			}
-		}
+                SetPatches();
+            }
+        }
 
-		private PatchesData GetPatchFromView(object sender)
-		{
-			if (sender is ListViewItem lvItem)
-				return lvItem.Content as PatchesData;
-			else if (sender is ListView lv)
-				return lv.SelectedItem as PatchesData;
+        private PatchesData GetPatchFromView(object sender)
+        {
+            if (sender is ListViewItem lvItem)
+                return lvItem.Content as PatchesData;
+            else if (sender is ListView lv)
+                return lv.SelectedItem as PatchesData;
 
 
-			return listPatches.Items[listPatches.SelectedIndex] as PatchesData;
-		}
+            return listPatches.Items[listPatches.SelectedIndex] as PatchesData;
+        }
 
-		private void PatchViewItem_MouseEnter(object sender, MouseEventArgs e)
-		{
+        private void PatchViewItem_MouseEnter(object sender, MouseEventArgs e)
+        {
 
-			var patch = GetPatchFromView(sender);
+            var patch = GetPatchFromView(sender);
 
-			if (patch is null)
-				return;
+            if (patch is null)
+                return;
 
-			PatchAuthor.Text += ": " + patch.Author;
-			PatchCategory.Text += ": " + patch.Category;
-			PatchDescription.Text += " " + patch.Description;
-		}
+            PatchAuthor.Text += ": " + patch.Author;
+            PatchCategory.Text += ": " + patch.Category;
+            PatchDescription.Text += " " + patch.Description;
+        }
 
-		private void PatchViewItem_MouseLeave(object sender, MouseEventArgs e)
-		{
-			PatchAuthor.Text = Lang.GetString("CommonStrings.Author");
-			PatchCategory.Text = Lang.GetString("CommonStrings.Category");
-			PatchDescription.Text = Lang.GetString("CommonStrings.Description");
-		}
+        private void PatchViewItem_MouseLeave(object sender, MouseEventArgs e)
+        {
+            PatchAuthor.Text = Lang.GetString("CommonStrings.Author");
+            PatchCategory.Text = Lang.GetString("CommonStrings.Category");
+            PatchDescription.Text = Lang.GetString("CommonStrings.Description");
+        }
 
-		private bool GetPatchCheckState(PatchesData patch)
-		{
-			if (GameProfile.Patches.ContainsKey(patch.Name))
-				return GameProfile.Patches[patch.Name];
-			else
-				return patch.IsChecked;
-		}
+        private bool GetPatchCheckState(PatchesData patch)
+        {
+            if (GameProfile.Patches.ContainsKey(patch.Name))
+                return GameProfile.Patches[patch.Name];
+            else
+                return patch.IsChecked;
+        }
 
-		private List<PatchesData> GetPatches(ref ListView list)
-		{
-			list.Items.Clear();
+        private List<PatchesData> GetPatches(ref ListView list)
+        {
+            var patches = PatchesList.Deserialize(patchesPath);
 
-			var patches = PatchesList.Deserialize(patchesPath);
+            if (patches is not null)
+            {
+                var listPatch = patches.Patches;
 
-			if (patches is not null)
-			{
-				var listPatch = patches.Patches;
+                foreach (var patch in listPatch)
+                {
+                    string nKey = "GamePatchesSA2." + patch.Name;              // Display Name Key
+                    string lnString = Lang.GetString(nKey);
+                    string dKey = "GamePatchesSA2." + patch.Name + "Desc";     // Description Key
+                    string ldString = Lang.GetString(dKey);
 
-				foreach (var patch in listPatch)
-				{
-					string nKey = "GamePatches." + patch.Name;              // Display Name Key
-					string lnString = Lang.GetString(nKey);
-					string dKey = "GamePatches." + patch.Name + "Desc";     // Description Key
-					string ldString = Lang.GetString(dKey);
+                    patch.InternalName = lnString == nKey ? patch.InternalName : lnString;
+                    patch.Description = ldString == dKey ? patch.Description : ldString;
 
-					patch.InternalName = lnString == nKey ? patch.InternalName : lnString;
-					patch.Description = ldString == dKey ? patch.Description : ldString;
+                    patch.IsChecked = GetPatchCheckState(patch);
+                }
 
-					patch.IsChecked = GetPatchCheckState(patch);
-				}
+                return listPatch;
+            }
 
-				return listPatch;
-			}
+            return null;
+        }
 
-			return null;
-		}
+        public void SetPatches()
+        {
+            listPatches.Items.Clear();
 
-		public void SetPatches()
-		{
-			listPatches.Items.Clear();
+            List<PatchesData> patches = GetPatches(ref listPatches);
 
-			List<PatchesData> patches = GetPatches(ref listPatches);
+            if (patches is not null)
+            {
+                foreach (var patch in patches)
+                {
+                    listPatches.Items.Add(patch);
+                }
+            }
+        }
 
-			if (patches is not null)
-			{
-				foreach (var patch in patches)
-				{
-					listPatches.Items.Add(patch);
-				}
-			}
-		}
+        private void btnSelectAllPatch_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (PatchesData patch in listPatches.Items)
+            {
+                patch.IsChecked = true;
+            }
+            RefreshPatchesList();
+        }
 
-		private void btnSelectAllPatch_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (PatchesData patch in listPatches.Items)
-			{
-				patch.IsChecked = true;
-			}
-			RefreshPatchesList();
-		}
+        private void btnDeselectAllPatch_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (PatchesData patch in listPatches.Items)
+            {
+                patch.IsChecked = false;
+            }
+            RefreshPatchesList();
 
-		private void btnDeselectAllPatch_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (PatchesData patch in listPatches.Items)
-			{
-				patch.IsChecked = false;
-			}
-			RefreshPatchesList();
+        }
 
-		}
+        private void btnResetPatches_Click(object sender, RoutedEventArgs e)
+        {
+            PatchesList defaults = PatchesList.Deserialize(patchesPath);
 
-		private void btnResetPatches_Click(object sender, RoutedEventArgs e)
-		{
-			PatchesList defaults = PatchesList.Deserialize(patchesPath);
+            foreach (PatchesData patch in listPatches.Items)
+            {
+                foreach (var value in defaults.Patches)
+                {
+                    if (patch.Name == value.Name)
+                    {
+                        patch.IsChecked = value.IsChecked;
+                        defaults.Patches.Remove(value);
+                        break;
+                    }
+                }
+            }
 
-			foreach (PatchesData patch in listPatches.Items)
-			{
-				foreach (var value in defaults.Patches)
-				{
-					if (patch.Name == value.Name)
-					{
-						patch.IsChecked = value.IsChecked;
-						defaults.Patches.Remove(value);
-						break;
-					}
-				}
-			}
+            RefreshPatchesList();
+        }
 
-			RefreshPatchesList();
-		}
+        private void RefreshPatchesList()
+        {
+            ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
+            view.Refresh();
+        }
 
-		private void RefreshPatchesList()
-		{
-			ICollectionView view = CollectionViewSource.GetDefaultView(listPatches.Items);
-			view.Refresh();
-		}
+        public void SavePatches(ref object input)
+        {
+            GameSettings settings = input as GameSettings;
 
-		public void SavePatches(ref object input)
-		{
-			GameSettings settings = input as GameSettings;
+            if (listPatches is null)
+                return;
 
-			if (listPatches is null)
-				return;
+            settings.Patches.Clear();
+            foreach (PatchesData patch in listPatches.Items)
+                settings.Patches.Add(patch.Name, patch.IsChecked);
+        }
+        #endregion
 
-			settings.Patches.Clear();
-			foreach (PatchesData patch in listPatches.Items)
-				settings.Patches.Add(patch.Name, patch.IsChecked);
-		}
-		#endregion
+        #endregion
 
-		#endregion
-
-		#region Private Functions
-		private void SetupBindings()
+        #region Private Functions
+        private void SetupBindings()
         {
             // Graphics Bindings
 
@@ -344,13 +342,13 @@ namespace SAModManager.Controls.SA2
 
             txtCustomResX.MinValue = 0;
             txtCustomResY.MinValue = 0;
-			CustomWindowSettingsPanel.SetBinding(Grid.IsEnabledProperty, new Binding("ScreenMode")
-			{
-				Source = GameProfile.Graphics,
-				Mode = BindingMode.OneWay,
-				Converter = new SA2CustomWindowEnabledConverter()
-			});
-			txtCustomResX.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowWidth")
+            CustomWindowSettingsPanel.SetBinding(Grid.IsEnabledProperty, new Binding("ScreenMode")
+            {
+                Source = GameProfile.Graphics,
+                Mode = BindingMode.OneWay,
+                Converter = new SA2CustomWindowEnabledConverter()
+            });
+            txtCustomResX.SetBinding(NumberBox.ValueProperty, new Binding("CustomWindowWidth")
             {
                 Source = GameProfile.Graphics,
                 Mode = BindingMode.TwoWay
