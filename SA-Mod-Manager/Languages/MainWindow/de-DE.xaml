@@ -3,7 +3,7 @@
 					xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 	<!--#region Main Window Strings-->
-	<system:String x:Key="Manager.Buttons.SaveAndPlay">Sichern &amp; Spielen</system:String>
+	<system:String x:Key="Manager.Buttons.SaveAndPlay">Speichern &amp; Spielen</system:String>
 	<system:String x:Key="Manager.Tabs.Mods">Mods</system:String>
 	<system:String x:Key="Manager.Tabs.Codes">Codes</system:String>
 	<system:String x:Key="Manager.Tabs.GameConfig">Spieleinstellungen</system:String>
@@ -207,7 +207,7 @@
     <system:String x:Key="MainWindow.Tips.Tab.Options.OpenGameDirectory">Öffnet das Verzeichnis, in dem dein Spiel installiert ist.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Theme">Wähle das Design aus, das im Mod Manager angezeigt werden soll.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.Language">Wähle die Sprache aus, die im Modmanager genutzt werden soll.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Hält den Mod Manager öffnen, wenn du auf »Sichern und Spielen« klickst.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Hält den Mod Manager öffnen, wenn du auf »Speichern und Spielen« klickst.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Ausgewählte Mods werden nicht mehr verschoben, wenn du sie nach dem Speichern auswählst.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Damit wird der »Test Spawn«-Reiter im Mod Manager aktiviert.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Wenn diese Einstellung aktiviert ist, öffnet sich beim Klicken auf One-Click-Links auf GameBanana ein Download-Dialogfeld für die Mod.</system:String>
