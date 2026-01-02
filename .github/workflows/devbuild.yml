@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: 'recursive'
@@ -33,13 +33,13 @@ jobs:
         run: echo ${{github.sha}} > SA-Mod-Manager/Resources/Version.txt
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '8.0.x' 
 
       - name: Publish 64-bit WPF application
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: dotnet publish -p:PublishSingleFile=true -r win-x64 -c ${{ matrix.configuration }} --self-contained false
+        run: dotnet publish -r win-x64 -c ${{ matrix.configuration }}
 
       - name: CleanUp Misc Files (64-bit)
         working-directory: ${{github.workspace}}\bin\${{ matrix.configuration }}\net8.0-windows7.0\win-x64\publish
@@ -47,7 +47,7 @@ jobs:
 
       - name: Publish 32-bit WPF application
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: dotnet publish -p:PublishSingleFile=true -r win-x86 -c ${{ matrix.configuration }} --self-contained false
+        run: dotnet publish -r win-x86 -c ${{ matrix.configuration }}
 
       - name: CleanUp Misc Files (32-bit)
         working-directory: ${{github.workspace}}\bin\${{ matrix.configuration }}\net8.0-windows7.0\win-x86\publish
@@ -55,13 +55,13 @@ jobs:
 
       # Step to upload the dev build artifact
       - name: Upload 64-bit Build Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: SAModManager_x64_${{ matrix.configuration }}
           path: bin/${{ matrix.configuration }}/net8.0-windows7.0/win-x64/publish
 
       - name: Upload 32-bit Build Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: SAModManager_x86_${{ matrix.configuration }}
           path: bin/${{ matrix.configuration }}/net8.0-windows7.0/win-x86/publish

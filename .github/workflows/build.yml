@@ -22,7 +22,7 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
         submodules: 'recursive'
@@ -35,13 +35,13 @@ jobs:
       run: npm install -g auto-changelog
 
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '8.0.x' 
 
     - name: Publish 64-bit WPF application
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: dotnet publish -p:PublishSingleFile=true -r win-x64 -c Release --self-contained false
+      run: dotnet publish win-x64 -c Release
       
     - name: CleanUp Misc Files (64-bit)
       working-directory: ${{github.workspace}}\bin\Release\net8.0-windows7.0\win-x64\publish
@@ -49,7 +49,7 @@ jobs:
       
     - name: Publish 32-bit WPF application
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: dotnet publish -p:PublishSingleFile=true -r win-x86 -c Release --self-contained false
+      run: dotnet publish -r win-x86 -c Release
       
     - name: CleanUp Misc Files (32-bit)
       working-directory: ${{github.workspace}}\bin\Release\net8.0-windows7.0\win-x86\publish
@@ -61,7 +61,7 @@ jobs:
         auto-changelog --sort-commits date --hide-credit --template changelog-template.hbs --commit-limit 30 --starting-version "$env:RELEASE_TAG" --output "$env:PUBLISH_CHANGELOG_PATH"
       
     - name: Archive 64-bit
-      uses: thedoctor0/zip-release@0.7.5
+      uses: thedoctor0/zip-release@0.7.6
       with:
         type: 'zip'
         filename: 'release_x64.zip'
@@ -69,7 +69,7 @@ jobs:
         exclusions: '*.git* /*node_modules/* .editorconfig'
         
     - name: Archive 32-bit
-      uses: thedoctor0/zip-release@0.7.5
+      uses: thedoctor0/zip-release@0.7.6
       with:
         type: 'zip'
         filename: 'release_x86.zip'
@@ -78,7 +78,7 @@ jobs:
         
       
     - name: Create Release
-      uses: softprops/action-gh-release@v0.1.15
+      uses: softprops/action-gh-release@v2
       with:
         body_path: ${{ env.PUBLISH_CHANGELOG_PATH }}
         files: |
