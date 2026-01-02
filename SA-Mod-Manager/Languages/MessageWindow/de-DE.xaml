@@ -117,7 +117,7 @@
 	<system:String x:Key="MessageWindow.Warnings.DeleteMod0" xml:space="preserve">Dadurch werden alle ausgewählten Mods deinstalliert.s:&#x0a;&#x0a;</system:String>
     <system:String x:Key="MessageWindow.Warnings.DeleteMod1">Möchtest du wirklich fortfahren?</system:String>
 
-    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Du bist dabei, die Speicherumleitung für diese Mod zu deaktivieren. Wenn du weitermachst werden alle Speicherstände in diesem Mod-Ordner gelöscht.&#x0a;&#x0a;Are you sure you want to proceed?</system:String>
+    <system:String x:Key="MessageWindow.Warnings.DisableSaveRedirect" xml:space="preserve">Du bist dabei, die Speicherumleitung für diese Mod zu deaktivieren. Wenn du weitermachst werden alle Speicherstände in diesem Mod-Ordner gelöscht.&#x0a;&#x0a;Möchtest du fortfahren?</system:String>
     <system:String x:Key="MessageWindow.Warnings.DeleteProfile">Möchtest du die ausgewählten Profile wirklich löschen?</system:String>
     <system:String x:Key="MessageWindow.Warnings.ForceModUpdate" xml:space="preserve">Dadurch werden alle ausgewählten Mods komplett neu heruntergeladen.&#x0a;&#x0a;Möchtest du fortfahren?</system:String>
 	
@@ -163,7 +163,7 @@
     <system:String x:Key="MessageWindow.Information.SADXSteamDetected" xml:space="preserve">SADX wurde in »{1}« gefunden, allerdings scheint es sich dabei um die Steamversion zu handeln.&#x0a;Der Mod Loader funktioniert nur mit der PC Version von 2004.&#x0a;&#x0a;Möchtest du den Mod Installer herunterladen und installieren, um dein Spiel auf die Version von 2004 umzustellen? (Deine Speicherstände werden ebenfalls konvertiert).</system:String>
     <system:String x:Key="MessageWindow.Information.SADXSteamDetectedTemp" xml:space="preserve">SADX wurde in »{1}« gefunden, allerdings scheint es sich dabei um die Steamversion zu handeln.&#x0a;Der Mod Loader funktioniert nur mit der PC Version von 2004.&#x0a;&#x0a;Bitte lade den SADX Mod Installer herunter, um dein Spiel auf die Version von 2004 umzustellen. (Deine Speicherstände werden ebenfalls konvertiert).</system:String>
 	<system:String x:Key="MessageWindow.Warnings.HealthCheckTitle">Gesundheitscheck</system:String>
-	<system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Du bist gerade dabei den Gesundheitscheck auszuführen. Dabei werden die Spieldateien überpürft. Damit werden alle Dateien, mit der Ausnahme von Audio-Dateien überprüft.&#x0a;&#x0a;Möchtest du weitermachen?</system:String>
+	<system:String x:Key="MessageWindow.Warnings.HealthCheck" xml:space="preserve">Du bist gerade dabei den Gesundheitscheck auszuführen. Dabei werden die Spieldateien überprüft. Damit werden alle Dateien, mit der Ausnahme von Audio-Dateien überprüft.&#x0a;&#x0a;Möchtest du weitermachen?</system:String>
 
 	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles.Title">Dateiprobleme gefunden</system:String>
 	<system:String x:Key="MessageWindow.Information.HealthCheck.FailedFiles1">Die folgenden Probleme wurden in den Spieldateien festgestellt:</system:String>
