@@ -168,14 +168,14 @@
     <system:String x:Key="TSCutscene254">Das Ende der letzten Story</system:String>
     <system:String x:Key="TSCutscene255">Jeder bringt Sonic die Emeralds</system:String>
     <system:String x:Key="TSCutscene256">Sonic und Tails, nachdem sie auf dem Egg Carrier landen</system:String>
-    <system:String x:Key="TSCutscene257">Kommt bloß nicht auf dumme Gedanken, ihr Narren! (Sonic)</system:String>
+    <system:String x:Key="TSCutscene257">Bildet euch nichts ein, Ihr Narren!! (Sonic)</system:String>
     <system:String x:Key="TSCutscene258">Der Egg Carrier hat sich verwandelt (Sonic)</system:String>
     <system:String x:Key="TSCutscene259">Sonic am Eingagn des Sky Deck</system:String>
     <system:String x:Key="TSCutscene260">Sonic gelang in den Egg Carrier (War's das?)</system:String>
     <system:String x:Key="TSCutscene262">Sonic auf dem Weg zum verwandelten Egg Carrier</system:String>
     <system:String x:Key="TSCutscene263">Der Notstand ist aufgehoben (Sonic)</system:String>
     <system:String x:Key="TSCutscene272">Tails und Sonic, nachdem sie auf dem Egg Carrier landen</system:String>
-    <system:String x:Key="TSCutscene273">Komm' bloß nicht auf dumme Gedanken (Tails)</system:String>
+    <system:String x:Key="TSCutscene273">Bilde dir nichts ein (Tails)</system:String>
     <system:String x:Key="TSCutscene274">Der Egg Carrier hat sich verwandelt (Tails)</system:String>
     <system:String x:Key="TSCutscene275">Tails am Eingagn des Sky Deck</system:String>
     <system:String x:Key="TSCutscene276">Tails gelang in den Egg Carrier (War's das?)</system:String>
