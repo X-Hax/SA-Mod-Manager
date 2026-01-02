@@ -788,7 +788,7 @@ namespace SAModManager
             {
                 UseShellExecute = true,
                 WorkingDirectory = Environment.CurrentDirectory,
-                FileName = Assembly.GetEntryAssembly().Location,
+                FileName = AppContext.BaseDirectory,
                 Verb = "runas" // This will prompt for admin rights
             };
 
