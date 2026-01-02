@@ -12,6 +12,7 @@ namespace SAMM.Configuration
 		v1 = 1, // V1: Initial Release
 		v2 = 2, // V2: Migrated to GameEntry system for managing game selection setup.
 		v3 = 3, // V3: Added Software Render Mode option (Visible option is "Disable Hardware Acceleration").
+		v4 = 4, // V4: Avalonia rewrite which has several clean up changes to the Manager Settings object.
 
 		MAX,
 	}
@@ -253,16 +254,27 @@ namespace SAMM.Configuration
 		{
 			if (File.Exists(path))
 			{
-				string jsonContent = File.ReadAllText(path);
-
-				ManagerSettings settings = Utilities.JSON.Deserialize<ManagerSettings>(jsonContent);
+				ManagerSettings settings = Utilities.JSON.Deserialize<ManagerSettings>(path);
 
 				// Switch case to bump settings version. Allows for manual adjustment if needed for any version bumps.
-				switch (settings.SettingsVersion)
+				switch ((ManagerSettingsVersions)settings.SettingsVersion)
 				{
 					default:
 						if (settings.SettingsVersion < (int)(ManagerSettingsVersions.MAX - 1))
 							settings.SettingsVersion = (int)(ManagerSettingsVersions.MAX - 1);
+						break;
+					case ManagerSettingsVersions.v0:
+					case ManagerSettingsVersions.v1:
+					case ManagerSettingsVersions.v2:
+					case ManagerSettingsVersions.v3:
+						foreach (GameEntry game in settings.GameEntries)
+						{
+							if (game.Executable == "sonic.exe")
+								game.ID = GameIDs.SADX;
+							else if (game.Executable == "sonic2app.exe")
+								game.ID = GameIDs.SA2B;
+						}
+						settings.SettingsVersion = (int)(ManagerSettingsVersions.MAX - 1);
 						break;
 				}
 

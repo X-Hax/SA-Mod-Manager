@@ -6,6 +6,7 @@ namespace SAMM.Configuration
 	public class GameConfig
 	{
 		#region Variables
+		public GameIDs GameID { get; set; } = GameIDs.Unsupported;
 		public string GameDirectory { get; set; } = string.Empty;
 
 		public string GameExecutable { get; set; } = string.Empty;
@@ -21,7 +22,9 @@ namespace SAMM.Configuration
 
 		public string GameModsFolder { get { return Path.Combine(GameDirectory, "mods"); } }
 
-		public string ModloaderPath { get { return Path.Combine(GameDirectory, ".modloader"); } }
+		public string ModloaderPath { get { return Path.Combine(GameModsFolder, ".modloader"); } }
+
+		public string ProfilesPath { get { return Path.Combine(ModloaderPath, "profiles"); } }
 
 		public ModLoaderInfo? ModLoaderInfo { get; set; }
 
@@ -132,6 +135,7 @@ namespace SAMM.Configuration
 			{ 
 				GameIDs.SADX, new GameConfig()
 				{
+					GameID = GameIDs.SADX,
 					GameExecutable = "sonic.exe",
 					GameSystemFolder = "system",
 					ModLoaderInfo = new ModLoaderInfo()
@@ -147,6 +151,7 @@ namespace SAMM.Configuration
 			{ 
 				GameIDs.SA2B, new GameConfig()
 				{
+					GameID = GameIDs.SA2B,
 					GameExecutable = "sonic2app.exe",
 					GameSystemFolder = Path.Combine("resource", "gd_PC"),
 					ModLoaderInfo = new ModLoaderInfo()

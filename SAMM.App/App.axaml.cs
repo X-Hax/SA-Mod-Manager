@@ -70,7 +70,7 @@ public partial class App : Application
     /// </summary>
     /// <param name="resourceKey">Returns the resource if the key is found. If it's not found, the key itself is returned.</param>
     /// <returns></returns>
-    public static string GetSring(string resourceKey)
+    public static string GetString(string resourceKey)
     {
         string output = GetResource<string>(resourceKey);
         if (string.IsNullOrEmpty(output))

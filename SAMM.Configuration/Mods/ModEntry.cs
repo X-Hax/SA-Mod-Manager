@@ -1,10 +1,5 @@
 ﻿using SAMM.Utilities.INI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+using SAMM.Utilities;
 
 namespace SAMM.Configuration.Mods
 {
@@ -100,7 +95,7 @@ namespace SAMM.Configuration.Mods
 			{
 				if (File.Exists(Path.Combine(modsDirectory, "mods.ini")))
 				{
-					throw new Exception("Invalid file! mod.ini located in mods directory.");
+					ExceptionHandler.Throw(new Exception("Invalid file! mod.ini located in mods directory."));
 				}
 
 				foreach (var subdir in System.IO.Directory.EnumerateDirectories(modsDirectory))
@@ -108,6 +103,7 @@ namespace SAMM.Configuration.Mods
 					string path = Path.Combine(subdir, "mod.ini");
 					if (File.Exists(path))
 					{
+						Logger.Log($"Valid Mod found at {path}");
 						yield return new ModEntry(path);
 						continue;
 					}
@@ -115,6 +111,32 @@ namespace SAMM.Configuration.Mods
 			}
 			else
 				yield break;
+		}
+
+		public static Dictionary<string, ModEntry> GetModDictionary(string gameDirectory)
+		{
+			string modsDirectory = Path.Combine(gameDirectory, "mods");
+			Dictionary<string, ModEntry> dict = new Dictionary<string, ModEntry>();
+			if (Path.Exists(modsDirectory))
+			{
+				if (File.Exists(Path.Combine(modsDirectory, "mods.ini")))
+				{
+					ExceptionHandler.Throw(new Exception("Invalid file! mod.ini located in mods directory."));
+				}
+
+				foreach (var subdir in System.IO.Directory.EnumerateDirectories(modsDirectory))
+				{
+					string path = Path.Combine(subdir, "mod.ini");
+					if (File.Exists(path))
+					{
+						Logger.Log($"Valid Mod found at {path}");
+						ModEntry output = new ModEntry(path);
+						dict.Add(output.Key, output);
+					}
+				}
+			}
+
+			return dict;
 		}
 
 		#endregion

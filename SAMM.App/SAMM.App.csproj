@@ -48,4 +48,10 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\Dialogs\MessagePopupDialog.axaml.cs">
+      <DependentUpon>MessagePopupDialog.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

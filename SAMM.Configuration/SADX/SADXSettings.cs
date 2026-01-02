@@ -51,7 +51,7 @@ namespace SAMM.Configuration.SADX
 
 		public int GameClipLevel { get; set; } = 0;
 
-		public int ShowMouseInFullscreen { get; set; } = 0;
+		public bool ShowMouseInFullscreen { get; set; } = true;
 
 		public int RenderBackend { get; set; } = (int)RenderBackendOptions.Direct3D9;
 
@@ -237,8 +237,8 @@ namespace SAMM.Configuration.SADX
 		}
 
 		public override void Deserialize(string path) 
-		{ 
-			throw new NotImplementedException(); 
+		{
+			throw new NotImplementedException();
 		}
 
 		public override void ToGameConfig(string path)

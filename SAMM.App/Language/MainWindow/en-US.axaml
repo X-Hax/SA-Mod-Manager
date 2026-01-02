@@ -25,6 +25,9 @@
 	<x:String x:Key="MainWindow.Mods.Profiles">Profiles:</x:String>
 	<x:String x:Key="MainWindow.Mods.ProfileManager.ToolTip">Open the Profile Manager.</x:String>
 	<x:String x:Key="MainWindow.Mods.ProfileQuickAdd.ToolTip">Add a new profile with currently selected mods, codes, and other settings.</x:String>
+	<x:String x:Key="MainWindow.Mods.MissingEntries.Title">The following mods were not found:</x:String>
+	<x:String x:Key="MainWindow.Mods.MissingEntries.AddendumEnabled">is enabled and</x:String>
+	<x:String x:Key="MainWindow.Mods.MissingEntries.Addendum">was not found.</x:String>
 	
 	<!-- Elements in the Codes Tab in the Main Window -->
 	<x:String x:Key="MainWindow.Codes">Codes</x:String>

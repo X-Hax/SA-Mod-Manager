@@ -10,6 +10,11 @@ namespace SAMM.Utilities
 {
 	public static class JSON
 	{
+		private static JsonSerializerOptions serializtionOptions = new()
+		{
+			WriteIndented = true
+		};
+
 		/// <summary>
 		/// Deserializes a supplied text file.
 		/// </summary>
@@ -44,7 +49,7 @@ namespace SAMM.Utilities
 		{
 			try
 			{
-				string json = JsonSerializer.Serialize<T>(obj);
+				string json = JsonSerializer.Serialize<T>(obj, serializtionOptions);
 				File.WriteAllText(filePath, json);
 			}
 			catch (Exception ex)

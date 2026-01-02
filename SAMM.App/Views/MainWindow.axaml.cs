@@ -30,6 +30,12 @@ public partial class MainWindow : Window
 		MainWindowDialogHost.IsOpen = true;
 	}
 
+	public void ShowMessage(string header, string message)
+	{
+		PART_DialogHost.Child = new MessagePopupDialog(header, message);
+		MainWindowDialogHost.IsOpen = true;
+	}
+
 	public void ShowException(Exception ex)
 	{
 		PART_DialogHost.Child = new ExceptionHandlerDialog(ex);
@@ -48,6 +54,7 @@ public partial class MainWindow : Window
         InitializeComponent();
 
 		ExceptionHandler.Initialize(ShowException);
+		MessageHandler.Initialize(ShowMessage);
 
         DataContext = new MainWindowViewModel();
 

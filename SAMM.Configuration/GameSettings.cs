@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using SAMM.Configuration.Enumeration;
+using SAMM.Configuration.SADX;
+using System.ComponentModel;
 
 namespace SAMM.Configuration
 {
@@ -128,5 +130,10 @@ namespace SAMM.Configuration
 		public abstract void Deserialize(string path);
 
 		public abstract void ToGameConfig(string path);
+
+		public static T Deserialize<T>(string path) where T : GameSettings
+		{
+			return Utilities.JSON.Deserialize<T>(path);
+		}
 	}
 }

@@ -62,6 +62,17 @@ namespace SAMM.Configuration
 		[JsonPropertyName("ProfilesList")]
 		public List<UserProfile> Profiles { get; set; } = new List<UserProfile>();
 
+		public UserProfile CurrentProfile 
+		{ 
+			get 
+			{
+				if (!(ProfileIndex <= Profiles.Count))
+					ProfileIndex = 0;
+
+				return Profiles[ProfileIndex];
+			} 
+		}
+
 		#endregion
 
 		#region Constructors
@@ -71,18 +82,15 @@ namespace SAMM.Configuration
 
 		public void Save(string profilePath)
 		{
-			
+			profilePath = Path.Combine(profilePath, "Profiles.json");
+			JSON.Serialize(profilePath, this);
 		}
 
 		#region Static
 		public static UserProfiles LoadProfiles(string profilePath)
 		{
-			UserProfiles profiles = new UserProfiles();
 			profilePath = Path.Combine(profilePath, "Profiles.json");
-			if (File.Exists(profilePath))
-				return JSON.Deserialize<UserProfiles>(profilePath);
-
-			return profiles;
+			return JSON.Deserialize<UserProfiles>(profilePath);
 		}
 
 		#endregion

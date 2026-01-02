@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SAMM.App.Controls.Dialogs.MessagePopupDialog"
+	        xmlns:advconv="clr-namespace:ADVTheme.Converters;assembly=ADVTheme">
+	<UserControl.Resources>
+		<advconv:DoubleIncrementConverter x:Key="TitleSizing" ModifierMethod="Add" ModifierValue="6"/>
+	</UserControl.Resources>
+	<Border>
+		<Grid RowDefinitions="50,*,40" RowSpacing="5">
+			<TextBlock x:Name="MessageHeader" Grid.Row="0" Margin="5" FontSize="{Binding $parent[UserControl].FontSize, Converter={StaticResource TitleSizing}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+			<TextBlock x:Name="Message" Grid.Row="1" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+			<Grid Grid.Row="2" ColumnDefinitions="150,150" ColumnSpacing="5" HorizontalAlignment="Right" Margin="5">
+				<Button x:Name="LeftButton" Content="{DynamicResource Common.OK}" Click="LeftButton_Click"/>
+				<Button Grid.Column="1" x:Name="RightButton" Content="{DynamicResource Common.Cancel}" Click="RightButton_Click"/>
+			</Grid>
+		</Grid>
+	</Border>
+</UserControl>

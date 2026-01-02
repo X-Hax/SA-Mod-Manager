@@ -1,16 +1,18 @@
 ﻿using DynamicData;
 using ReactiveUI;
+using SAMM.App.Views;
 using SAMM.Configuration;
+using SAMM.Configuration.Enumeration;
 using SAMM.Configuration.Mods;
+using SAMM.Configuration.SA2B;
+using SAMM.Configuration.SADX;
 using SAMM.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SAMM.App.Models
 {
@@ -83,9 +85,19 @@ namespace SAMM.App.Models
 			set { this.RaiseAndSetIfChanged(ref modEntries, value); }
 		}
 
+		private string CurrentUserProfilePath { get { return Path.Combine(GameConfig.ProfilesPath, UserProfiles.CurrentProfile.Filepath); } }
+
 		#endregion
 
-		#region Internal Functions
+		#region Add
+		public void AddUserProfile(string name)
+		{
+			UserProfiles.Profiles.Add(new UserProfile(name, $"{name}.json"));
+		}
+
+		#endregion
+
+		#region Load
 		/// <summary>
 		/// Populates the <see cref="ModEntries"/> in the view model.
 		/// 
@@ -98,12 +110,56 @@ namespace SAMM.App.Models
 				ModEntries.Clear();
 
 			Logger.Log($"Loading Mod Entries");
-			ModEntries = new ObservableCollection<ModEntry>(ModEntry.GetModEntries(GameConfig.GameDirectory));
+			Dictionary<string, ModEntry> modList = ModEntry.GetModDictionary(GameConfig.GameDirectory);
+
+			List<string> missingEntries = new List<string>();
+			foreach (var modEntry in GameSettings.EnabledMods)
+			{
+				if (modList.ContainsKey(modEntry))
+					modList[modEntry].IsEnabled = true;
+				else
+				{
+					missingEntries.Add($"{modEntry} {App.GetString("MainWindow.Mods.MissingMods.AddendumEnabled")} {App.GetString("MainWindow.Mods.MissingMods.Addendum")}");
+					GameSettings.EnabledMods.Remove(modEntry);
+				}
+			}
+
+			List<ModEntry> sortedMods = new List<ModEntry>();
+			if (ManagerSettings.KeepModOrder)
+			{
+				foreach (var entry in GameSettings.ModsList)
+				{
+					if (modList.ContainsKey(entry))
+					{
+						sortedMods.Add(modList[entry]);
+						modList.Remove(entry);
+					}
+					else
+					{
+						missingEntries.Add($"{entry} {App.GetString("MainWindow.Mods.MissingMods.Addendum")}");
+						GameSettings.ModsList.Remove(entry);
+					}
+				}
+
+				if (modList.Count > 0)
+					sortedMods.AddRange(modList.Values.ToList());
+			}
+			else
+			{
+				foreach (var entry in GameSettings.EnabledMods)
+					sortedMods.Add(modList[entry]);
+				var unselected = modList.Values.ToList().Where(m => !m.IsEnabled);
+				sortedMods.AddRange(unselected);
+			}
+
+			if (missingEntries.Count > 0)
+			{
+				
+			}
+
+			ModEntries = new ObservableCollection<ModEntry>(sortedMods);
 		}
 
-		#endregion
-
-		#region Public Functions
 		public void LoadGameConfig(bool loadEntries = false)
 		{
 			GameEntry gameEntry = ManagerSettings.GetCurrentGameEntry();
@@ -115,13 +171,51 @@ namespace SAMM.App.Models
 
 		public void LoadGameSettings()
 		{
-
+			Logger.Log($"Loading Game Settings");
+			if (UserProfiles != null)
+			{
+				switch (GameConfig.GameID)
+				{
+					case GameIDs.SADX:
+						GameSettings = GameSettings.Deserialize<SADXSettings>(CurrentUserProfilePath);
+						break;
+					case GameIDs.SA2B:
+						GameSettings = GameSettings.Deserialize<SA2BSettings>(CurrentUserProfilePath);
+						break;
+				}
+			}
 		}
 
 		public void LoadUserProfiles()
 		{
 			Logger.Log($"Loading User Profiles");
-			UserProfiles = UserProfiles.LoadProfiles(Path.Combine(GameConfig.GameModsFolder, ".modloader", "profiles"));
+			UserProfiles = UserProfiles.LoadProfiles(GameConfig.ProfilesPath);
+		}
+		
+		#endregion
+
+		#region Save
+		public void SaveGameSettings()
+		{
+			GameSettings.EnabledMods.Clear();
+			GameSettings.ModsList.Clear();
+
+			foreach (var entry in ModEntries)
+			{
+				if (entry.IsEnabled)
+					GameSettings.EnabledMods.Add(entry.Key);
+
+				GameSettings.ModsList.Add(entry.Key);
+			}
+
+			Logger.Log($"Saving current Game Settings profile: {CurrentUserProfilePath}");
+			GameSettings.Serialize(CurrentUserProfilePath);
+		}
+
+		public void SaveUserProfiles()
+		{
+			Logger.Log($"Saving current User Profiles: {GameConfig.ProfilesPath}");
+			UserProfiles.Save(GameConfig.ProfilesPath);
 		}
 
 		public void SaveManagerSettings()
@@ -138,12 +232,11 @@ namespace SAMM.App.Models
 			string settings = Path.Combine(FolderManager.GetAppFolder(), "Manager.json");
 			ManagerSettings = ManagerSettings.Deserialize(settings);
 			LoadGameConfig();
-			LoadModEntries();
 			LoadUserProfiles();
+			LoadGameSettings();
+			LoadModEntries();
 		}
 
 		#endregion
-
-		
 	}
 }
