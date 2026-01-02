@@ -48,13 +48,13 @@
     <system:String x:Key="MessageWindow.Errors.ModFailedVerif2" xml:space="preserve">&#x0a;&#x0a;Möchtest du versuchen sie zu reparieren?</system:String>
 
     <system:String x:Key="MessageWindow.Errors.URIParseFail.Title">URI-Parsing-Fehler</system:String>
-    <system:String x:Key="MessageWindow.Errors.URIParseFail0">Fehlerhafte URI für die One-Click-Installation</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFail0">Fehlerhafte URI für die 1-Klick-Installation</system:String>
     <system:String x:Key="MessageWindow.Errors.URIParseFail1" xml:space="preserve">verursachte folgende Parsing-Fehler:&#x0a;</system:String>
 
     <system:String x:Key="MessageWindow.Errors.GBAPIFail.Title">Fehler bei der GameBanana-API</system:String>
     <system:String x:Key="MessageWindow.Errors.GBAPIFail">GameBanana-API-Abfrage fehlgeschlagen:</system:String>
 
-    <system:String x:Key="MessageWindow.Errors.URIParseFailFields0">One-Click-Installations URI</system:String>
+    <system:String x:Key="MessageWindow.Errors.URIParseFailFields0">1-Klick-Installations URI</system:String>
     <system:String x:Key="MessageWindow.Errors.URIParseFailFields1">beinhaltete nicht alle benötigten Felder.</system:String>
 
     <system:String x:Key="MessageWindow.Errors.DirectoryDeleteFail.Title">Verzeichnislöschung fehlgeschlagen</system:String>

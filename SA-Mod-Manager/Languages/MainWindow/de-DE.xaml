@@ -210,7 +210,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepOpen">Hält den Mod Manager öffnen, wenn du auf »Speichern und Spielen« klickst.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.KeepModOrder">Ausgewählte Mods werden nicht mehr verschoben, wenn du sie nach dem Speichern auswählst.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.TestSpawn">Damit wird der »Test Spawn«-Reiter im Mod Manager aktiviert.</system:String>
-	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Wenn diese Einstellung aktiviert ist, öffnet sich beim Klicken auf One-Click-Links auf GameBanana ein Download-Dialogfeld für die Mod.</system:String>
+	<system:String x:Key="MainWindow.Tips.Tab.Options.EnableOneClick">Wenn diese Einstellung aktiviert ist, öffnet sich beim Klicken auf »1-Klick«-Links auf GameBanana ein Download-Dialogfeld für die Mod.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.InstallLoader">Wenn diese Einstellung aktiviert ist, wird der Mod Loader installiert und du kannst mit Mods, Patches und Cheats spielen.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ManagerUpdates">Aktiviert die automatische Überprüfung auf Updates für den Mod Manager beim Start.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.LoaderUpdates">Aktiviert die automatische Überprüfung auf Updates für den Mod Loader beim Start.</system:String>
