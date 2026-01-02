@@ -117,7 +117,7 @@
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Start/Setzen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Kamera nach links</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Kamera nach rechts</system:String>
-	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Flöte</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Pfeifen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2">Bessere Eingabe Konfiguration</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">AppLauncher öffnen</system:String>
 	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">AppLauncher erhalten</system:String>
