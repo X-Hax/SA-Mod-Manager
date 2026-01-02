@@ -1,0 +1,11 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+>
+
+  <system:String x:Key="InfoManagerUpdate.Title">模组管理器有新版本</system:String>
+  <system:String x:Key="InfoLoaderUpdate.Title">{0} 有新版本</system:String> <!--This is a placeholder for the Loader name (ie "New SADX Mod Loader Update"...)!-->
+  <system:String x:Key="InfoManagerUpdate.Changelog">更新日志：</system:String>
+  <system:String x:Key="InfoManagerUpdate.DLQuestion">你要下载更新吗？</system:String>
+</ResourceDictionary>

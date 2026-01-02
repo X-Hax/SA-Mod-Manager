@@ -1,0 +1,34 @@
+﻿<ResourceDictionary 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+>
+
+  <!--Dependencies-->
+  <system:String x:Key="Updater.DL.Dep.Download">下载</system:String>
+  <system:String x:Key="Updater.DL.Dep.Install">安装</system:String>
+  <system:String x:Key="Updater.DL.Dep.Update">更新</system:String>
+  <system:String x:Key="Updater.DL.Dep.Downloading">正在下载</system:String>
+  <system:String x:Key="Updater.DL.Dep.Installing">正在安装</system:String>
+  <system:String x:Key="Updater.DL.Dep.Updating">正在更新</system:String>
+  <system:String x:Key="Updater.DL.Dep.Completed">完成。</system:String>
+  <system:String x:Key="Updater.DL.Dep.Copying">正在复制文件……</system:String>
+
+  <system:String x:Key="Updater.DL.Offline.Title">离线安装</system:String>
+  <system:String x:Key="Updater.DL.Offline.Failed">下载 {0} 失败</system:String>
+  <system:String x:Key="Updater.DL.Offline.InstallAttempt">正在尝试离线安装，请稍候……</system:String>
+
+  <!--Mod Update-->
+  <system:String x:Key="Updater.DL.Mod.Init">准备下载，请稍候……</system:String>
+  <system:String x:Key="Updater.DL.Mod.Extracting">正在解压……</system:String>
+  <system:String x:Key="Updater.DL.Mod.ParsingManifest">正在解析清单文件……</system:String>
+  <system:String x:Key="Updater.DL.Mod.ApplyingManifest">正在应用清单文件……</system:String>
+  <system:String x:Key="Updater.DL.Mod.DownloadingFile">正在下载文件</system:String>
+  <system:String x:Key="Updater.DL.Mod.of"> </system:String> <!-- "of" files to download-->
+  <system:String x:Key="Updater.DL.Mod.UpdatingMod">更新模组</system:String>
+  <system:String x:Key="Updater.DL.Mod.StartingDownload">开始下载……</system:String>
+  <system:String x:Key="Updater.DL.Mod.DownloadComplete">下载完成。</system:String>
+
+  <system:String x:Key="Updater.DL.Mod.ManifestFail">下载清单文件失败</system:String>
+  <system:String x:Key="Updater.DL.Mod.ManifestApplyFail">应用清单文件失败</system:String>
+</ResourceDictionary>

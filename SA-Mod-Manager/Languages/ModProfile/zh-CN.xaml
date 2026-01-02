@@ -1,0 +1,25 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+>
+  
+  <system:String x:Key="ManagerProfile.Title">管理配置文件</system:String>
+  <system:String x:Key="ManagerProfile.Buttons.Rename">重命名配置文件</system:String>
+  <system:String x:Key="ManagerProfile.Buttons.Create">创建配置文件</system:String>
+  <system:String x:Key="ManagerProfile.Buttons.Migrate">导入</system:String>
+  <system:String x:Key="ManagerProfile.Path">文件路径</system:String>
+  <system:String x:Key="ManagerProfile.ContextMenu.Rename">重命名</system:String>
+  <system:String x:Key="ManagerProfile.ContextMenu.Duplicate">创建副本</system:String>
+  <system:String x:Key="ManagerProfile.ContextMenu.Delete">删除</system:String>
+  <system:String x:Key="ManagerProfile.Errors.Unexpected">发生了意外错误，无法重命名配置文件。</system:String>
+  <system:String x:Key="ManagerProfile.Errors.ProfileExists.Title">错误：配置文件已存在</system:String>
+  <system:String x:Key="ManagerProfile.Errors.ProfileExists">该名称的配置文件已经存在，请使用别的名称。</system:String>
+  
+  <system:String x:Key="ManagerProfile.ToolTip.Create">创建一个新的配置文件。</system:String>
+  <system:String x:Key="ManagerProfile.ToolTip.Migrate">导入现有配置文件（json）或迁移旧配置文件（ini）。</system:String>
+
+  <system:String x:Key="NewProfile.Title">创建配置文件</system:String>
+  <system:String x:Key="NewProfile.Text.NewProfile">新配置文件</system:String>
+  <system:String x:Key="NewProfile.CheckBox.ModsAndCodes">保持当前选中的模组与代码。</system:String>
+</ResourceDictionary>
