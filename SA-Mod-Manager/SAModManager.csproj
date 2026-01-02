@@ -7,6 +7,10 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ApplicationIcon>Icons\SADXModManager.ico</ApplicationIcon>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>false</SelfContained>
+		<PublishTrimmed>false</PublishTrimmed>
+		<PublishAot>false</PublishAot>
 		<Nullable>disable</Nullable>
 		<BaseOutputPath>..\bin\</BaseOutputPath>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
