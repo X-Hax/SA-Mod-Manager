@@ -1,0 +1,179 @@
+﻿<ResourceDictionary 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=mscorlib">
+    
+	<!--#region Shared-->
+	<!--Game Tabs Strings-->
+	<system:String x:Key="GameConfig.Tabs.Graphics">Grafik</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input">Eingabe</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound">Sound</system:String>
+	<system:String x:Key="GameConfig.Tabs.Lang">Sprache</system:String>
+	<system:String x:Key="GameConfig.Tabs.Patches">Patches</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options">Einstellungen</system:String>
+
+    <!--Graphics Tab Strings-->
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display">Bildschirmeinstellungen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen">Bildschirm:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Screen.All">Alle Bildschirme</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption">Bildschirmmodus:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowed">Fenster</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Windowered.ToolTip">Standard Fenstermodus.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen">Exklusiver Vollbildmodus</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Fullscreen.ToolTip">Nicht empfohlen. Fenster wird die Monitorauflösung aktualisieren. Es kann zu Abstürzen kommen, wenn das Fenster nicht im Fokus ist.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless">Rahmenloser Vollbildmodus</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Borderless.ToolTip">Empfohlener Modus. Erlaubt es das Spiel in verschiedenen Auflösungen zu rendern und behebt den »Alt-Tab-Bug«.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom">Benutzerdefiniertes Fenster</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.DisplayOption.Custom.ToolTip">Ähnlich wie beim rahmenlosen Vollbildmodus. Das Spiel verhält sich aber wie im Fenstermodus und nicht wie im Vollbildmodus.</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution">Renderauflösung:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.CustomSize">Fenstergröße:</system:String>
+
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r480">640x480</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r600">800x600</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r768">1024x768</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r864">1152x864</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r960">1280x960</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1024">1280x1024</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.Native">Nativ</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.HalfNative">1/2x nativ</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.DoubleNative">2x nativ</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r720">720p</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r1080">1080p</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Resolution.r4K">4K</system:String>
+	
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Settings">Einstellungen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.ForceRatio">4:3 Verhältnis</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.VSync">V-Sync aktivieren</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Pause">Pausieren, wenn nicht aktiv</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.Check.Buffers">Puffer dynamisch zuweisen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Display.RefreshRate">Bildwiederholfrequenz:</system:String>
+
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ResizeWindow">Größenveränderbares Fenster</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.StretchToWindow">Auf Fenster strecken</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.DisableBorderImage">Rahmenbild deaktivieren</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.AspectRatio">Mit Renderverhältnis abpassen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.CustomWindow">Benutzerdefinierte Fenstergröße:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.BorderlessFullscreen">Rahmenloser Vollbildmodus</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Check.ShowMouse">Maus im Vollbildmodus anzeigen</system:String>
+
+
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other">Weitere Grafikeinstellungen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Framerate">Bildfrequenz:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel">Detailgrad:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.High">Hoch (beste)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Low">Mittel</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.DetailLevel.Lowest">Niedrig</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog">Nebel-Emulation:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Auto">Auto</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Fog.Emulation">Emulation</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill">Hintergrund-Füllmodus:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Stretch">Strecken [Standard]</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fit">Anpassen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.BGFill.Fill">Ausfüllen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.FMVFill">FMV Füllmodus:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.TexFilter">Textur-Filtern:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.UIFilter">GUI-Filtern</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements">Verbesserungen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.MipMap">Mipmapping erzwingen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.UIScale">UI-Skalierung aktivieren</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Check.D3D8to9">D3D8to9 aktivieren</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.Group.Enhancements.Buttons.UpdateD3D8to9">D3D8to9 aktualisieren</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVK">DXVK herunterladen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel">Mit diesem Knopf kannst du DXVK herunterladen. Dadurch kann die Leistung und Stabilität von SA2 verbessert werden. Das Programm wird nur heruntergeladen, nicht installiert.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.GetDXVKLabel2">Sobald das Archiv heruntergeladen ist, musst du einfach »d3d9.dll« in den Spieleordner, wo auch »sonic2app.exe« ist, reinkopieren.</system:String>
+
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend">Render-Backend:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D8.ToolTip">Setzt das Render-Backend auf den Standard von SADX (2004), Direct3D 8.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D9.ToolTip">Nutzt Direct3D 9 als Render-Backend durch d3d8to9 shim.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Graphics.Group.Other.RenderBackend.D3D11.ToolTip">Nutzt Direct3D 11 als Render-Backend durch d3d8to11 shim.</system:String>
+    <!--#endregion-->
+    
+    <!--Options Tab Strings-->
+    <system:String x:Key="GameConfig.Tabs.Options.Title">Weitere Einstellungen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Einführung überspringen</system:String>
+    <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">Die Text- und Sprachausgabe kann beim ersten Start des Spiels eingestellt werden. Diese Einstellungen werden beim Starten mit »Test Spawn« wirksam. Sobald eine Speicherdatei geladen wird, werden die Einstellungen hier damit überschrieben.</system:String>
+	<system:String x:Key="GameConfig.Tabs.Options.Lang.SA2">Die Text- und Sprachausgabe kann beim ersten Start des Spiels eingestellt werden. Diese Einstellungen werden beim Starten mit »Test Spawn« wirksam. Die Sprachausgabe wird mit der geladenen Speicherdatei überschrieben.</system:String>
+	<!--#endregion-->
+    
+    <!--Input Tab Strings-->
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input">Eingabeeinstellungen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.Vanilla">Standard-Eingabe (DInput)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Check.SDL2">Bessere Eingabe (SDL2)</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla">Standard-Eingabe konfigurieren</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard">Maus</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragHold">Ziehen und halten</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Check.DragAccel">Ziehen zum Beschleunigen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftMouseBtn">Linke Maustaste</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightMouseBtn">Rechte Maustaste</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.MiddleMouseBtn">Mittlere Maustaste</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.OtherMouseBtn">Weitere Maustaste 1</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.LeftRightMouseBtn">Linke + Rechte Maustaste</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.RightLeftMouseBtn">Rechte + Linke Maustaste</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.Action">Aktion:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Group.MouseKeyboard.BtnAssignment">Knopfzuordnung:</system:String>
+    <system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Jump">Springen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Action">Aktion</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Cancel">Abbrechen/Angriff</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Start">Start/Setzen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateLeft">Kamera nach links</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.CamRotateRight">Kamera nach rechts</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.Vanilla.Flute">Pfeifen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2">Bessere Eingabe Konfiguration</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.OpenApp">AppLauncher öffnen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Buttons.GetApp">AppLauncher erhalten</system:String>
+	<system:String x:Key="GameConfig.Tabs.Input.Group.Input.Group.SDL2.Info">Das bessere Eingabe-System ist eine Implementierung von SDL2 in SADX. Es wird für das Spielen empfohlen, da es Probleme mit dem ursprünglichen DInput-System behebt.</system:String>
+    <!--#endregion-->
+
+    <!--Sound Tab Strings-->
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings">Soundeinstellungen</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume">Lautstärke</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassMusic">Nutze BASS für Musik</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.BassSFX">Nutze BASS für SFX</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Music">Musik aktivieren</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.Sound">Sounds aktivieren</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Settings.Check.3DSound">3D Sound aktivieren</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Music">Musiklautstärke:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Voices">Sprachlautstärke:</system:String>
+	<system:String x:Key="GameConfig.Tabs.Sound.Group.Volume.Sound">SFX-Lautstärke:</system:String>
+	<!--#endregion-->
+
+	<!--#region Test Spawn Tab Strings-->
+	<system:String x:Key="TestSpawn.Check.Character">Charakter:</system:String>
+	<system:String x:Key="TestSpawn.Check.Level">Level:</system:String>
+	<system:String x:Key="TestSpawn.Time">Zeit:</system:String>
+	<system:String x:Key="TestSpawn.Act">Act:</system:String>
+	<system:String x:Key="TestSpawn.Check.Mode">Spielmodus:</system:String>
+	<system:String x:Key="TestSpawn.Check.Save">Speicherdatei auswählen:</system:String>
+	<system:String x:Key="TestSpawn.Check.Event">Event:</system:String>
+	<system:String x:Key="TestSpawn.Warning">Ein Level, oder Charakter im Event zu überschreiben kann zum Absturz führen.</system:String>
+	<system:String x:Key="TestSpawn.Buttons.Launch">Spiel starten</system:String>
+	<system:String x:Key="TestSpawn.Group.Advanced">Weitere Optionen</system:String>
+	<system:String x:Key="TestSpawn.Group.Advanced.Check.Manual">Manuell einstellen:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.Check.Event">Event manuell einstellen:</system:String>
+    <system:String x:Key="TestSpawn.Group.Advanced.Check.Position">Startposition überschreiben:</system:String>
+	<system:String x:Key="TestSpawn.Group.Advanced.PosX">Pos X:</system:String>
+	<system:String x:Key="TestSpawn.Group.Advanced.PosY">Pos Y:</system:String>
+	<system:String x:Key="TestSpawn.Group.Advanced.PosZ">Pos Z:</system:String>
+	<system:String x:Key="TestSpawn.Group.Advanced.Angle">Winkel:</system:String>
+    <system:String x:Key="TestSpawn.Player2">Spieler 2:</system:String>
+    <system:String x:Key="TestSpawn.Mission">Mission:</system:String>
+
+    <system:String x:Key="TestSpawn.Language.Voice">Sprache:</system:String>
+	<system:String x:Key="TestSpawn.Language.Text">Text:</system:String>
+	<system:String x:Key="TestSpawn.Language.Japanese">日本語</system:String>
+	<system:String x:Key="TestSpawn.Language.English">English</system:String>
+	<system:String x:Key="TestSpawn.Language.French">Français</system:String>
+    <system:String x:Key="TestSpawn.Language.Italian">Italiano</system:String>
+    <system:String x:Key="TestSpawn.Language.Spanish">Español</system:String>
+	<system:String x:Key="TestSpawn.Language.German">Deutsch</system:String>
+	<!--#endregion-->
+
+	<!--#region SADX-->
+	
+	<!--#endregion-->
+	
+	<!--#region SA2-->
+	
+	<!--#endregion-->
+	
+</ResourceDictionary>

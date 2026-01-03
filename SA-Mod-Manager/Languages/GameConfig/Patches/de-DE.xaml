@@ -1,0 +1,65 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+
+    <system:String x:Key="GamePatches.Title">Patch</system:String>
+    <system:String x:Key="GamePatches.HRTFSound">HRTF 3D Sound erlauben</system:String>
+    <system:String x:Key="GamePatches.KeepCamSettings">Kamera-Code Fehlerbehebung</system:String>
+    <system:String x:Key="GamePatches.FixVertexColorRendering">Vertex-Farben korrigieren</system:String>
+    <system:String x:Key="GamePatches.MaterialColorFix">Materialfarbe korrigieren</system:String>
+    <system:String x:Key="GamePatches.NodeLimit">Node-Limit erhöhen</system:String>
+    <system:String x:Key="GamePatches.FOVFix">Sichtfeld korrigieren</system:String>
+    <system:String x:Key="GamePatches.SkyChaseResolutionFix">Sky Chase korrigieren</system:String>
+    <system:String x:Key="GamePatches.Chaos2CrashFix">Chaos 2 Absturzbehebung</system:String>
+    <system:String x:Key="GamePatches.ChunkSpecularFix">Chunk-Spiegelungen korrigieren</system:String>
+    <system:String x:Key="GamePatches.E102NGonFix">Gammas Kopflicht korrigieren</system:String>
+    <system:String x:Key="GamePatches.ChaoPanelFix">Chao Statusbildschirmabmessungen korrigieren</system:String>
+    <system:String x:Key="GamePatches.PixelOffSetFix">2D Rendering Offset Fixes</system:String>
+    <system:String x:Key="GamePatches.LightFix">Licht korrigieren</system:String>
+    <system:String x:Key="GamePatches.KillGBIX">GBIX deaktivieren (Experimentell)</system:String>
+    <system:String x:Key="GamePatches.DisableCDCheck">CD-Prüfung deaktivieren</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupport">Erweiterte Speicherunterstützung</system:String>
+    <system:String x:Key="GamePatches.CrashGuard">Absturzschutz</system:String>
+    <system:String x:Key="GamePatches.XInputFix">XInput korrigieren</system:String>
+
+    <system:String x:Key="GamePatches.HRTFSoundDesc">Stellt DirectSound so ein, dass es fortschrittlichere Algorithmen zur Verarbeitung von 3D-Sounds verwendet. Dieser Patch ist nicht erforderlich, wenn »BASS für SFX« aktiviert ist.</system:String>
+    <system:String x:Key="GamePatches.KeepCamSettingsDesc">Behebt einen Vanilla-Fehler, der verhindert, dass die Einstellungen der freien Kamera beim Tod oder beim Laden einer Zone/eines Acts ordnungsgemäß gespeichert werden.</system:String>
+    <system:String x:Key="GamePatches.FixVertexColorRenderingDesc" xml:space="preserve">Vanilla SADX ignoriert bewusst die vom Mesh bereitgestellte Vertex-Farbe und verwendet stattdessen eine globale Vertex-Farbe, auch wenn dies nicht vorgesehen ist.&#x0a;&#x0a;Dieser Patch implementiert die Funktionen neu, um den Fall KORREKT zu behandeln und die vom Mesh bereitgestellten Vertexfarben zu verwenden.</system:String>
+    <system:String x:Key="GamePatches.MaterialColorFixDesc" xml:space="preserve">Dadurch werden alle Modelle im Spiel durchlaufen und ihre Materialfarben durch Weiß ersetzt.&#x0a;&#x0a;Dadurch werden verschiedene Unstimmigkeiten behoben und die Modelle sehen eher so aus wie in den Gamecube- und Dreamcast-Versionen des Spiels.</system:String>
+    <system:String x:Key="GamePatches.NodeLimitDesc" xml:space="preserve">SADX hat ursprünglich eine Begrenzung von 111 Knoten pro Charakter für Modelle und Animationen. Dieser Patch erhöht die Begrenzung auf 255, wodurch die Integration modernerer und komplexerer Modelle in das Spiel ermöglicht wird.</system:String>
+    <system:String x:Key="GamePatches.FOVFixDesc">Verbessert das Sichtfeld und ermöglicht vertikale/Hochformat-Auflösungen/-Abmessungen.</system:String>
+    <system:String x:Key="GamePatches.SkyChaseResolutionFixDesc" xml:space="preserve">Sorgt dafür, dass Sky Chase bei allen Bildschirmauflösungen gleich funktioniert. Dadurch werden Tornado- und Fadenkreuzbewegungen sowie die Feuerrate der Gegner korrigiert.&#x0a;&#x0a;Mit diesem Patch ist es einfacher als im Originalspiel, bei Auflösungen über 640x480 Punkte für Embleme zu sammeln.</system:String>
+    <system:String x:Key="GamePatches.Chaos2CrashFixDesc">Behebt einen Vanilla-Fehler, bei dem das Spiel abstürzte, wenn man Chaos 2 besiegt und dann den Boss neu gestartet hat.</system:String>
+    <system:String x:Key="GamePatches.ChunkSpecularFixDesc">Behebt Spiegelungen bei Chunk-Modellen.</system:String>
+    <system:String x:Key="GamePatches.E102NGonFixDesc">Korrigiert N-seitige Polygone (Gammas Kopflicht) mithilfe eines »Triangle-Strip-Vertex«-Puffers.</system:String>
+    <system:String x:Key="GamePatches.ChaoPanelFixDesc">Behebt einen Fehler, durch den das UI-Fenster für Chao-Statistiken nicht korrekt angezeigt wurde.</system:String>
+    <system:String x:Key="GamePatches.PixelOffSetFixDesc">Behebt die Fehlplatzierung von Subpixeln bei den meisten 2D-Elementen, die bei höheren Auflösungen sichtbar werden können.</system:String>
+    <system:String x:Key="GamePatches.LightFixDesc">FBehebt einen Fehler, durch den Licht auf LandTables falsch angewendet wurde, und ermöglicht die Beibehaltung des Lichttyps für Modelle in der Warteschlange.</system:String>
+    <system:String x:Key="GamePatches.KillGBIXDesc" xml:space="preserve">Der »Global Index« (GBIX) ist ein Wert, der im Textur-Caching-System des Spiels verwendet wird. Jede Textur in SADX hat einen&#x0a;Bevor das Spiel eine neue Textur lädt, vergleicht es den GBIX-Wert der neuen Textur mit den Indizes anderer Texturen, die bereits geladen sind.&#x0a;Wenn eine Übereinstimmung gefunden wird, verwendet das Spiel die bereits geladene Textur erneut, anstatt die neue zu laden.&#x0a;&#x0a;Dieser Patch deaktiviert den Großteil des GBIX-Systems im Spiel, um Texturfehler/-konflikte zu reduzieren. (Es gibt einige Ausnahmen, wie z.B. HUD-Elemente.)</system:String>
+	<system:String x:Key="GamePatches.DisableCDCheckDesc">Deaktiviert die CD-Prüfung des Spiels.</system:String>
+    <system:String x:Key="GamePatches.ExtendedSaveSupportDesc">Ermöglicht die Unterstützung für gespeicherte Spiele aus der Steam-Version und erlaubt benutzerdefinierte Speichernamen (bis zu 48 Zeichen).</system:String>
+    <system:String x:Key="GamePatches.CrashGuardDesc" xml:space="preserve">Verhindert häufig auftretende Abstürze aufgrund fehlender Texturen und Binärdateien.&#x0a;&#x0a;Das Spiel kann unter Umständen dennoch an einigen Punkten abstürzen.</system:String>
+    <system:String x:Key="GamePatches.XInputFixDesc" xml:space="preserve">Behebt das Problem, dass sich die Kamera bei der Verwendung der Standardeingabe mit XInput-Controllern dreht.</system:String>
+
+    <!--#region SA2 Patches-->
+    <system:String x:Key="GamePatchesSA2.FramerateLimiter">Bildfrequenz sperren</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPrompt">Schließmeldung deaktivieren</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoad">Ladeanimation deaktivieren</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBuffer">Vertex-Puffer-Limit erhöhen</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFix">Umgebung-Mapping korrigieren</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFix">Bildschirmausblendung korrigieren</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFix">City Escape Autos korrigieren</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFix">Partikeleffekte korrigieren</system:String>
+
+    <system:String x:Key="GamePatchesSA2.FramerateLimiterDesc">Sperrt die Bildfrequenz auf 60 FPS. Dadurch wird das Problem behoben, dass das Spiel zu schnell läuft, wenn dein Bildschirm eine höhere Bildwiederholfrequenz besitzt.</system:String>
+    <system:String x:Key="GamePatchesSA2.DisableExitPromptDesc">Deaktiviert die Warnmeldung, wenn du das Spiel schließen möchtest.</system:String>
+    <system:String x:Key="GamePatchesSA2.SyncLoadDesc">Deaktiviert die Omochao-Ladeanimation. Das sollte Abstürze zu Beginn des Spiels reduzieren.</system:String>
+    <system:String x:Key="GamePatchesSA2.ExtendVertexBufferDesc">Erhöht das Vertex-Puffer-Limit auf 32k. Dadurch können Modelle mit mehr Polygone geladen werden. Einige Mods benötigen diese Einstellung, um zu funktionieren.</system:String>
+    <system:String x:Key="GamePatchesSA2.EnvMapFixDesc">Behebt einen Fehler beim Umgebung-Mapping (hauptsächlich in Chao World), wodurch eine bessere Darstellung ermöglicht wird..</system:String>
+    <system:String x:Key="GamePatchesSA2.ScreenFadeFixDesc">Behebt einen Bug bei der Bildschirmausblendung während der Siegesanimation.</system:String>
+    <system:String x:Key="GamePatchesSA2.CECarFixDesc">Behebt den berüchtigten Straßenbahnwagen-Fehler in City Escape (Intel-GPU).</system:String>
+    <system:String x:Key="GamePatchesSA2.ParticlesFixDesc">Behebt Partikeleffkte (Mystic Melody-Portal, etc.) die nicht zu sehen waren (intel GPU).</system:String>
+    <!--#endregion-->
+
+</ResourceDictionary>

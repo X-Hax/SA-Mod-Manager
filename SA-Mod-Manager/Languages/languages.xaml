@@ -4,7 +4,7 @@
 
     <local:LanguageList x:Key="Languages">
         <local:LangEntry FileName="en-EN" Name="English"/>
-        <local:LangEntry FileName="fr-FR" Name="Français (France)"/>
+		<local:LangEntry FileName="fr-FR" Name="Français (France)"/>
         <local:LangEntry FileName="es-ES" Name="Español (España)"/>
         <local:LangEntry FileName="es-MX" Name="Español (Mexicano)"/>
         <local:LangEntry FileName="et-EE" Name="Eesti keel (Eesti Vabariik)"/>
@@ -14,6 +14,8 @@
         <local:LangEntry FileName="it-IT" Name="Italiano (Italia)"/>
         <local:LangEntry FileName="ko-KR" Name="한국어 (대한민국)"/>
         <local:LangEntry FileName="uk-UA" Name="Українська (Україна)"/>
+		<local:LangEntry FileName="de-DE" Name="Deutsch (Deutschland)"/>
+		<!--<local:LangEntry FileName="he-IL" Name="עברית"/>-->
         <local:LangEntry FileName="zh-CN" Name="中文（中国大陆）"/>
         <!--<local:LangEntry FileName="he-IL" Name="עברית"/>-->
     </local:LanguageList>

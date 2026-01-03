@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+	<system:String x:Key="EditMod.Description">Bitte fülle alle Informationen über deine Modifikation aus.</system:String>
+	<system:String x:Key="EditMod.Header.EditMod">Bearbeiten</system:String>
+	<system:String x:Key="EditMod.Header.NewMod">Neue Mod</system:String>
+
+	<system:String x:Key="EditMod.Tabs.Info">Mod-Info</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.AuthorURL">Autor-URL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.ModID">Mod-ID:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.DLL">DLL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Source">Quellcode-URL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.SaveRedirect">Speicherweiterleitung:</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectMainSave">Hauptspeicher</system:String>
+	<system:String x:Key="EditMod.Tabs.Info.Check.RedirectChaoSave">Chao-Speicher</system:String>
+    <system:String x:Key="EditMod.Tabs.Btn.Advanced">Erweitert</system:String>
+    <system:String x:Key="EditMod.Tabs.Info.IncludeDir">Verzeichnisse einschließen:</system:String>
+
+    <system:String x:Key="EditMod.Tabs.Updates">Informationen</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Method">Plattform</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.SelfHosted">Selbst gehostet</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GitHub">GitHub-Einstellungen</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Author">Autor und Repo:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GitHub.Asset">Asset freigeben:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GB">Gamebanana-Einstellungen</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.GB.ModID">Mod-ID:</system:String>
+    <system:String x:Key="EditMod.Tabs.Updates.GB.ModType">Mod-Typ:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self">Selbsthost-Einstellungen</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.URL">URL:</system:String>
+	<system:String x:Key="EditMod.Tabs.Updates.Self.Changelog">URL für das Änderungsprotokoll:</system:String>
+
+	<system:String x:Key="EditMod.Tabs.Dependencies">Abhängigkeiten</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Warning">Das Abhängigkeitssystem sollte nur genutzt werden, wenn du eine Mod erstellt hast, die ohne Ausnahme eine andere Mod braucht, um richtig zu funktionieren.</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Add">Abhängigkeiten hinzufügen</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Buttons.Remove">Abhängigkeiten entfernen</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.ID">ID</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Folder">Ordner</system:String>
+	<system:String x:Key="EditMod.Tabs.Dependencies.Grid.Column">Download-Link</system:String>
+</ResourceDictionary>
