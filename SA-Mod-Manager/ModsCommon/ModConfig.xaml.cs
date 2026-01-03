@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -95,7 +94,6 @@ namespace SAModManager.ModsCommon
             Init();
         }
 
-
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             ModConfig.allGroupBoxes.Clear();
@@ -150,7 +148,6 @@ namespace SAModManager.ModsCommon
                 }
             }
         }
-
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -207,7 +204,6 @@ namespace SAModManager.ModsCommon
             }
         }
 
-
         private IEnumerable<FrameworkElement> FindAllControls(DependencyObject parent)
         {
             if (parent == null)
@@ -253,15 +249,11 @@ namespace SAModManager.ModsCommon
 
     }
 
-
-
     public class ConfigSettings
     {
         public ConfigSchema schema;
         public Dictionary<string, Dictionary<string, string>> configINI;
         private string configfilename;
-        public Dictionary<string, Dictionary<string, string>> modINI;
-        private string modiniFilename;
         public string modPath;
         public bool modNeedRefresh = false;
 
@@ -270,8 +262,6 @@ namespace SAModManager.ModsCommon
             modPath = path;
             schema = ConfigSchema.Load(Path.Combine(path, "configschema.xml"));
             configfilename = Path.Combine(path, "config.ini");
-            modiniFilename = Path.Combine(modPath, "mod.ini");
-            modINI = Ini.IniFile.Load(modiniFilename);
 
             if (File.Exists(configfilename))
                 configINI = Ini.IniFile.Load(configfilename);
@@ -287,22 +277,6 @@ namespace SAModManager.ModsCommon
                 {
                     if (!configINI[group.Name].ContainsKey(prop.Name))
                         configINI[group.Name].Add(prop.Name, prop.DefaultValue);
-
-                    //for basic mods config without code injection
-                    if (modINI is not null && prop.Name.ToLower().Contains("includedir"))
-                    {
-                        if (!modINI.ContainsKey("Config"))
-                            modINI.Add("Config", []);
-
-                        var value = prop.DefaultValue;
-                        if (IsEnum(prop.Type) && int.TryParse(value, out int result))
-                        {
-                            var EnumProp = GetEnum(prop.Type).Members[result];
-                            value = string.IsNullOrEmpty(EnumProp.DisplayName) ? EnumProp.Name : EnumProp.DisplayName;
-                        }
-
-                         modINI["Config"].TryAdd(prop.Name, value);
-                    }
                 }
 
 
@@ -324,11 +298,6 @@ namespace SAModManager.ModsCommon
             }
 
             Ini.IniFile.Save(configINI, configfilename);
-            if (modINI != null)
-            {
-                Ini.IniFile.Save(modINI, modiniFilename);
-            }
-
 
             FileInfo fileInfo = new(configfilename);
 
@@ -355,9 +324,6 @@ namespace SAModManager.ModsCommon
                             var EnumProp = GetEnum(prop.Type).Members[result];
                             value = string.IsNullOrEmpty(EnumProp.DisplayName) ? EnumProp.Name : EnumProp.DisplayName;
                         }
-
-                        if (IsEnum(prop.Type))
-                            modINI["Config"][prop.Name] = value;
                     }
 
                 }
@@ -372,7 +338,6 @@ namespace SAModManager.ModsCommon
         {
             return schema.Enums.SingleOrDefault(a => a.Name == name);
         }
-
 
         public bool IsEnum(string name)
         {
@@ -398,11 +363,8 @@ namespace SAModManager.ModsCommon
                         string enumName = GetEnum(type).Members[result].DisplayName;
                         value = string.IsNullOrEmpty(enumName) ? value : enumName;
                     }
-
-                    modINI["Config"][propertyName] = value;
                 }
             }
-
         }
     }
 
@@ -476,7 +438,6 @@ namespace SAModManager.ModsCommon
                     return i;
             return 0;
         }
-
         public void SetValue(object value)
         {
             switch (type)
