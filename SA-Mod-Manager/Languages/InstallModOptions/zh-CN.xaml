@@ -1,0 +1,20 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+>
+  
+  <system:String x:Key="InstallModOptions.Title">安装或制作一个新的模组。</system:String>
+  <system:String x:Key="InstallModOptions.Radio.Archive">从压缩归档文件安装</system:String>
+  <system:String x:Key="InstallModOptions.Radio.Folder">从文件夹安装</system:String>
+  <system:String x:Key="InstallModOptions.Radio.Url">从链接安装</system:String>
+  <system:String x:Key="InstallModOptions.Radio.New">新建模组（开发者专用）</system:String>
+
+  <system:String x:Key="InstallModUrl.Radio.Header">复制并粘贴模组的下载页面链接至此处：</system:String>
+  
+  <!--Mod Download-->
+  <system:String x:Key="ModDL.DLMod">下载模组</system:String>
+  <system:String x:Key="ModDL.OpenLink">打开链接</system:String>
+  <system:String x:Key="ModDL.NoDescript">找不到描述。</system:String>
+
+</ResourceDictionary>
