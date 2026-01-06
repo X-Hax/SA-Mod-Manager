@@ -30,10 +30,13 @@ public partial class MainWindow : Window
 		MainWindowDialogHost.IsOpen = true;
 	}
 
-	public void ShowMessage(string header, string message)
+	public bool ShowMessage(string header, string message)
 	{
-		PART_DialogHost.Child = new MessagePopupDialog(header, message);
+		MessagePopupDialog popup = new MessagePopupDialog(header, message);
+		PART_DialogHost.Child = popup;
 		MainWindowDialogHost.IsOpen = true;
+
+		return popup.IsOK;
 	}
 
 	public void ShowException(Exception ex)
@@ -92,7 +95,8 @@ public partial class MainWindow : Window
 	{
 		try
 		{
-			ShowDialog(new ModConfigDialog(selectedMod));
+			//ShowDialog(new ModConfigDialog(selectedMod));
+			MessageHandler.OpenDialog("This is a Message", "and this is the text of the test message.");
 		}
 		catch (Exception ex)
 		{

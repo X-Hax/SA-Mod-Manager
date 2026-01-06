@@ -106,6 +106,8 @@ namespace SAMM.App.Models
 		/// <param name="clearEntries"></param>
 		private void LoadModEntries(bool clearEntries = true)
 		{
+			if (GameSettings == null) return;
+
 			if (clearEntries && ModEntries.Count > 0)
 				ModEntries.Clear();
 
