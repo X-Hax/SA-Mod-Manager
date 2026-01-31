@@ -4,6 +4,7 @@ using Avalonia.Metadata;
 using System;
 using System.Collections.Generic;
 using SAMM.App.Models;
+using SAMM.Configuration.XML;
 
 namespace SAMM.App.Selectors
 {
@@ -14,7 +15,7 @@ namespace SAMM.App.Selectors
 
 		public Control Build(object? param)
 		{
-			var key = param as ModConfigPropertyModel;
+			var key = param as ConfigSchemaProperty;
 			if (key == null)
 				throw new ArgumentNullException();
 
@@ -26,11 +27,11 @@ namespace SAMM.App.Selectors
 
 		public bool Match(object? data)
 		{
-			var key = data as ModConfigPropertyModel;
+			var key = data as ConfigSchemaProperty;
 
-			bool retVal = data is ModConfigPropertyModel && !string.IsNullOrEmpty(key.Type) && Templates.ContainsKey(key.Type.ToLowerInvariant());
+			bool retVal = data is ConfigSchemaProperty && !string.IsNullOrEmpty(key.Type) && Templates.ContainsKey(key.Type.ToLowerInvariant());
 			if (!retVal)
-				retVal = data is ModConfigPropertyModel && Templates.ContainsKey("enum");
+				retVal = data is ConfigSchemaProperty && Templates.ContainsKey("enum");
 			
 			return retVal;
 		}

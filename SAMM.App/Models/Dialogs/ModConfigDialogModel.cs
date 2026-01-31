@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using SAMM.Configuration.Mods;
+using SAMM.Configuration.XML;
 using SAMM.Utilities.INI;
 using System.IO;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace SAMM.App.Models.Dialogs
 {
 	public class ModConfigDialogModel : ReactiveObject
 	{
-		private ModConfigModel modConfig = new ModConfigModel();
-		public ModConfigModel ModConfig
+		private ConfigSchema modConfig = new ConfigSchema();
+		public ConfigSchema ModConfig
 		{
 			get => modConfig;
 			set => this.RaiseAndSetIfChanged(ref modConfig, value);
@@ -27,13 +28,13 @@ namespace SAMM.App.Models.Dialogs
 
 		public ModConfigDialogModel(ModEntry entry) 
 		{
-			ModConfig = new ModConfigModel(ConfigSchema.Load(Path.Combine(entry.Directory, "configschema.xml")));
+			ModConfig = ConfigSchema.Load(Path.Combine(entry.Directory, "configschema.xml"));
 			configPath = Path.Combine(entry.Directory, "config.ini");
 			if (File.Exists(configPath))
 			{
 				Config = IniFile.Load(configPath);
 
-				foreach (var group in ModConfig.Groups)
+				foreach (var group in ModConfig.ConfigPropertyGroups)
 				{
 					if (Config.ContainsKey(group.Name))
 					{

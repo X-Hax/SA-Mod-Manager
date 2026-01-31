@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 xmlns:models="clr-namespace:SAMM.App.Models.Dialogs;assembly=SAMM.App"
+			 xmlns:config="clr-namespace:SAMM.Configuration.XML;assembly=SAMM.Configuration"
 			 x:DataType="models:ModConfigDialogModel"
 			 xmlns:selectors="clr-namespace:SAMM.App.Selectors;assembly=SAMM.App"
 			 xmlns:converters="clr-namespace:SAMM.App.Converters;assembly=SAMM.App"
-			 xmlns:config="clr-namespace:SAMM.App.Models;assembly=SAMM.App"
+			 xmlns:avaconv="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
              x:Class="SAMM.App.Controls.Dialogs.ModConfigDialog">
 	<UserControl.Resources>
 		<converters:ConfigDisplayNameConverter x:Key="NameConverter"/>
@@ -22,10 +23,10 @@
 				<Rectangle Height="2" Fill="{DynamicResource ADVTheme.Brush.Border.Base}" Grid.Row="1" Margin="0,5,0,0"/>
 			</Grid>
 			<ScrollViewer Grid.Row="1">
-				<ItemsControl ItemsSource="{Binding ModConfig.Groups}" Margin="5">
+				<ItemsControl ItemsSource="{Binding ModConfig.ConfigPropertyGroups}" Margin="5">
 					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Expander x:Name="{Binding Name}" IsExpanded="True" Margin="5">
+						<DataTemplate DataType="config:ConfigSchemaGroup">
+							<Expander x:Name="{Binding Name}" IsExpanded="{Binding !DefaultCollapsed}" Margin="5">
 								<Expander.Header>
 									<MultiBinding Converter="{StaticResource NameConverter}">
 										<Binding Path="Name"/>
@@ -35,7 +36,7 @@
 								<ItemsControl ItemsSource="{Binding Properties}">
 									<ItemsControl.DataTemplates>
 										<selectors:ConfigPropertyTemplateSelector>
-											<DataTemplate x:Key="bool" DataType="config:ModConfigPropertyModel">
+											<DataTemplate x:Key="bool" DataType="config:ConfigSchemaProperty">
 												<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
 													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
 														<Grid ColumnDefinitions="Auto,Auto" Grid.Column="0" ColumnSpacing="5">
@@ -47,7 +48,7 @@
 																	</MultiBinding>
 																</TextBlock.Text>
 															</TextBlock>
-															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelperText}" IsVisible="{Binding HelperText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelpText}" IsVisible="{Binding HelpText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
 																<Path Margin="5" Data="{StaticResource ADVTheme.Icon.Information}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}"/>
 															</Border>
 														</Grid>
@@ -56,7 +57,7 @@
 													</Grid>
 												</Border>
 											</DataTemplate>
-											<DataTemplate x:Key="int" DataType="config:ModConfigPropertyModel">
+											<DataTemplate x:Key="int" DataType="config:ConfigSchemaProperty">
 												<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
 													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
 														<Grid ColumnDefinitions="Auto,Auto" Grid.Column="0" ColumnSpacing="5">
@@ -68,22 +69,22 @@
 																	</MultiBinding>
 																</TextBlock.Text>
 															</TextBlock>
-															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelperText}" IsVisible="{Binding HelperText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelpText}" IsVisible="{Binding HelpText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
 																<Path Margin="5" Data="{StaticResource ADVTheme.Icon.Information}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}"/>
 															</Border>
 														</Grid>
 
 														<Grid Grid.Column="1">
-															<NumericUpDown IsVisible="{Binding !UseSlider}" HorizontalAlignment="Right" Width="230" Maximum="{Binding MaximumValue}" Minimum="{Binding MinimumValue}" Value="{Binding Value}" FormatString="0" Increment="1"/>
+															<NumericUpDown IsVisible="{Binding !UseSlider}" HorizontalAlignment="Right" Width="230" Maximum="{Binding MaxValue}" Minimum="{Binding MinValue}" Value="{Binding Value}" FormatString="0" Increment="1"/>
 															<Grid IsVisible="{Binding UseSlider}" ColumnDefinitions="*,50" ColumnSpacing="5">
-																<Slider Grid.Column="0" Maximum="{Binding MaximumValue}" Minimum="{Binding MinimumValue}" Value="{Binding Value}" TickPlacement="TopLeft" TickFrequency="10"/>
+																<Slider Grid.Column="0" Maximum="{Binding MaxValue}" Minimum="{Binding MinValue}" Value="{Binding Value}" TickPlacement="TopLeft" TickFrequency="10"/>
 																<TextBlock Grid.Column="1" Text="{Binding Value}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 															</Grid>
 														</Grid>
 													</Grid>
 												</Border>
 											</DataTemplate>
-											<DataTemplate x:Key="float" DataType="config:ModConfigPropertyModel">
+											<DataTemplate x:Key="float" DataType="config:ConfigSchemaProperty">
 												<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
 													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
 														<Grid ColumnDefinitions="Auto,Auto" Grid.Column="0" ColumnSpacing="5">
@@ -95,22 +96,22 @@
 																	</MultiBinding>
 																</TextBlock.Text>
 															</TextBlock>
-															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelperText}" IsVisible="{Binding HelperText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelpText}" IsVisible="{Binding HelpText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
 																<Path Margin="5" Data="{StaticResource ADVTheme.Icon.Information}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}"/>
 															</Border>
 														</Grid>
 														
 														<Grid Grid.Column="1">
-															<NumericUpDown IsVisible="{Binding !UseSlider}" HorizontalAlignment="Right" Width="230" Maximum="{Binding MaximumValue}" Minimum="{Binding MinimumValue}" Value="{Binding Value}" FormatString="0.00" Increment="0.1"/>
+															<NumericUpDown IsVisible="{Binding !UseSlider}" HorizontalAlignment="Right" Width="230" Maximum="{Binding MaxValue}" Minimum="{Binding MinValue}" Value="{Binding Value}" FormatString="0.00" Increment="0.1"/>
 															<Grid IsVisible="{Binding UseSlider}" ColumnDefinitions="*,50" ColumnSpacing="5">
-																<Slider Grid.Column="0" Maximum="{Binding MaximumValue}" Minimum="{Binding MinimumValue}" Value="{Binding Value}"/>
+																<Slider Grid.Column="0" Maximum="{Binding MaxValue}" Minimum="{Binding MinValue}" Value="{Binding Value}"/>
 																<TextBlock Grid.Column="1" Text="{Binding Value}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 															</Grid>
 														</Grid>
 													</Grid>
 												</Border>
 											</DataTemplate>
-											<DataTemplate x:Key="string" DataType="config:ModConfigPropertyModel">
+											<DataTemplate x:Key="string" DataType="config:ConfigSchemaProperty">
 												<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
 													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
 														<Grid ColumnDefinitions="Auto,Auto" Grid.Column="0" ColumnSpacing="5">
@@ -122,7 +123,7 @@
 																	</MultiBinding>
 																</TextBlock.Text>
 															</TextBlock>
-															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelperText}" IsVisible="{Binding HelperText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelpText}" IsVisible="{Binding HelpText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
 																<Path Margin="5" Data="{StaticResource ADVTheme.Icon.Information}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}"/>
 															</Border>
 														</Grid>
@@ -131,7 +132,7 @@
 													</Grid>
 												</Border>
 											</DataTemplate>
-											<DataTemplate x:Key="enum" DataType="config:ModConfigPropertyModel">
+											<DataTemplate x:Key="enum" DataType="config:ConfigSchemaProperty">
 												<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Margin="5">
 													<Grid ColumnDefinitions="*,*" Margin="5" Height="30">
 														<Grid ColumnDefinitions="Auto,Auto" Grid.Column="0" ColumnSpacing="5">
@@ -143,12 +144,12 @@
 																	</MultiBinding>
 																</TextBlock.Text>
 															</TextBlock>
-															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelperText}" IsVisible="{Binding HelperText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+															<Border Grid.Column="1" Background="Transparent" ToolTip.Tip="{Binding HelpText}" IsVisible="{Binding HelpText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
 																<Path Margin="5" Data="{StaticResource ADVTheme.Icon.Information}" Fill="{DynamicResource ADVTheme.Brush.Foreground.Base}"/>
 															</Border>
 														</Grid>
 
-														<ComboBox Grid.Column="1" ItemsSource="{Binding Items}" SelectedIndex="{Binding Value}"/>
+														<ComboBox Grid.Column="1" ItemsSource="{Binding EnumItems}" SelectedIndex="{Binding Value}"/>
 													</Grid>
 												</Border>
 											</DataTemplate>
