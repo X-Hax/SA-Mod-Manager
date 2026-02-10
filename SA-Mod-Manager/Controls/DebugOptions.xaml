@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SAModManager.Controls"
              mc:Ignorable="d" x:Name="DebugSettingsControl" Loaded="DebugSettingsControl_Loaded"
              d:DesignHeight="100" d:DesignWidth="500">
-	<GroupBox Header="Debug Settings">
+    <GroupBox Header="{DynamicResource GameConfig.Tabs.Options.DebugTitle}">
 		<Grid Margin="10">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>

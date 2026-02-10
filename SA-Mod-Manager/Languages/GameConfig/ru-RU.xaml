@@ -80,6 +80,7 @@
     <!--#endregion-->
 
     <!--Options Tab Strings-->
+    <system:String x:Key="GameConfig.Tabs.Options.DebugTitle">Настройки дебага</system:String>
     <system:String x:Key="GameConfig.Tabs.Options.Title">Прочие настройки</system:String>
     <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Пропуск интро</system:String>
     <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">Можно настроить языки текста и озвучки, которые будут применены при запуске игры. Опция применяется и при запуске игры через раздел "Дебаг", а также будет перезаписана при загрузке файла сохранения.</system:String>
