@@ -1,0 +1,12 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					x:ClassModifier="public">
+	<x:String x:Key="ProfileManagerDialog.Title">User Profile Manager</x:String>
+
+	<x:String x:Key="ProfileManagerDialog.AddProfile.ToolTip">Create a new profile.</x:String>
+	<x:String x:Key="ProfileManagerDialog.EditProfile.ToolTip">Edit the current active profile.</x:String>
+	<x:String x:Key="ProfileManagerDialog.DuplicateProfile.ToolTip">Duplicate the currently selected profile(s)</x:String>
+	<x:String x:Key="ProfileManagerDialog.DeleteProfile.ToolTip">Delete the currently selected profile(s).</x:String>
+	<x:String x:Key="ProfileManagerDialog.ImportProfile.ToolTip">Import a profile.</x:String>
+	<x:String x:Key="ProfileManagerDialog.OpenProfileFolder.ToolTip">Open your profile folder.</x:String>
+</ResourceDictionary>

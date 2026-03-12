@@ -5,6 +5,7 @@
 		<ResourceInclude Source="avares://ADVTheme/Language/en-US.axaml"/>
 		<ResourceInclude Source="avares://SAMM.App/Language/MainWindow/en-US.axaml"/>
 		<ResourceInclude Source="avares://SAMM.App/Language/ExceptionDialog/en-US.axaml"/>
+		<ResourceInclude Source="avares://SAMM.App/Language/ProfileManagerDialog/en-US.axaml"/>
 	</ResourceDictionary.MergedDictionaries>
 
 	<x:String x:Key="Common.Name">Name</x:String>
