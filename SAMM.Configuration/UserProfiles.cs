@@ -1,33 +1,34 @@
-﻿using SAMM.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Text.Json;
+﻿using SAMM.Configuration.Enumeration;
+using SAMM.Utilities;
+using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace SAMM.Configuration
 {
-	public class UserProfile
+	public class UserProfile : NotifyObject
 	{
 		#region Variables
+		private string name = string.Empty;
+
 		/// <summary>
 		/// Display name of the User Profile.
 		/// </summary>
-		public string Name { get; set; } = string.Empty;
+		public string Name 
+		{
+			get => name;
+			set => RaiseAndSetIfChanged<string>(ref name, value);
+		}
+
+		private string filename = string.Empty;
 
 		/// <summary>
 		/// Name of the file storing the user profile information.
 		/// </summary>
-		public string Filename { get; set; } = string.Empty;
-
-		/// <summary>
-		/// Full path to the file storing the user profile information.
-		/// </summary>
-		[JsonIgnore]
-		public string Filepath { get { return Path.Combine(Filename); } }
+		public string Filename 
+		{
+			get => filename;
+			set => RaiseAndSetIfChanged<string>(ref filename, value);
+		}
 
 		#endregion
 
@@ -48,20 +49,40 @@ namespace SAMM.Configuration
 		}
 	}
 
-	public class UserProfiles
+	public class UserProfiles : NotifyObject
 	{
 		#region Variables
+		[JsonIgnore]
+		public GameIDs GameID { get; set; }
+
+		private int profileIndex = 0;
 		/// <summary>
 		/// Index of the current/last selected profile.
 		/// </summary>
-		public int ProfileIndex { get; set; } = 0;
+		public int ProfileIndex 
+		{ 
+			get => profileIndex;
+			set => RaiseAndSetIfChanged<int>(ref profileIndex, value);
+		}
+
+		private ObservableCollection<UserProfile> profiles = new ObservableCollection<UserProfile>();
 
 		/// <summary>
 		/// List of all profiles the user currently has saved.
 		/// </summary>
 		[JsonPropertyName("ProfilesList")]
-		public List<UserProfile> Profiles { get; set; } = new List<UserProfile>();
+		public ObservableCollection<UserProfile> Profiles 
+		{
+			get => profiles;
+			set => RaiseAndSetIfChanged<ObservableCollection<UserProfile>>(ref profiles, value);
+		}
 
+		/// <summary>
+		/// This is the currently selected profile in the loaded profiles. 
+		/// 
+		/// If the selected index is greater than the amount of profiles in the list, it will return the profile that's index is 0.
+		/// </summary>
+		[JsonIgnore]
 		public UserProfile CurrentProfile 
 		{ 
 			get 

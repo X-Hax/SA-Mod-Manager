@@ -1,6 +1,10 @@
 ﻿using SAMM.Configuration.Enumeration;
 using SAMM.Configuration.SADX;
+using SAMM.Utilities;
 using System.ComponentModel;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace SAMM.Configuration
 {
@@ -113,8 +117,16 @@ namespace SAMM.Configuration
 		#endregion
 	}
 
-	public abstract class GameSettings
+	public abstract class GameSettings<G,T> 
+		where G : GraphicsSettings, new() 
+		where T : TestSpawnSettings, new ()
 	{
+		[JsonPropertyName("Graphics")]
+		public G GraphicsSettings { get; set; } = new G();
+
+		[JsonPropertyName("TestSpawn")]
+		public T TestSpawnSettings { get; set; } = new T();
+
 		public DebugSettings DebugSettings { get; set; } = new DebugSettings();
 
 		public Dictionary<string, bool> Patches { get; set; } = new Dictionary<string, bool>();
@@ -125,15 +137,26 @@ namespace SAMM.Configuration
 
 		public List<string> ModsList { get; set; } = new List<string>();
 
-		public abstract void Serialize(string path);
-
-		public abstract void Deserialize(string path);
+		/// <summary>
+		/// Serializes the JSON file to the specified path.
+		/// </summary>
+		/// <param name="path"></param>
+		public void Serialize(string path)
+		{
+			JSON.Serialize(path, this);
+		}
 
 		public abstract void ToGameConfig(string path);
 
+		/// <summary>
+		/// Deserializes a <see cref="GameSettings"/> derived class to its appropriate object.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="path"></param>
+		/// <returns><see cref="GameSettings"/> derived object.</returns>
 		public static T Deserialize<T>(string path) where T : GameSettings
 		{
-			return Utilities.JSON.Deserialize<T>(path);
+			return JSON.Deserialize<T>(path);
 		}
 	}
 }

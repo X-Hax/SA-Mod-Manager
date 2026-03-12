@@ -62,25 +62,13 @@ namespace SAMM.Configuration.SA2B
 		#endregion
 	}
 
-	public class SA2BSettings : GameSettings
+	public class SA2BSettings : GameSettings<SA2BGraphicsSettings,SA2BTestSpawnSettings>
 	{
 		#region Variables
-		[JsonPropertyName("GraphicSettings")]
-		public SA2BGraphicsSettings GraphicsSettings { get; set; } = new SA2BGraphicsSettings();
 
 		#endregion
 
 		#region Functions
-		public override void Serialize(string path)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void Deserialize(string path)
-		{
-			throw new NotImplementedException();
-		}
-
 		public override void ToGameConfig(string path)
 		{
 			throw new NotImplementedException();

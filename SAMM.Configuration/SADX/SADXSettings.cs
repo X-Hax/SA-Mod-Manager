@@ -1,4 +1,5 @@
-﻿using SAMM.Utilities.INI;
+﻿using SAMM.Utilities;
+using SAMM.Utilities.INI;
 using System.ComponentModel;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -198,7 +199,7 @@ namespace SAMM.Configuration.SADX
 		public SADXConfig GameConfig { get; set; } = new SADXConfig();
 	}
 
-	public class SADXSettings : GameSettings
+	public class SADXSettings : GameSettings<SADXGraphicsSettings, SADXTestSpawnSettings>
 	{
 		#region Enumeration
 		public enum Version
@@ -225,22 +226,9 @@ namespace SAMM.Configuration.SADX
 		[JsonPropertyName("Sound")]
 		public SADXAudioSettings AudioSettings { get; set; } = new SADXAudioSettings();
 
-		[JsonPropertyName("TestSpawn")]
-		public SADXTestSpawnSettings TestSpawnSettings { get; set; } = new SADXTestSpawnSettings();
-
 		#endregion
 
 		#region Functions
-		public override void Serialize(string path)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void Deserialize(string path) 
-		{
-			throw new NotImplementedException();
-		}
-
 		public override void ToGameConfig(string path)
 		{
 			throw new NotImplementedException();
