@@ -57,10 +57,16 @@ public partial class App : Application
     /// <typeparam name="T"></typeparam>
     /// <param name="resourceName"></param>
     /// <returns>The requested object is returned if resource key is found, else returns the default of <see cref="T"/></returns>
-    public static T GetResource<T>(string resourceName)
+    public static T? GetResource<T>(string resourceName)
     {
         if (!string.IsNullOrEmpty(resourceName))
-            return (T)Current.FindResource(resourceName);
+        {
+            object obj = Current.FindResource(resourceName);
+            if (obj != AvaloniaProperty.UnsetValue)
+                return (T)obj;
+            else
+                return default(T);
+        }
         else
             return default(T);
     }

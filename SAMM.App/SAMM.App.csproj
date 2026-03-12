@@ -50,6 +50,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\Dialogs\GameManagerDialog.axaml.cs">
+      <DependentUpon>GameManagerDialog.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\Dialogs\MessagePopupDialog.axaml.cs">
       <DependentUpon>MessagePopupDialog.axaml</DependentUpon>
     </Compile>
