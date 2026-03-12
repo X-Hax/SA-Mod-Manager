@@ -223,90 +223,95 @@ namespace SAModManager.Updater
                 mod.UpdateUrl += "/";
             }
 
-            var url = new Uri(mod.UpdateUrl);
-            url = new Uri(url, "mod.ini");
-
-            ModInfo remoteInfo;
-
-            try
+            string url = mod.UpdateUrl + "mod.ini";
+            Uri modQuery;
+            if (Uri.TryCreate(url, new UriCreationOptions(), out modQuery))
             {
-                Dictionary<string, Dictionary<string, string>> dict = IniFile.Load(await client.GetStreamAsync(url));
-                remoteInfo = IniSerializer.Deserialize<ModInfo>(dict);
-            }
-            catch (Exception ex)
-            {
-                errors.Add($"[{mod.Name}] Error pulling mod.ini from \"{mod.UpdateUrl}\": {ex.Message}");
-                return null;
-            }
+                ModInfo remoteInfo;
 
-            if (!ForceUpdate && remoteInfo.Version == mod.Version)
-            {
-                return null;
-            }
-
-            string manString;
-
-            try
-            {
-                manString = await client.GetStringAsync(new Uri(new Uri(mod.UpdateUrl), "mod.manifest"));
-            }
-            catch (Exception ex)
-            {
-                errors.Add($"[{mod.Name}] Error pulling mod.manifest from \"{mod.UpdateUrl}\": {ex.Message}");
-                return null;
-            }
-
-            List<ModManifestEntry> remoteManifest;
-
-            try
-            {
-                remoteManifest = ModManifest.FromString(manString);
-            }
-            catch (Exception ex)
-            {
-                errors.Add($"[{mod.Name}] Error parsing remote manifest from \"{mod.UpdateUrl}\": {ex.Message}");
-                return null;
-            }
-
-            List<ModManifestDiff> diff = ModManifestGenerator.Diff(remoteManifest, localManifest);
-
-            if (diff.Count < 1 || diff.All(x => x.State == ModManifestState.Unchanged))
-            {
-                return null;
-            }
-
-            string changes;
-
-            if (!string.IsNullOrEmpty(mod.ChangelogUrl))
-            {
                 try
                 {
-                    changes = await client.GetStringAsync(new Uri(mod.ChangelogUrl));
+                    Dictionary<string, Dictionary<string, string>> dict = IniFile.Load(await client.GetStreamAsync(url));
+                    remoteInfo = IniSerializer.Deserialize<ModInfo>(dict);
                 }
                 catch (Exception ex)
                 {
-                    changes = ex.Message;
+                    errors.Add($"[{mod.Name}] Error pulling mod.ini from \"{mod.UpdateUrl}\": {ex.Message}");
+                    return null;
                 }
-            }
-            else
-            {
+
+                if (!ForceUpdate && remoteInfo.Version == mod.Version)
+                {
+                    return null;
+                }
+
+                string manString;
+
                 try
                 {
-                    changes = await client.GetStringAsync(new Uri(new Uri(mod.UpdateUrl), "changelog.txt"));
+                    manString = await client.GetStringAsync(new Uri(new Uri(mod.UpdateUrl), "mod.manifest"));
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // ignored
-                    changes = string.Empty;
+                    errors.Add($"[{mod.Name}] Error pulling mod.manifest from \"{mod.UpdateUrl}\": {ex.Message}");
+                    return null;
                 }
-            }
 
-            if (!string.IsNullOrEmpty(changes))
-            {
-                changes = Regex.Replace(changes, "(?<!\r)\n", "\r\n");
-            }
+                List<ModManifestEntry> remoteManifest;
 
-            return new ModDownload(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), mod.UpdateUrl, changes, diff);
+                try
+                {
+                    remoteManifest = ModManifest.FromString(manString);
+                }
+                catch (Exception ex)
+                {
+                    errors.Add($"[{mod.Name}] Error parsing remote manifest from \"{mod.UpdateUrl}\": {ex.Message}");
+                    return null;
+                }
+
+                List<ModManifestDiff> diff = ModManifestGenerator.Diff(remoteManifest, localManifest);
+
+                if (diff.Count < 1 || diff.All(x => x.State == ModManifestState.Unchanged))
+                {
+                    return null;
+                }
+
+                string changes;
+
+                if (!string.IsNullOrEmpty(mod.ChangelogUrl))
+                {
+                    try
+                    {
+                        changes = await client.GetStringAsync(new Uri(mod.ChangelogUrl));
+                    }
+                    catch (Exception ex)
+                    {
+                        changes = ex.Message;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        changes = await client.GetStringAsync(new Uri(new Uri(mod.UpdateUrl), "changelog.txt"));
+                    }
+                    catch
+                    {
+                        // ignored
+                        changes = string.Empty;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(changes))
+                {
+                    changes = Regex.Replace(changes, "(?<!\r)\n", "\r\n");
+                }
+
+                return new ModDownload(mod, basePath == null ? Path.Combine(modsFolder, folder) : Path.Combine(basePath, modsFolder, folder), mod.UpdateUrl, changes, diff);
+            }
+            else
+                return null;
+            
         }
 
         // TODO: cancel
