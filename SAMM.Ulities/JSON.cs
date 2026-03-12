@@ -45,11 +45,11 @@ namespace SAMM.Utilities
 		/// <typeparam name="T"></typeparam>
 		/// <param name="filePath"></param>
 		/// <param name="obj"></param>
-		public static void Serialize<T>(string filePath, T obj)
+		public static void Serialize(string filePath, object obj)
 		{
 			try
 			{
-				string json = JsonSerializer.Serialize<T>(obj, serializtionOptions);
+				string json = JsonSerializer.Serialize(obj, obj.GetType(), serializtionOptions);
 				File.WriteAllText(filePath, json);
 			}
 			catch (Exception ex)

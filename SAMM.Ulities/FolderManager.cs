@@ -1,4 +1,6 @@
-﻿namespace SAMM.Utilities
+﻿using System.Diagnostics;
+
+namespace SAMM.Utilities
 {
 	public static class FolderManager
 	{
@@ -161,6 +163,19 @@
 					CopyFolder(subDirectory.FullName, destSubDirectory, searchPattern);
 				});
 			});
+		}
+
+		/// <summary>
+		/// Opens the supplied folder path (if valid). If the folder does not exist, an error message will pop up.
+		/// </summary>
+		/// <param name="folderPath">Folder to open.</param>
+		public static void OpenFolder(string folderPath)
+		{
+			string fullPath = Path.GetFullPath(folderPath);
+			if (Path.Exists(fullPath))
+				Process.Start(new ProcessStartInfo { FileName = fullPath, UseShellExecute = true });
+			else
+				MessageHandler.OpenDialog("Invalid Folder",$"Invalid folder path: {folderPath}. Path does not exist.");
 		}
 
 		#endregion
