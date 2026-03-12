@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200"
+			 Width="340" Height="120"
+			 xmlns:converters="clr-namespace:Avalonia.Data.Converters;assembly=Avalonia.Base"
+			 xmlns:dm="clr-namespace:SAMM.App.Models.Dialogs;assembly=SAMM.App"
+             x:Class="SAMM.App.Controls.Dialogs.TextInputDialog"
+			 x:DataType="dm:TextInputDialogModel">
+	<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}" BorderThickness="2" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" Padding="5">
+		<Grid RowDefinitions="*,40">
+			<TextBox x:Name="Input" Grid.Row="0" Text="{Binding TextInput}" VerticalAlignment="Center" Margin="5"/>
+			<Grid Grid.Row="2" ColumnDefinitions="*,120,120" ColumnSpacing="5" Margin="5"> 
+				<Button Grid.Column="1" Content="{DynamicResource Common.OK}" Click="OK_Click" IsEnabled="{Binding TextInput, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" HotKey="Enter"/>
+				<Button Grid.Column="2" Content="{DynamicResource Common.Cancel}" Click="Cancel_Click"/>
+			</Grid>
+		</Grid>
+	</Border>
+</UserControl>

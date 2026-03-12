@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:models="clr-namespace:SAMM.App.Models.Dialogs;assembly=SAMM.App"
+			 x:DataType="models:ProfileManagerDialogModel"
+			 xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+			 xmlns:advconv="clr-namespace:ADVTheme.Converters;assembly=ADVTheme"
+			 xmlns:sammconv="clr-namespace:SAMM.App.Converters;assembly=SAMM.App"
+             x:Class="SAMM.App.Controls.Dialogs.ProfileManagerDialog">
+	<UserControl.Resources>
+		<advconv:DoubleIncrementConverter x:Key="TitleSizing" ModifierMethod="Add" ModifierValue="6"/>
+		<sammconv:SelectionIndexToBoolConverter x:Key="SelectionIndexBool"/>
+		<sammconv:ActiveProfileToBoolConverter x:Key="ActiveProfileToEnabled"/>
+	</UserControl.Resources>
+	<dialogHostAvalonia:DialogHost x:Name="ProfileDialogHost" Identifier="ProfileManagerDialogHost" Background="Transparent" CloseOnClickAway="True">
+		<dialogHostAvalonia:DialogHost.DialogContent>
+			<Border x:Name="PART_DialogHost">
+				
+			</Border>
+		</dialogHostAvalonia:DialogHost.DialogContent>
+		<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}" BorderThickness="2">
+			<Grid RowDefinitions="Auto,34,*,50" RowSpacing="5" Margin="10">
+				<TextBlock Grid.Row="0" Text="{DynamicResource ProfileManagerDialog.Title}" FontSize="{Binding $parent[UserControl].FontSize, Converter={StaticResource TitleSizing}}" HorizontalAlignment="Center"/>
+				<Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto">
+					<StackPanel Spacing="5" Orientation="Horizontal" >
+						<Button x:Name="AddProfile" Width="34" Click="_AddProfile" ToolTip.Tip="{DynamicResource ProfileManagerDialog.AddProfile.ToolTip}" >
+							<Path Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Gray.Base}"/>
+						</Button>
+						<Button x:Name="EditProfile" Width="34" Click="_EditProfile" ToolTip.Tip="{DynamicResource ProfileManagerDialog.EditProfile.ToolTip}" IsEnabled="{Binding ElementName=ProfileList, Path=SelectedIndex, Converter={StaticResource SelectionIndexBool}, ConverterParameter={Binding Profiles.ProfileIndex}}">
+							<Path Data="{StaticResource ADVTheme.Icon.Edit}" Stroke="{DynamicResource ADVTheme.Brush.Gray.Base}" StrokeThickness="3"/>
+						</Button>
+						<Button x:Name="DuplicateProfile" Width="34" Click="_DuplicateProfile" ToolTip.Tip="{DynamicResource ProfileManagerDialog.DuplicateProfile.ToolTip}" IsEnabled="{Binding ElementName=ProfileList, Path=SelectedIndex, Converter={StaticResource SelectionIndexBool}}">
+							<Path Data="{StaticResource ADVTheme.Icon.Duplicate}" Stroke="{DynamicResource ADVTheme.Brush.Gray.Base}"/>
+						</Button>
+						<Button x:Name="DeleteProfile" Width="34" Click="_DeleteProfile" ToolTip.Tip="{DynamicResource ProfileManagerDialog.DeleteProfile.ToolTip}" IsEnabled="{Binding ElementName=ProfileList, Path=SelectedIndex, Converter={StaticResource SelectionIndexBool}, ConverterParameter={Binding Profiles.ProfileIndex}}">
+							<Path Data="{StaticResource ADVTheme.Icon.Delete}" Stroke="{DynamicResource ADVTheme.Brush.Gray.Base}"/>
+						</Button>
+					</StackPanel>
+					<StackPanel Grid.Column="2" Spacing="5" Orientation="Horizontal">
+						<Button x:Name="ImportProfile" Width="34" Click="_ImportProfile" ToolTip.Tip="{DynamicResource ProfileManagerDialog.ImportProfile.ToolTip}">
+							<Path Data="{StaticResource ADVTheme.Icon.Floor}" Fill="{DynamicResource ADVTheme.Brush.Gray.Base}"/>
+						</Button>
+						<Button x:Name="OpenProfileFolder" Width="34" Click="_OpenProfileFolder" ToolTip.Tip="{DynamicResource ProfileManagerDialog.OpenProfileFolder.ToolTip}">
+							<Path Data="{StaticResource ADVTheme.Icon.Folder}" Fill="{DynamicResource ADVTheme.Brush.Gray.Base}"/>
+						</Button>
+					</StackPanel>
+				</Grid>
+				<Grid Grid.Row="2">
+					<DataGrid x:Name="ProfileList" ItemsSource="{Binding Profiles.Profiles}" CanUserResizeColumns="True" IsReadOnly="True"
+							  CanUserSortColumns="True" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}"
+							  BorderThickness="2" Background="{DynamicResource ADVTheme.Brush.Controls.Dark}" CellTheme="{StaticResource ModEntryCell}" >
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="{DynamicResource Common.Name}" Binding="{Binding Name}" Width="200"/>
+							<DataGridTextColumn Header="{DynamicResource FileChooser.Filename}" Binding="{Binding Filename}" Width="400" />
+						</DataGrid.Columns>
+					</DataGrid>
+				</Grid>
+
+				<Grid Row="3" HorizontalAlignment="Right">
+					<Button x:Name="CloseControl" Content="{DynamicResource Common.OK}" MinWidth="150" Height="32" Click="CloseDialog"/>
+				</Grid>
+			</Grid>
+		</Border>
+	</dialogHostAvalonia:DialogHost>
+
+</UserControl>

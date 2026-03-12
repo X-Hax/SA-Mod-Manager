@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using DialogHostAvalonia;
 using SAMM.App.Controls.Dialogs;
 using SAMM.App.Models;
+using SAMM.Configuration;
 using SAMM.Configuration.Mods;
 using SAMM.Utilities;
 using System;
@@ -26,8 +27,15 @@ public partial class MainWindow : Window
 
 	public void ShowDialog(Control? control)
 	{
-		PART_DialogHost.Child = control;
-		MainWindowDialogHost.IsOpen = true;
+		try
+		{
+			PART_DialogHost.Child = control;
+			DialogHost.Show(PART_DialogHost, "MainWindowDialogHost");
+		}
+		catch (Exception ex)
+		{
+			ExceptionHandler.Throw(ex);
+		}
 	}
 
 	public bool ShowMessage(string header, string message)
@@ -88,24 +96,23 @@ public partial class MainWindow : Window
 
 	private void GameSelectionChanged(object? sender, Avalonia.Controls.SelectionChangedEventArgs e)
 	{
-		ViewModel.LoadGameConfig(true);
+		ViewModel.Load();
 	}
 
 	private void OpenModConfigDialog(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
 	{
-		try
-		{
-			//ShowDialog(new ModConfigDialog(selectedMod));
-			MessageHandler.OpenDialog("This is a Message", "and this is the text of the test message.");
-		}
-		catch (Exception ex)
-		{
-			ExceptionHandler.Throw(ex);
-		}
+		if (selectedMod != null)
+			ShowDialog(new ModConfigDialog(selectedMod));
 	}
 
 	private void Window_Closing(object? sender, Avalonia.Controls.WindowClosingEventArgs e)
 	{
 		ViewModel.SaveManagerSettings();
+	}
+
+	private void OpenProfileDialog(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+	{
+		if (ViewModel.UserProfiles != null)
+			ShowDialog(new ProfileManagerDialog(ViewModel.UserProfiles, ViewModel.GameConfig.ProfilesPath));
 	}
 }

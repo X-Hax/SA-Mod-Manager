@@ -8,7 +8,7 @@
 	<UserControl.Resources>
 		<advconv:DoubleIncrementConverter x:Key="TitleSizing" ModifierMethod="Add" ModifierValue="6"/>
 	</UserControl.Resources>
-	<Border>
+	<Border Background="{DynamicResource ADVTheme.Brush.Background.Base}" CornerRadius="{DynamicResource ADVTheme.CornerRadius}" BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}" BorderThickness="2">
 		<Grid RowDefinitions="50,*,40" RowSpacing="5">
 			<TextBlock x:Name="MessageHeader" Grid.Row="0" Margin="5" FontSize="{Binding $parent[UserControl].FontSize, Converter={StaticResource TitleSizing}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 			<TextBlock x:Name="Message" Grid.Row="1" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>

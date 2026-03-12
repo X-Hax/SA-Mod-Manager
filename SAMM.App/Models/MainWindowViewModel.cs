@@ -13,6 +13,8 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SAMM.App.Models
 {
@@ -73,19 +75,28 @@ namespace SAMM.App.Models
 			set { this.RaiseAndSetIfChanged(ref gameConfig, value); }
 		}
 
-		public GameSettings? GameSettings { get; set; }
+		private GameSettings gameSettings = null;
+		public GameSettings? GameSettings 
+		{
+			get => gameSettings;
+			set => this.RaiseAndSetIfChanged(ref gameSettings, value); 
+		}
 
-		public UserProfiles? UserProfiles { get; set; }
+		private UserProfiles userProfiles = null;
+		public UserProfiles? UserProfiles 
+		{
+			get => userProfiles;
+			set => this.RaiseAndSetIfChanged(ref userProfiles, value);
+		}
 
 		private ObservableCollection<ModEntry> modEntries = new ObservableCollection<ModEntry>();
-
 		public ObservableCollection<ModEntry> ModEntries 
 		{ 
 			get { return modEntries; } 
 			set { this.RaiseAndSetIfChanged(ref modEntries, value); }
 		}
 
-		private string CurrentUserProfilePath { get { return Path.Combine(GameConfig.ProfilesPath, UserProfiles.CurrentProfile.Filepath); } }
+		private string CurrentUserProfilePath { get { return Path.Combine(GameConfig.ProfilesPath, UserProfiles.CurrentProfile.Filename); } }
 
 		#endregion
 
@@ -120,11 +131,11 @@ namespace SAMM.App.Models
 				if (modList.ContainsKey(modEntry))
 					modList[modEntry].IsEnabled = true;
 				else
-				{
-					missingEntries.Add($"{modEntry} {App.GetString("MainWindow.Mods.MissingMods.AddendumEnabled")} {App.GetString("MainWindow.Mods.MissingMods.Addendum")}");
-					GameSettings.EnabledMods.Remove(modEntry);
-				}
+					missingEntries.Add(modEntry);
 			}
+
+			if (missingEntries.Count > 0)
+				GameSettings.EnabledMods.Remove(missingEntries);
 
 			List<ModEntry> sortedMods = new List<ModEntry>();
 			if (ManagerSettings.KeepModOrder)
@@ -156,13 +167,17 @@ namespace SAMM.App.Models
 
 			if (missingEntries.Count > 0)
 			{
-				
+				StringBuilder sb = new StringBuilder();
+				foreach (var entry in missingEntries)
+					sb.AppendLine($"{entry} was not located.");
+
+				MessageHandler.OpenDialog("Oops", sb.ToString());
 			}
 
 			ModEntries = new ObservableCollection<ModEntry>(sortedMods);
 		}
 
-		public void LoadGameConfig(bool loadEntries = false)
+		private void LoadGameConfig(bool loadEntries = false)
 		{
 			GameEntry gameEntry = ManagerSettings.GetCurrentGameEntry();
 			Logger.Log($"Loading {gameEntry.Name}");
@@ -171,7 +186,7 @@ namespace SAMM.App.Models
 				LoadModEntries();
 		}
 
-		public void LoadGameSettings()
+		private void LoadGameSettings()
 		{
 			Logger.Log($"Loading Game Settings");
 			if (UserProfiles != null)
@@ -188,10 +203,19 @@ namespace SAMM.App.Models
 			}
 		}
 
-		public void LoadUserProfiles()
+		private void LoadUserProfiles()
 		{
 			Logger.Log($"Loading User Profiles");
 			UserProfiles = UserProfiles.LoadProfiles(GameConfig.ProfilesPath);
+			UserProfiles.GameID = GameConfig.GameID;
+		}
+
+		public void Load()
+		{
+			LoadGameConfig();
+			LoadUserProfiles();
+			LoadGameSettings();
+			LoadModEntries();
 		}
 		
 		#endregion
@@ -233,10 +257,7 @@ namespace SAMM.App.Models
 		{
 			string settings = Path.Combine(FolderManager.GetAppFolder(), "Manager.json");
 			ManagerSettings = ManagerSettings.Deserialize(settings);
-			LoadGameConfig();
-			LoadUserProfiles();
-			LoadGameSettings();
-			LoadModEntries();
+			Load();
 		}
 
 		#endregion
