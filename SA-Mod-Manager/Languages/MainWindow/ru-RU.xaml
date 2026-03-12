@@ -75,7 +75,7 @@
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Писать данные отладки в файл</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Создавать дамп-файл вылетов</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Проверить состояние игры</system:String>
-
+	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.UseSoftwareRendering">Отключить аппаратное ускорение</system:String>
 	<!--About-->
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About">О программе</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.AboutMod">О моде</system:String>
@@ -85,7 +85,8 @@
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Исходники загрузчика</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Сообщить о багах (English only)</system:String>
 	<system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Открыть SA Docs (English only)</system:String>
-	<!--#endregion-->
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.AdvancedOptions">Продвинутые опции</system:String>
+    <!--#endregion-->
 	
 	<!--#region Tooltips-->
 	<!--#region Main Window Tool Tips-->
@@ -220,6 +221,7 @@
 	<system:String x:Key="MainWindow.Tips.Tab.Options.SADocs">Открыть страницу с SA Docs, где будет доступна различная информация о создании модов для SA1 и SA2.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.ReportBug">Открыть страницу обратной связи на GitHub для приёма  сообщений о проблемах и ошибках загрузчика модов.</system:String>
 	<system:String x:Key="MainWindow.Tips.Tab.Options.HealthCheck">Запуск проверки состояния игры для выявления отсутствующих или изменённых файлов.</system:String>
-	<!--#endregion-->
+    <system:String x:Key="MainWindow.Tips.Tab.Options.UseSoftwareRendering">Отключить аппаратный рендеринг и переключиться на программный. На некоторых системах это может исправить проблемы с производительностью и графикой.</system:String>
+    <!--#endregion-->
 
 </ResourceDictionary>
