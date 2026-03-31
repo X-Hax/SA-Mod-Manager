@@ -89,6 +89,7 @@
     <!--#endregion-->
     
     <!--Options Tab Strings-->
+	<system:String x:Key="GameConfig.Tabs.Options.DebugTitle">Debug-Einstellungen</system:String>
     <system:String x:Key="GameConfig.Tabs.Options.Title">Weitere Einstellungen</system:String>
     <system:String x:Key="GameConfig.Tabs.Options.SA2.SkipIntro">Einführung überspringen</system:String>
     <system:String x:Key="GameConfig.Tabs.Options.Lang.SADX">Die Text- und Sprachausgabe kann beim ersten Start des Spiels eingestellt werden. Diese Einstellungen werden beim Starten mit »Test Spawn« wirksam. Sobald eine Speicherdatei geladen wird, werden die Einstellungen hier damit überschrieben.</system:String>
