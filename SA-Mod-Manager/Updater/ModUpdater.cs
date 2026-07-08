@@ -218,6 +218,25 @@ namespace SAModManager.Updater
             }
         }
 
+        private static async Task<Dictionary<string, Dictionary<string, string>>> GetUpdateIniAsync(HttpClient client, Uri uri, ModInfo mod)
+        {
+            using var request = UpdateHelper.CreateRequest(HttpMethod.Get, uri, mod);
+            using var response = await client.SendAsync(request).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+
+            using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            return IniFile.Load(stream);
+        }
+
+        private static async Task<string> GetUpdateStringAsync(HttpClient client, Uri uri, ModInfo mod)
+        {
+            using var request = UpdateHelper.CreateRequest(HttpMethod.Get, uri, mod);
+            using var response = await client.SendAsync(request).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        }
+
         public async Task<ModDownload> CheckModularVersion(ModInfo mod, string modsFolder, string folder, List<ModManifestEntry> localManifest,
                                                HttpClient client, List<string> errors, string basePath = null)
         {
@@ -240,7 +259,7 @@ namespace SAModManager.Updater
 
                 try
                 {
-                    Dictionary<string, Dictionary<string, string>> dict = IniFile.Load(await client.GetStreamAsync(url));
+                    Dictionary<string, Dictionary<string, string>> dict = await GetUpdateIniAsync(client, modQuery, mod);
                     remoteInfo = IniSerializer.Deserialize<ModInfo>(dict);
                 }
                 catch (Exception ex)
@@ -258,7 +277,7 @@ namespace SAModManager.Updater
 
                 try
                 {
-                    manString = await client.GetStringAsync(new Uri(new Uri(mod.UpdateUrl), "mod.manifest"));
+                    manString = await GetUpdateStringAsync(client, new Uri(new Uri(mod.UpdateUrl), "mod.manifest"), mod);
                 }
                 catch (Exception ex)
                 {
@@ -291,7 +310,7 @@ namespace SAModManager.Updater
                 {
                     try
                     {
-                        changes = await client.GetStringAsync(new Uri(mod.ChangelogUrl));
+                        changes = await GetUpdateStringAsync(client, new Uri(mod.ChangelogUrl), mod);
                     }
                     catch (Exception ex)
                     {
@@ -302,7 +321,7 @@ namespace SAModManager.Updater
                 {
                     try
                     {
-                        changes = await client.GetStringAsync(new Uri(new Uri(mod.UpdateUrl), "changelog.txt"));
+                        changes = await GetUpdateStringAsync(client, new Uri(new Uri(mod.UpdateUrl), "changelog.txt"), mod);
                     }
                     catch
                     {

@@ -58,9 +58,17 @@ namespace SAModManager
             }
         }
 
-        public static async Task DownloadFileAsync(this HttpClient client, string url, string filePath, IProgress<double?> progress = null, CancellationToken cancellationToken = default)
+        public static async Task DownloadFileAsync(this HttpClient client, string url, string filePath, IProgress<double?> progress = null, CancellationToken cancellationToken = default, string authorization = null)
         {
-            using var httpResponse = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            authorization = authorization?.Trim();
+            if (!string.IsNullOrEmpty(authorization))
+            {
+                request.Headers.TryAddWithoutValidation("Authorization", authorization);
+            }
+
+            using var httpResponse = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
             httpResponse.EnsureSuccessStatusCode();
 
             using var outputFile = File.Create(filePath, 8192, FileOptions.Asynchronous);

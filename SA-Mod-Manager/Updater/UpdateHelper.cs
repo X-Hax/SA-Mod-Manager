@@ -8,6 +8,26 @@ namespace SAModManager.Updater
     public class UpdateHelper
     {
         public static HttpClient HttpClient { get; set; }
+
+        public static string GetUpdateUrlAuth(ModInfo mod)
+        {
+            string auth = mod?.UpdateUrlAuth?.Trim();
+            return !string.IsNullOrEmpty(auth) ? auth : null;
+        }
+
+        public static HttpRequestMessage CreateRequest(HttpMethod method, Uri uri, ModInfo mod)
+        {
+            var request = new HttpRequestMessage(method, uri);
+            string auth = GetUpdateUrlAuth(mod);
+
+            if (auth != null)
+            {
+                request.Headers.TryAddWithoutValidation("Authorization", auth);
+            }
+
+            return request;
+        }
+
         private const int CD = 59;
         private const int CDAmount = 2;
 

@@ -348,13 +348,14 @@ namespace SAModManager.Updater
             }
         }
 
-        private async Task DownloadModular(List<ModManifestDiff> newEntries, Uri uri, string updatePath, CancellationToken cancellationToken = default)
+        private async Task DownloadModular(ModDownload mod, List<ModManifestDiff> newEntries, Uri uri, string updatePath, CancellationToken cancellationToken = default)
         {
             try
             {
 
                 string tempDir = Path.Combine(updatePath, uri.Segments.Last());
                 var httpClient = UpdateHelper.HttpClient;
+                string authorization = UpdateHelper.GetUpdateUrlAuth(mod.Info);
 
                 Util.CreateSafeDirectory(tempDir);
                 Path.Combine(dest, Path.GetFileName(uri.LocalPath));
@@ -376,7 +377,7 @@ namespace SAModManager.Updater
                         //dl each mod file one by one
                         var curFile = Path.Combine(uri.AbsoluteUri, i.Current.FilePath);
                         UpdateCurFileText(i.Current.FilePath);
-                        await httpClient.DownloadFileAsync(curFile, filePath, _progress, cancellationToken).ConfigureAwait(false);
+                        await httpClient.DownloadFileAsync(curFile, filePath, _progress, cancellationToken, authorization).ConfigureAwait(false);
                         info.Refresh();
 
                         if (info.Length != i.Current.FileSize)
@@ -489,13 +490,13 @@ namespace SAModManager.Updater
             }
         }
 
-        private async Task Download_ManifestModular(string tempDir, Uri uri, CancellationToken cancellationToken = default)
+        private async Task Download_ManifestModular(ModDownload mod, string tempDir, Uri uri, CancellationToken cancellationToken = default)
         {
             try
             {
                 var httpClient = UpdateHelper.HttpClient;
                 var uriMa = new Uri(uri, "mod.manifest"); //dl mod manifest
-                await httpClient.DownloadFileAsync(uriMa.AbsoluteUri, Path.Combine(tempDir, "mod.manifest"), _progress, cancellationToken).ConfigureAwait(false);
+                await httpClient.DownloadFileAsync(uriMa.AbsoluteUri, Path.Combine(tempDir, "mod.manifest"), _progress, cancellationToken, UpdateHelper.GetUpdateUrlAuth(mod.Info)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -577,9 +578,9 @@ namespace SAModManager.Updater
                     List<ModManifestDiff> newEntries = mod.ChangedFiles.Where(x => x.State == ModManifestState.Added
                     || x.State == ModManifestState.Changed).ToList();
 
-                    await DownloadModular(newEntries, uri, this.dest);
+                    await DownloadModular(mod, newEntries, uri, this.dest);
                     string tempDir = Path.Combine(this.dest, uri.Segments.Last());
-                    await Download_ManifestModular(tempDir, uri);
+                    await Download_ManifestModular(mod, tempDir, uri);
                     await MoveFiles_Modular(tempDir, newEntries, mod);
                 }
 
@@ -610,7 +611,8 @@ namespace SAModManager.Updater
 
                 if (!uri.Host.EndsWith("github.com", StringComparison.OrdinalIgnoreCase))
                 {
-                    var response = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, uri), cancelToken);
+                    using var request = UpdateHelper.CreateRequest(HttpMethod.Head, uri, file.Info);
+                    using var response = await httpClient.SendAsync(request, cancelToken);
                     uri = response.RequestMessage.RequestUri;
                 }
 
@@ -628,7 +630,7 @@ namespace SAModManager.Updater
                 }
                 catch { }
 
-                await httpClient.DownloadFileAsync(uri.AbsoluteUri, currentFilePath, _progress, cancelToken).ConfigureAwait(false);
+                await httpClient.DownloadFileAsync(uri.AbsoluteUri, currentFilePath, _progress, cancelToken, UpdateHelper.GetUpdateUrlAuth(file.Info)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

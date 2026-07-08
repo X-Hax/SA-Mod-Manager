@@ -24,6 +24,7 @@ namespace SAModManager
         public string GitHubAsset { get; set; }
         public string UpdateUrl { get; set; }
         public string ChangelogUrl { get; set; }
+        public string UpdateUrlAuth { get; set; }
         public string GameBananaItemType { get; set; }
         public long? GameBananaItemId { get; set; }
         public string ModID { get; set; }
