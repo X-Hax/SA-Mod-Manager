@@ -166,6 +166,12 @@ namespace SAModManager.Updater
 
         public async Task<ModDownload> GetGameBananaReleases(ModInfo mod, string modsFolder, string folder, List<string> errors, string basePath = null)
         {
+            if (mod?.GameBananaItemType == null || !mod.GameBananaItemId.HasValue)
+            {
+                errors.Add($"[{mod.Name}] GameBananaItemType or GameBananaItemId is missing.");
+                return null;
+            }
+
             GameBananaItem gbi;
             try
             {
@@ -348,7 +354,7 @@ namespace SAModManager.Updater
             {
                 ModInfo mod = info.Value;
 
-                if (mod.DisableUpdate == true)
+                if (mod is null || mod.DisableUpdate == true)
                 {
                     continue;
                 }
@@ -370,62 +376,70 @@ namespace SAModManager.Updater
 
                 }
 
-                if (!string.IsNullOrEmpty(mod.GitHubRepo))
+                try
                 {
-                    if (string.IsNullOrEmpty(mod.GitHubAsset))
-                    {
-                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
-                        });
 
-                        modUpdateHelper.errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
-                        continue;
-                    }
-
-                    ModDownload d = await GetGitHubReleases(mod, modsFolder, info.Key, client, modUpdateHelper.errors, baseFolder);
-                    if (d != null)
+                    if (!string.IsNullOrEmpty(mod.GitHubRepo))
                     {
-                        modUpdateHelper.updates.Add(d);
-                    }
-                }
-                else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
-                {
-                    ModDownload d = await GetGameBananaReleases(mod, modsFolder, info.Key, modUpdateHelper.errors, baseFolder);
-                    if (d != null)
-                    {
-                        modUpdateHelper.updates.Add(d);
-                    }
-                }
-                else if (!string.IsNullOrEmpty(mod.UpdateUrl))
-                {
-                    List<ModManifestEntry> localManifest = null;
-                    string manPath = Path.Combine(modsFolder, info.Key, "mod.manifest");
-                    if (baseFolder != null)
-                        manPath = Path.Combine(baseFolder, manPath);
-
-                    if (!ForceUpdate && File.Exists(manPath))
-                    {
-                        try
-                        {
-                            localManifest = ModManifest.FromFile(manPath);
-                        }
-                        catch (Exception ex)
+                        if (string.IsNullOrEmpty(mod.GitHubAsset))
                         {
                             System.Windows.Application.Current.Dispatcher.Invoke(() =>
                             {
                                 ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
                             });
-                            modUpdateHelper.errors.Add($"[{mod.Name}] Error parsing local manifest: {ex.Message}");
+
+                            modUpdateHelper.errors.Add($"[{mod.Name}] GitHubRepo specified, but GitHubAsset is missing.");
                             continue;
                         }
-                    }
 
-                    ModDownload d = await CheckModularVersion(mod, modsFolder, info.Key, localManifest, client, modUpdateHelper.errors, baseFolder);
-                    if (d != null)
-                    {
-                        modUpdateHelper.updates.Add(d);
+                        ModDownload d = await GetGitHubReleases(mod, modsFolder, info.Key, client, modUpdateHelper.errors, baseFolder);
+                        if (d != null)
+                        {
+                            modUpdateHelper.updates.Add(d);
+                        }
                     }
+                    else if (!string.IsNullOrEmpty(mod.GameBananaItemType) && mod.GameBananaItemId.HasValue)
+                    {
+                        ModDownload d = await GetGameBananaReleases(mod, modsFolder, info.Key, modUpdateHelper.errors, baseFolder);
+                        if (d != null)
+                        {
+                            modUpdateHelper.updates.Add(d);
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(mod.UpdateUrl))
+                    {
+                        List<ModManifestEntry> localManifest = null;
+                        string manPath = Path.Combine(modsFolder, info.Key, "mod.manifest");
+                        if (baseFolder != null)
+                            manPath = Path.Combine(baseFolder, manPath);
+
+                        if (!ForceUpdate && File.Exists(manPath))
+                        {
+                            try
+                            {
+                                localManifest = ModManifest.FromFile(manPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                                {
+                                    ((MainWindow)System.Windows.Application.Current.MainWindow).UpdateManagerStatusText(string.Format(Lang.GetString("UpdateStatus.ModUpdateFail"), mod.Name));
+                                });
+                                modUpdateHelper.errors.Add($"[{mod.Name}] Error parsing local manifest: {ex.Message}");
+                                continue;
+                            }
+                        }
+
+                        ModDownload d = await CheckModularVersion(mod, modsFolder, info.Key, localManifest, client, modUpdateHelper.errors, baseFolder);
+                        if (d != null)
+                        {
+                            modUpdateHelper.updates.Add(d);
+                        }
+                    }
+                }
+                catch
+                {
+
                 }
             }
 
