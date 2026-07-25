@@ -13,8 +13,8 @@ Version 1.3
 
 > [!NOTE]
 > To use SA Mod Manager, you must have:
-> * Windows 7 or later
-> * [.NET 8.0 x64 Desktop Runtime](https://aka.ms/dotnet-core-applaunch?missing_runtime=true&arch=x64&apphost_version=8.0.0&gui=true)
+> * Windows 10 or later
+> * [.NET 10.0 x64 Desktop Runtime](https://aka.ms/dotnet-core-applaunch?missing_runtime=true&arch=x64&apphost_version=10.0.0&gui=true)
 
 > [!IMPORTANT]
 > To use the Mod Loader, you must have:
