@@ -384,10 +384,11 @@ namespace SAModManager
                     bool is64BitSystem = Environment.Is64BitOperatingSystem;
                     string targetArchitecture = is64BitSystem ? "x64" : "x86";
 
-                    info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release-" + targetArchitecture));
+                    info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains(targetArchitecture));
 
                     // If there's no specific architecture match, try to get a generic "Release" artifact
-                    info ??= artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
+                    if (info == null)
+                        info = artifacts.FirstOrDefault(t => t.Expired == false && t.Name.Contains("Release"));
                 }
             }
 
