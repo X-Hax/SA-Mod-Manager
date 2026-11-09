@@ -1897,7 +1897,9 @@
 												<Button Style="{DynamicResource WindowCloseButton}" x:Name="ButtonClose" Click="CloseWindow"/>
 											</StackPanel>
 											</Grid>
-										<ContentPresenter Grid.Row="1"/>
+										<AdornerDecorator Grid.Row="1">
+											<ContentPresenter/>
+										</AdornerDecorator>
 									</Grid>
 								</Border>
 							</Grid>
@@ -1953,7 +1955,9 @@
 												<Button Style="{DynamicResource WindowCloseButton}" x:Name="ButtonClose" Click="CloseWindow"/>
 											</StackPanel>
 										</Grid>
-										<ContentPresenter Grid.Row="1"/>
+										<AdornerDecorator Grid.Row="1">
+											<ContentPresenter/>
+										</AdornerDecorator>
 									</Grid>
 								</Border>
 							</Grid>
