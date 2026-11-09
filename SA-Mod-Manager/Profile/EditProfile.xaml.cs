@@ -96,6 +96,18 @@ namespace SAModManager.Profile
                         }
 						ProfileManager.AddNewProfile(profileName, sa2Settings);
                         break;
+                    case GameEntry.GameType.SHTHRecomp:
+                        Configuration.SHTHR.GameSettings shthRSettings = new()
+                        {
+                            GamePath = App.CurrentGame.gameDirectory,
+                        };
+                        if ((bool)KeepMods.IsChecked)
+                        {
+                            shthRSettings.EnabledMods = Mods;
+                            shthRSettings.EnabledCodes = Codes;
+                        }
+						ProfileManager.AddNewProfile(profileName, shthRSettings);
+                        break;
                 }
             }
         }

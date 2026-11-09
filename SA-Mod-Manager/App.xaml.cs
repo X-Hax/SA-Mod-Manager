@@ -548,6 +548,10 @@ namespace SAModManager
         //also check for code, patches, lib  etc.
         public static async Task PerformUpdateLoaderCheck()
         {
+            // the loader is built into the game, it updates with the game
+            if (App.CurrentGame?.loader?.nativeLoader == true)
+                return;
+
             try
             {
                 var mainWindow = ((MainWindow)Application.Current.MainWindow);
@@ -775,6 +779,10 @@ namespace SAModManager
                             break;
                         case GameEntry.GameType.SA2:
                             CurrentGame = GamesInstall.SonicAdventure2;
+                            CurrentGame.gameDirectory = SettingsManager.GetCurrentGame().Directory;
+                            break;
+                        case GameEntry.GameType.SHTHRecomp:
+                            CurrentGame = GamesInstall.ShadowRecompiled;
                             CurrentGame.gameDirectory = SettingsManager.GetCurrentGame().Directory;
                             break;
                     }

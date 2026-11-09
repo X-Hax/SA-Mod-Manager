@@ -58,6 +58,16 @@ namespace SAModManager
             AddColon(modVersion);
             AddColon(modCategory);
 
+            // games without Chao don't get the Chao category and save option
+            List<string> categories = SAModInfo.ModCategory;
+            if (App.CurrentGame?.hasChao == false)
+            {
+                categories = SAModInfo.ModCategory.Where(c => c != "Chao").ToList();
+                chaoSaveBox.IsEnabled = false;
+                chaoSaveBox.Visibility = Visibility.Collapsed;
+            }
+            categoryBox.ItemsSource = categories;
+
             editMod = mod is not null;
 
             if (editMod)
@@ -72,7 +82,7 @@ namespace SAModManager
                 authorURLBox.Text = mod.AuthorURL;
                 versionBox.Text = mod.Version;
                 descriptionBox.Text = mod.Description;
-                categoryBox.SelectedIndex = SAModInfo.ModCategory.IndexOf(mod.Category);
+                categoryBox.SelectedIndex = categories.IndexOf(mod.Category);
                 modIDBox.Text = mod.ModID;
                 dllText.Text = mod.DLLFile;
                 sourceURLBox.Text = mod.SourceCode;
@@ -476,6 +486,9 @@ namespace SAModManager
                     case GameEntry.GameType.SA2:
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "gd_PC/ADX"));
                         break;
+                    case GameEntry.GameType.SHTHRecomp:
+                        Util.CreateSafeDirectory(@Path.Combine(moddir, "game"));
+                        break;
                 }
 
             }
@@ -489,6 +502,9 @@ namespace SAModManager
                     case GameEntry.GameType.SA2:
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "gd_PC/MPB"));
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "gd_PC/MLT"));
+                        break;
+                    case GameEntry.GameType.SHTHRecomp:
+                        Util.CreateSafeDirectory(@Path.Combine(moddir, "game/sound"));
                         break;
                 }
             }
@@ -516,6 +532,12 @@ namespace SAModManager
                         break;
                     case GameEntry.GameType.SA2:
                         Util.CreateSafeDirectory(@Path.Combine(moddir, "gd_PC"));
+                        break;
+                    case GameEntry.GameType.SHTHRecomp:
+                        if (categoryBox.Text == "Skin")
+                            Util.CreateSafeDirectory(@Path.Combine(moddir, "game/character"));
+                        else
+                            Util.CreateSafeDirectory(@Path.Combine(moddir, "game"));
                         break;
                 }
             }
@@ -638,10 +660,13 @@ namespace SAModManager
         {
             bool isSADX = App.CurrentGame?.id == GameEntry.GameType.SADX;
             bool isSA2 = App.CurrentGame?.id == GameEntry.GameType.SA2;
+            bool isSHTHR = App.CurrentGame?.id == GameEntry.GameType.SHTHRecomp;
             string save = "SAVEDATA";
 
             if (isSA2)
                 save = Path.Combine("gd_PC", "SAVEDATA");
+            else if (isSHTHR)
+                save = "save";
 
             var fullSavepath = Path.Combine(modDirectory, save);
             bool saveDirExist = Directory.Exists(fullSavepath);
@@ -651,7 +676,7 @@ namespace SAModManager
                 if (saveDirExist)
                 {
                     //if user unchecked save redirect and the mod has existing save files, throw Warning
-                    if (isSADX && Directory.GetFiles(fullSavepath, "*.snc").Length > 0 || isSA2 && Directory.GetFiles(fullSavepath).Length > 0)
+                    if (isSADX && Directory.GetFiles(fullSavepath, "*.snc").Length > 0 || (isSA2 || isSHTHR) && Directory.GetFiles(fullSavepath).Length > 0)
                     {
                         var dialogue = new MessageWindow(Lang.GetString("Warning"), Lang.GetString("MessageWindow.Warnings.DisableSaveRedirect"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Warning, MessageWindow.Buttons.YesNo);
                         dialogue.ShowDialog();

@@ -155,6 +155,10 @@ namespace SAModManager.Management
 					Configuration.SA2.GameSettings sa2Settings = gameSettings as Configuration.SA2.GameSettings;
 					sa2Settings.Serialize(name);
 					break;
+				case GameEntry.GameType.SHTHRecomp:
+					Configuration.SHTHR.GameSettings shthRSettings = gameSettings as Configuration.SHTHR.GameSettings;
+					shthRSettings.Serialize(name);
+					break;
 			}
 
 			AddProfile(name);

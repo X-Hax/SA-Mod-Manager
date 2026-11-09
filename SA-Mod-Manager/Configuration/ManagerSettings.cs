@@ -118,6 +118,7 @@ namespace SAModManager.Configuration
 			Unsupported = 0,
 			SADX = 1,
 			SA2 = 2,
+			SHTHRecomp = 3,
 		}
 
 		/// <summary>
@@ -169,6 +170,10 @@ namespace SAModManager.Configuration
 				case "sonic2app_decrypted.exe":
 					Name = "Sonic Adventure 2";
 					Type = GameType.SA2;
+					break;
+				case "ShadowRecomp.exe":
+					Name = "Shadow Recompiled";
+					Type = GameType.SHTHRecomp;
 					break;
 			}
 		}

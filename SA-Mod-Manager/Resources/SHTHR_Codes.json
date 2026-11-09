@@ -1,0 +1,108 @@
+{
+  "Codes": [
+    {
+      "Name": "InfiniteLives",
+      "Author": "Sora",
+      "Category": "Cheat",
+      "InternalName": "Infinite Lives",
+      "Description": "Infinite Lives.",
+      "IsChecked": false
+    },
+    {
+      "Name": "QuickBoot",
+      "Author": "Sora",
+      "Category": "System",
+      "InternalName": "Quick Boot",
+      "Description": "Boot directly to Title.",
+      "IsChecked": false
+    },
+    {
+      "Name": "AllStagesUnlocked",
+      "Author": "dreamsyntax",
+      "Category": "Cheat",
+      "InternalName": "All Stages Unlocked",
+      "Description": "All stages unlocked on stage select.",
+      "IsChecked": false
+    },
+    {
+      "Name": "UseOfficialTitleOnTitleBar",
+      "Author": "Sora",
+      "Category": "System",
+      "InternalName": "Use Official Title",
+      "Description": "Displays \"SHADOW THE HEDGEHOG\" on the title bar.",
+      "IsChecked": false
+    },
+    {
+      "Name": "EasyLastStoryUnlock",
+      "Author": "Sora",
+      "Category": "Cheat",
+      "InternalName": "Easier Way to Unlock Last Story",
+      "Description": "Only 5 endings will be needed to unlock Last Story.",
+      "IsChecked": false
+    },
+    {
+      "Name": "InfiniteAmmo",
+      "Author": "Sora",
+      "Category": "Cheat",
+      "InternalName": "Infinite Ammo",
+      "Description": "Weapons never run out of ammo.",
+      "IsChecked": false
+    },
+    {
+      "Name": "FillChaosControlGaugeOnInput",
+      "Author": "Sora",
+      "Category": "Cheat",
+      "InternalName": "Press Z+R To Fill Hero Meter",
+      "Description": "Press Z+R to fills the Hero gauge (Chaos Control).",
+      "IsChecked": false
+    },
+    {
+      "Name": "FillChaosBlastGaugeOnInput",
+      "Author": "Sora",
+      "Category": "Cheat",
+      "InternalName": "Press Z+L To Fill Dark Meter",
+      "Description": "Press Z+L to fills the Dark gauge (Chaos Blast).",
+      "IsChecked": false
+    },
+    {
+      "Name": "VacuumAnyEnemy",
+      "Author": "Sora",
+      "Category": "Cheat",
+      "InternalName": "Vacuum Works On Every Enemy",
+      "Description": "Vacuum Pod and Vacuum Egg can suck in enemies that are normally immune.",
+      "IsChecked": false
+    },
+    {
+      "Name": "VacuumGivePointsOnFireSuck",
+      "Author": "dreamsyntax",
+      "Category": "Cheat",
+      "InternalName": "Vacuum Gives Points On Fire",
+      "Description": "Sucking up fire with the Vacuum gives score and Hero points.",
+      "IsChecked": false
+    },
+    {
+      "Name": "HoldLTForceJumpDash",
+      "Author": "dreamsyntax",
+      "Category": "Gameplay",
+      "InternalName": "Hold L To Force Jump Dash",
+      "Description": "Hold L while doing a Homing Attack to do a Jump Dash instead.",
+      "IsChecked": false
+    },
+    {
+      "Name": "XboxEarlyTargetBehavior",
+      "Author": "dreamsyntax",
+      "Category": "Gameplay",
+      "InternalName": "Xbox Early Target Behavior",
+      "Description": "Restores the Xbox build behavior where hidden enemies can be targeted (Black Worms out of bounds, Black Ninjas while warping).",
+      "IsChecked": false
+    },
+    {
+      "Name": "PlayAsBattleCharacters",
+      "Author": "dreamsyntax",
+      "Category": "Gameplay",
+      "InternalName": "Play As Battle Mode Character",
+      "Description": "Story mode uses the character picked for Player 1 in Battle Mode. Skipped on the Devil Doom fight.",
+      "IsChecked": false
+    }
+  ]
+}

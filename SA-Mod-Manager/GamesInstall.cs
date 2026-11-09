@@ -41,6 +41,11 @@ namespace SAModManager
         public string gameDirectory { get; set; } = string.Empty;
 
         /// <summary>
+        /// Only used for registry detection method, format is ":HIVE\PATH\TO\KEY"
+        /// </summary>
+        public string registryPath { get; set; }
+
+        /// <summary>
         /// Current game's mods directory.
         /// </summary>
         public string modDirectory
@@ -81,6 +86,8 @@ namespace SAModManager
         public GameEntry.GameType id = GameEntry.GameType.Unsupported;
         public string gameAbbreviation { get; set; }
         public string oneClickName { get; set; }
+        public bool hasChao { get; set; }
+        public bool useJsonCode { get; set; }
 
     }
 
@@ -120,6 +127,7 @@ namespace SAModManager
         public string mlverfile;
         public string IniPath;
         public string defaultReleaseID;
+        public bool nativeLoader = false; //if true, the loader is built into the game and doesn't require a separate dll.
         public defaultLoaderPath originPath;
     }
 
@@ -357,6 +365,9 @@ namespace SAModManager
             id = GameEntry.GameType.SADX,
             gameAbbreviation = "SADX",
             oneClickName = "sadxmm",
+            registryPath = "",
+            hasChao = true,
+            useJsonCode = false,
 
             loader = new()
             {
@@ -394,6 +405,9 @@ namespace SAModManager
             id = GameEntry.GameType.SA2,
             gameAbbreviation = "SA2",
             oneClickName = "sa2mm",
+            registryPath = "",
+            hasChao = true,
+            useJsonCode = false,
 
             loader = new()
             {
@@ -424,16 +438,51 @@ namespace SAModManager
             },
         };
 
+        public static Game ShadowRecompiled = new()
+        {
+            gameName = "Shadow Recompiled",
+            gameImage = App.GetResourceUri("Games.shthR.png"),
+            exeName = "ShadowRecomp.exe",
+            defaultIniProfile = "SHTHRecompModLoader.ini",
+            id = GameEntry.GameType.SHTHRecomp,
+            gameAbbreviation = "SHTHR",
+            oneClickName = "shthrmm",
+            registryPath = ":HKEY_CURRENT_USER\\SOFTWARE\\ShadowRecomp", // the game writes ExecutableFilePath here on boot
+            hasChao = false,
+            useJsonCode = true,
+
+            loader = new()
+            {
+                name = "SHTHRModLoader",
+                nativeLoader = true,
+                installed = true,
+                mlverPath = "",
+                mlverfile = "",
+
+                originPath = new()
+                {
+                    defaultDataDllOriginPath = "",
+                    defaultDataDllPath = "",
+                    defaultLoaderinipath = ""
+                }
+            },
+
+
+            ProfilesDirectory = Path.Combine(App.ConfigFolder, "SHTHR"),
+        };
+
         private static readonly List<Game> _supportedGames = new List<Game>
         {
             SonicAdventure,
-            SonicAdventure2
+            SonicAdventure2,
+            ShadowRecompiled
         };
 
         public static IEnumerable<Game> GetSupportedGames()
         {
             yield return SonicAdventure;
             yield return SonicAdventure2;
+            yield return ShadowRecompiled;
         }
 
         public static Game GetGamePerID(GameEntry.GameType gameID)
@@ -574,6 +623,52 @@ namespace SAModManager
                             game.gameDirectory = gameInstallPath;
                             AddGameToList(game);
                         }
+                    }
+                }
+
+                // Shadow Recomp writes its exe path in the registry every time it boots
+                Logger.Log("Now looking for games through registry...");
+
+                var hives = new Dictionary<string, RegistryKey>()
+                {
+                    { "HKEY_CURRENT_USER", Registry.CurrentUser }
+                };
+
+                foreach (var game in GamesInstall.GetSupportedGames())
+                {
+                    if (Util.IsStringValid(game.registryPath) == false || !game.registryPath.StartsWith(':') || !game.registryPath.Contains('\\') || App.GamesList.Contains(game))
+                        continue;
+
+                    try
+                    {
+                        string hiveName = game.registryPath[1..].Split('\\')[0];
+                        string keyPath = game.registryPath[(hiveName.Length + 2)..];
+
+                        if (!hives.TryGetValue(hiveName, out RegistryKey hive))
+                            continue;
+
+                        using var key = hive.OpenSubKey(keyPath);
+
+                        if (key == null)
+                            continue;
+
+                        string exePath = key.GetValue("ExecutableFilePath") as string;
+                        string dirPath = key.GetValue("RootDirectoryPath") as string;
+
+                        Logger.Log("Checking for: " + exePath);
+                        if (File.Exists(exePath))
+                        {
+                            Logger.Log("Found Game through Registry!");
+                            if (Util.IsStringValid(dirPath) == false)
+                                dirPath = Path.GetDirectoryName(exePath);
+
+                            game.gameDirectory = dirPath;
+                            AddGameToList(game);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Registry check failed for " + game.gameName + ": " + ex.Message);
                     }
                 }
 

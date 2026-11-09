@@ -48,6 +48,7 @@ namespace SAModManager
         private static string updatePath = "mods\\.updates";
         string codelstpath = string.Empty;
         string codexmlpath = string.Empty;
+        string codeJsonpath = string.Empty;
         string codedatpath = string.Empty;
         string patchdatpath = string.Empty;
 
@@ -450,10 +451,10 @@ namespace SAModManager
             }
 
 
-            EnabledCodes = new List<string>(EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
+            EnabledCodes = new List<string>(EnabledCodes.Where(a => codes.Any(c => c.Id == a)));
 
-            foreach (Code item in codes.Where(a => a.Required && !EnabledCodes.Contains(a.Name)))
-                EnabledCodes.Add(item.Name);
+            foreach (Code item in codes.Where(a => a.Required && !EnabledCodes.Contains(a.Id)))
+                EnabledCodes.Add(item.Id);
 
             CodeListView.BeginInit();
 
@@ -462,7 +463,7 @@ namespace SAModManager
                 CodeData extraItem = new()
                 {
                     codes = item,
-                    IsChecked = EnabledCodes.Contains(item.Name),
+                    IsChecked = EnabledCodes.Contains(item.Id),
                     IsEnabled = !item.Required,
                 };
 
@@ -1199,7 +1200,7 @@ namespace SAModManager
         private async void btnInstallLoader_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Check the todos within this function
-            if (App.CurrentGame == GamesInstall.Unknown || App.CurrentGame.id == GameEntry.GameType.Unsupported)
+            if (App.CurrentGame == GamesInstall.Unknown || App.CurrentGame.id == GameEntry.GameType.Unsupported || App.CurrentGame.loader?.nativeLoader == true)
                 return;
 
             if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) || !File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
@@ -1237,6 +1238,9 @@ namespace SAModManager
                     break;
                 case GameEntry.GameType.SA2:
                     url += "https://github.com/X-Hax/sa2-mod-loader/issues/new";
+                    break;
+                case GameEntry.GameType.SHTHRecomp:
+                    url += "https://github.com/FoxWorkshop/ShadowRecomp/issues/new";
                     break;
                 case GameEntry.GameType.Unsupported:
                     return;
@@ -1399,18 +1403,19 @@ namespace SAModManager
 
         }
 
-        private void EnableUI(bool enable)
+        private void EnableUI(bool enable, bool nativeLoader = false)
         {
             if (enable)
             {
                 tabGame.Visibility = Visibility.Visible;
+                tabTestSpawn.Visibility = Visibility.Visible;
                 comboProfile.IsEnabled = true;
 
                 checkDevEnabled.IsEnabled = true;
                 checkManagerOpen.IsEnabled = true;
                 grpManUpdates.IsEnabled = true;
 
-                btnInstallLoader.IsEnabled = true;
+                btnInstallLoader.IsEnabled = nativeLoader == false;
                 RefreshBtn.IsEnabled = true;
                 btnSelectAll.IsEnabled = true;
                 btnDeselectAll.IsEnabled = true;
@@ -1461,6 +1466,12 @@ namespace SAModManager
                     stackPanel.Children.Add(new Controls.SA2.GameConfig(ref GameProfile, ref suppressEvent));
                     tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile));
                     break;
+                case GameEntry.GameType.SHTHRecomp:
+                    // game settings are handled in the game itself, no test spawn yet
+                    EnableUI(true, true);
+                    tabGame.Visibility = Visibility.Collapsed;
+                    tabTestSpawn.Visibility = Visibility.Collapsed;
+                    break;
                 case GameEntry.GameType.Unsupported:
                 default:
                     EnableUI(false);
@@ -1486,6 +1497,7 @@ namespace SAModManager
                 updatePath = Path.GetFullPath(Path.Combine(App.CurrentGame.modDirectory, ".updates"));
                 codelstpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modLoaderDirectory, "Codes.lst"));
                 codexmlpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modLoaderDirectory, "Codes.xml"));
+                codeJsonpath = App.CurrentGame.useJsonCode ? Path.GetFullPath(Path.Combine(App.CurrentGame.modLoaderDirectory, "Codes.json")) : string.Empty;
                 codedatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modLoaderDirectory, "Codes.dat"));
                 patchdatpath = Path.GetFullPath(Path.Combine(App.CurrentGame.modLoaderDirectory, "Patches.dat"));
 
@@ -1493,15 +1505,18 @@ namespace SAModManager
 
                 Controls.SADX.GameConfig.UpdateD3D8Paths();
 
-                App.UpdateDependenciesLocation();
+                // games with the loader built in don't use the shared extlib dependencies
+                if (App.CurrentGame.loader.nativeLoader == false)
+                    App.UpdateDependenciesLocation();
 
             }
             else
             {
                 App.CurrentGame.gameDirectory = string.Empty;
+                codeJsonpath = string.Empty;
             }
 
-            App.CurrentGame.loader.installed = File.Exists(App.CurrentGame.loader.dataDllOriginPath) && File.Exists(App.CurrentGame.loader.loaderdllpath);
+            App.CurrentGame.loader.installed = App.CurrentGame.loader.nativeLoader || File.Exists(App.CurrentGame.loader.dataDllOriginPath) && File.Exists(App.CurrentGame.loader.loaderdllpath);
             MigrateLoaderDLL();
             UpdateButtonsState();
         }
@@ -1531,7 +1546,7 @@ namespace SAModManager
                 CodeData extraItem = new()
                 {
                     codes = item,
-                    IsChecked = EnabledCodes.Contains(item.Name),
+                    IsChecked = EnabledCodes.Contains(item.Id),
                     IsEnabled = !item.Required,
                 };
 
@@ -1564,20 +1579,20 @@ namespace SAModManager
             EnabledCodes.Clear();
             foreach (CodeData code in CodeListView.Items)
                 if (code?.IsChecked == true)
-                    EnabledCodes.Add(code.codes.Name);
+                    EnabledCodes.Add(code.codes.Id);
         }
 
         #region Private: Load & Save
         private void LoadCodes()
         {
-            EnabledCodes = new List<string>(EnabledCodes.Where(a => codes.Any(c => c.Name == a)));
+            EnabledCodes = new List<string>(EnabledCodes.Where(a => codes.Any(c => c.Id == a)));
 
             CodeListView.BeginInit();
             CodeListView.Items.Clear();
             codesSearch.Clear();
 
-            foreach (Code item in codes.Where(a => a.Required && !EnabledCodes.Contains(a.Name)))
-                EnabledCodes.Add(item.Name);
+            foreach (Code item in codes.Where(a => a.Required && !EnabledCodes.Contains(a.Id)))
+                EnabledCodes.Add(item.Id);
 
 
             SortCodeAlphanumerically();
@@ -1609,7 +1624,8 @@ namespace SAModManager
                 }
             }
 
-            if (Directory.Exists(App.CurrentGame.modDirectory))
+            // json codes are read by the game from the profile, no dat file needed
+            if (Directory.Exists(App.CurrentGame.modDirectory) && App.CurrentGame.useJsonCode == false)
             {
                 if (Util.IsStringValid(patchdatpath))
                     CodeList.WriteDatFile(patchdatpath, selectedPatches);
@@ -1626,7 +1642,8 @@ namespace SAModManager
 
             bool installed = App.CurrentGame != null && App.CurrentGame.loader.installed;
             UIHelper.ToggleButton(ref btnCheckUpdates, installed);
-            UIHelper.ToggleImgButton(ref btnHealthCheck, installed);
+            // no file hash list for games with the loader built in
+            UIHelper.ToggleImgButton(ref btnHealthCheck, installed && App.CurrentGame.loader.nativeLoader == false);
             UpdateBtnInstallLoader_State();
         }
 
@@ -1682,6 +1699,22 @@ namespace SAModManager
             gameDebugSettings = sa2.DebugSettings;
         }
 
+        private void LoadSHTHRSettings(string profilePath, bool newSetup = false)
+        {
+            Configuration.SHTHR.GameSettings shthR = File.Exists(profilePath) ? Configuration.SHTHR.GameSettings.Deserialize(profilePath) : new();
+            GameProfile = shthR;
+
+            if (newSetup || Util.IsStringValid(shthR.GamePath) == false)
+                shthR.GamePath = tempPath;
+
+            if (shthR.EnabledMods is not null)
+                EnabledMods = shthR.EnabledMods;
+            if (shthR.EnabledCodes is not null)
+                EnabledCodes = shthR.EnabledCodes;
+
+            gameDebugSettings = null;
+        }
+
         private void LoadGameSettings(bool newSetup = false)
         {
             var id = App.CurrentGame.id;
@@ -1700,6 +1733,9 @@ namespace SAModManager
                     break;
                 case GameEntry.GameType.SA2:
                     LoadSA2Settings(profilePath, newSetup);
+                    break;
+                case GameEntry.GameType.SHTHRecomp:
+                    LoadSHTHRSettings(profilePath, newSetup);
                     break;
             }
         }
@@ -1755,6 +1791,35 @@ namespace SAModManager
 
             // Save to Loader Info
             sa2.WriteConfigs();
+        }
+
+        private void SaveSHTHRSettings()
+        {
+            if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory))
+                return;
+
+            // Update any GameSettings Info first.
+            (GameProfile as Configuration.SHTHR.GameSettings).GamePath = Path.GetFullPath(App.CurrentGame.gameDirectory);
+            Configuration.SHTHR.GameSettings shthR = GameProfile as Configuration.SHTHR.GameSettings;
+
+            // Save Selected Mods
+            shthR.EnabledMods = EnabledMods;
+            shthR.ModsList.Clear();
+            foreach (var mod in ViewModel.Modsdata.ToList())
+                shthR.ModsList.Add(mod.Tag);
+
+            // the game writes the redirected save in "mods/MyMod/save", make sure the folder is there
+            foreach (var mod in EnabledMods)
+            {
+                if (mods is not null && mods.TryGetValue(mod, out SAModInfo inf) && inf.RedirectMainSave)
+                    Util.CreateSafeDirectory(Path.Combine(App.CurrentGame.modDirectory, mod, "save"));
+            }
+
+            shthR.EnabledCodes = EnabledCodes;
+
+            // Save Game Settings to Current Profile
+            shthR.Serialize(ProfileManager.GetCurrentProfile().Filename);
+            Configuration.SHTHR.GameSettings.ExtractCodesFile(codeJsonpath);
         }
 
         private void ManualLoaderUpdateCheck()
@@ -1829,6 +1894,9 @@ namespace SAModManager
                     break;
                 case GameEntry.GameType.SA2:
                     SaveSA2Settings();
+                    break;
+                case GameEntry.GameType.SHTHRecomp:
+                    SaveSHTHRSettings();
                     break;
             }
 
@@ -2567,7 +2635,17 @@ namespace SAModManager
                 if (mainCodes is not null && mainCodes.Codes is not null)
                     mainCodes.Codes.Clear();
 
-                if (File.Exists(codelstpath))
+                if (App.CurrentGame.useJsonCode)
+                {
+                    // Codes.json ships inside the Manager, write it again if the one on disk is outdated
+                    Configuration.SHTHR.GameSettings.ExtractCodesFile(codeJsonpath);
+
+                    if (File.Exists(codeJsonpath))
+                        mainCodes = CodeList.Load(codeJsonpath);
+                    else
+                        mainCodes = new CodeList();
+                }
+                else if (File.Exists(codelstpath))
                     mainCodes = CodeList.Load(codelstpath);
                 else if (File.Exists(codexmlpath))
                     mainCodes = CodeList.Load(codexmlpath);
@@ -2695,6 +2773,9 @@ namespace SAModManager
 
         private async Task ForceInstallLoader()
         {
+            if (App.CurrentGame?.loader?.nativeLoader == true)
+                return;
+
             UpdateManagerStatusText(Lang.GetString("UpdateStatus.InstallLoader"));
             UIHelper.DisableButton(ref SaveAndPlayButton);
             UIHelper.DisableButton(ref btnInstallLoader);
@@ -2790,7 +2871,7 @@ namespace SAModManager
 
         private void btnHealthCheck_Click(object sender, RoutedEventArgs e)
         {
-            if (App.CurrentGame?.id == GameEntry.GameType.Unsupported)
+            if (App.CurrentGame?.id == GameEntry.GameType.Unsupported || App.CurrentGame?.loader?.nativeLoader == true)
                 return;
 
             MessageWindow message = new(Lang.GetString("MessageWindow.Warnings.HealthCheckTitle"), Lang.GetString("MessageWindow.Warnings.HealthCheck"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Caution, button: MessageWindow.Buttons.YesNo);

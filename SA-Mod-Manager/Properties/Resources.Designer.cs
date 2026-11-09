@@ -173,6 +173,16 @@ namespace SAModManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] SHTHR_Codes {
+            get {
+                object obj = ResourceManager.GetObject("SHTHR_Codes", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://api.github.com/repos/x-hax/sa2-mod-loader/releases/latest.
         /// </summary>
         internal static string URL_SA2_DL {

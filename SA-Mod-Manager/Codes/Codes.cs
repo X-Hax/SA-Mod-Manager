@@ -6,9 +6,60 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using System.Text.Json;
 
 namespace SAModManager.Codes
 {
+    // Codes.json is used by games with the loader built in (Shadow Recomp).
+    public class CodesJsonData
+    {
+        /// <summary>
+        /// Internal name of the code to be written to the codes list in the profile.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Author of the code.
+        /// </summary>
+        public string Author { get; set; }
+
+        /// <summary>
+        /// Category of the code.
+        /// </summary>
+        public string Category { get; set; }
+
+        /// <summary>
+        /// Display name for the code.
+        /// </summary>
+        public string InternalName { get; set; }
+
+        /// <summary>
+        /// Default description of the code.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Default check state of the code.
+        /// </summary>
+        public bool IsChecked { get; set; }
+    }
+
+    public class CodesJsonList
+    {
+        public List<CodesJsonData> Codes { get; set; } = new();
+
+        public static CodesJsonList Deserialize(string path)
+        {
+            if (File.Exists(path))
+            {
+                string jsonContent = File.ReadAllText(path);
+                return JsonSerializer.Deserialize<CodesJsonList>(jsonContent);
+            }
+
+            return null;
+        }
+    }
+
     [XmlRoot(Namespace = "http://www.sonicretro.org")]
     public class CodeList
     {
@@ -16,7 +67,9 @@ namespace SAModManager.Codes
 
         public static CodeList Load(string filename)
         {
-            if (Path.GetExtension(filename).Equals(".xml", StringComparison.OrdinalIgnoreCase))
+            if (Path.GetExtension(filename).Equals(".json", StringComparison.OrdinalIgnoreCase))
+                return GetJsonCodes(filename);
+            else if (Path.GetExtension(filename).Equals(".xml", StringComparison.OrdinalIgnoreCase))
                 using (FileStream fs = File.OpenRead(filename))
                     return (CodeList)serializer.Deserialize(fs);
             else
@@ -264,6 +317,30 @@ namespace SAModManager.Codes
             }
         }
 
+        private static CodeList GetJsonCodes(string codesPath)
+        {
+            CodeList result = new();
+            CodesJsonList codes = CodesJsonList.Deserialize(codesPath);
+
+            if (codes?.Codes is null)
+                return result;
+
+            // Id is the key saved in the profile, Name is what the user see
+            result.Codes.AddRange(codes.Codes.Where(p => Util.IsStringValid(p.Name)).Select(p => new Code()
+            {
+                Id = p.Name,
+                Name = Util.IsStringValid(p.InternalName) ? p.InternalName : p.Name,
+                Author = p.Author,
+                Description = p.Description,
+                Category = p.Category,
+                Required = false,
+                Patch = false,
+                Lines = new List<CodeLine>()
+            }));
+
+            return result;
+        }
+
         [XmlElement("Code")]
         public List<Code> Codes { get; set; } = [];
 
@@ -369,6 +446,11 @@ namespace SAModManager.Codes
 
         [XmlIgnore]
         public bool IsReg { get { return Lines.Any((line) => line.IsReg); } }
+
+        // Key saved in the profile. 
+        [XmlIgnore]
+        public string Id { get => string.IsNullOrEmpty(id) ? Name : id; set => id = value; }
+        private string id;
     }
 
     public class CodeLine
