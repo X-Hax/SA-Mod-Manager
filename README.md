@@ -11,18 +11,18 @@ Version 1.3
 
 ## System Requirements
 
-> [!NOTE]
+> [!CAUTION]
 > To use SA Mod Manager, you must have:
 > * Windows 10 or later
 > * [.NET 10.0 x64 Desktop Runtime](https://aka.ms/dotnet-core-applaunch?missing_runtime=true&arch=x64&apphost_version=10.0.0&gui=true)
-
-> [!IMPORTANT]
+>
 > To use the Mod Loader, you must have:
 > * [Visual C++ Redistributable Runtimes (32 Bits)](https://aka.ms/vs/17/release/vc_redist.x86.exe)
 
 ## Supported Games
-* Sonic Adventure DX PC, 2004 version (US release, but If you have the Steam version, or a different region, you can [convert it to 2004 US.](https://gitlab.com/PiKeyAr/sadx-mod-installer))
-* Sonic Adventure 2 (Battle) PC
+* [Sonic Adventure DX PC](https://store.steampowered.com/app/71250/Sonic_Adventure_DX/) (note: We only support the 2004 version (US release), but if you have the Steam version, or a different region, you can [convert it to 2004 US.](https://gitlab.com/PiKeyAr/sadx-mod-installer))
+* [Sonic Adventure 2 (Battle) PC](https://store.steampowered.com/app/213610/Sonic_Adventure_2/)
+* [Shadow Recompiled](https://github.com/FoxWorkshop/ShadowRecomp)
 
 ## How To Use
 - Download the [latest version from GitHub](https://github.com/X-Hax/SA-Mod-Manager/releases/latest) then extract the zip anywhere.
