@@ -207,7 +207,7 @@ namespace SAMM.App.Models
 		{
 			Logger.Log($"Loading User Profiles");
 			UserProfiles = UserProfiles.LoadProfiles(GameConfig.ProfilesPath);
-			UserProfiles.GameID = GameConfig.GameID;
+			GameConfig.GameID = UserProfiles.GameID;
 		}
 
 		public void Load()

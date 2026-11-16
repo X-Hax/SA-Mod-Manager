@@ -1,9 +1,5 @@
-﻿using SAMM.Configuration.Enumeration;
-using SAMM.Configuration.SADX;
-using SAMM.Utilities;
+﻿using SAMM.Utilities;
 using System.ComponentModel;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace SAMM.Configuration
@@ -76,7 +72,7 @@ namespace SAMM.Configuration
 		#endregion
 
 		#region Variables
-		public abstract string GenerateParameters();
+		public virtual string GenerateParameters() { return string.Empty; }
 
 		#endregion
 	}
@@ -117,16 +113,8 @@ namespace SAMM.Configuration
 		#endregion
 	}
 
-	public abstract class GameSettings<G,T> 
-		where G : GraphicsSettings, new() 
-		where T : TestSpawnSettings, new ()
+	public abstract class GameSettings
 	{
-		[JsonPropertyName("Graphics")]
-		public G GraphicsSettings { get; set; } = new G();
-
-		[JsonPropertyName("TestSpawn")]
-		public T TestSpawnSettings { get; set; } = new T();
-
 		public DebugSettings DebugSettings { get; set; } = new DebugSettings();
 
 		public Dictionary<string, bool> Patches { get; set; } = new Dictionary<string, bool>();

@@ -199,7 +199,7 @@ namespace SAMM.Configuration.SADX
 		public SADXConfig GameConfig { get; set; } = new SADXConfig();
 	}
 
-	public class SADXSettings : GameSettings<SADXGraphicsSettings, SADXTestSpawnSettings>
+	public class SADXSettings : GameSettings
 	{
 		#region Enumeration
 		public enum Version
@@ -219,6 +219,9 @@ namespace SAMM.Configuration.SADX
 		#region Variables
 		[JsonPropertyName("Graphics")]
 		public SADXGraphicsSettings GraphicsSettings { get; set; } = new SADXGraphicsSettings();
+
+		[JsonPropertyName("TestSpawn")]
+		public SADXTestSpawnSettings TestSpawnSettings { get; set; } = new SADXTestSpawnSettings();
 
 		[JsonPropertyName("Controller")]
 		public SADXControllerSettings ControllerSettings { get; set; } = new SADXControllerSettings();

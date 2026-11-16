@@ -37,7 +37,7 @@
 		</dialogHostAvalonia:DialogHost.DialogContent>
 		
 		<Grid RowDefinitions="*,Auto">
-			<Grid>
+			<Grid Margin="7">
 				<TabControl x:Name="ManagerTabs" Theme="{DynamicResource MainWindowTabControl}" Width="{Binding Path=$parent[Window].Bounds.Width}">
 					<TabItem Grid.Column="0" Header="{DynamicResource MainWindow.Mods}" Theme="{DynamicResource WindowTabItem}" TabIndex="0" Tag="{StaticResource ADVTheme.Icon.SonicHead}">
 						<Grid ColumnDefinitions="*,Auto" Margin="10">
@@ -54,7 +54,8 @@
 								</Grid>
 								<DataGrid x:Name="ModList" Grid.Row="1" ItemsSource="{Binding ModEntries}" Margin="2,2,7,2" IsReadOnly="True" GridLinesVisibility="All"
 										  CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserSortColumns="True" CellTheme="{StaticResource ModEntryCell}"
-										  BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}" BorderThickness="2" CornerRadius="{DynamicResource ADVTheme.CornerRadius}">
+										  BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}" BorderThickness="2" CornerRadius="{DynamicResource ADVTheme.CornerRadius}"
+										  MinHeight="500">
 									<DataGrid.Columns>
 										<DataGridTemplateColumn HeaderPointerPressed="DataGridTemplateColumn_HeaderPointerPressed">
 											<DataTemplate>
@@ -231,7 +232,7 @@
 									<Image Width="30" Source="{Binding ID, Converter={StaticResource GameIconConverter}}"
 										   RenderOptions.BitmapInterpolationMode="HighQuality">
 										<Image.OpacityMask>
-											<RadialGradientBrush Center="50%,50%" Radius="0.9">
+											<RadialGradientBrush Center="50%,50%" RadiusX="0.1" RadiusY="0.1">
 												<RadialGradientBrush.GradientStops>
 													<GradientStop Color="White" Offset="0.7"/>
 													<GradientStop Color="Transparent" Offset="0.8"/>

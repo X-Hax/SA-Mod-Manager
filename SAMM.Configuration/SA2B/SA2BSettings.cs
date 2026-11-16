@@ -62,10 +62,15 @@ namespace SAMM.Configuration.SA2B
 		#endregion
 	}
 
-	public class SA2BSettings : GameSettings<SA2BGraphicsSettings,SA2BTestSpawnSettings>
+	public class SA2BSettings : GameSettings
 	{
 		#region Variables
+		[JsonPropertyName("Graphics")]
+		public SA2BGraphicsSettings GraphicsSettings { get; set; } = new SA2BGraphicsSettings();
 
+		[JsonPropertyName("TestSpawn")]
+		public SA2BTestSpawnSettings TestSpawnSettings { get; set; } = new SA2BTestSpawnSettings();
+		
 		#endregion
 
 		#region Functions

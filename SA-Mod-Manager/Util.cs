@@ -346,7 +346,7 @@ namespace SAModManager
             {
                 await Task.Run(() =>
                 {
-                    using var archive = ArchiveFactory.Open(zipPath);
+                    using var archive = ArchiveFactory.OpenArchive(zipPath);
 
                     foreach (var entry in archive.Entries)
                     {
@@ -379,7 +379,7 @@ namespace SAModManager
             {
                 await Task.Run(() =>
                 {
-                    using var archive = ArchiveFactory.Open(zipPath);
+                    using var archive = ArchiveFactory.OpenArchive(zipPath);
 
                     if (excludeFolder is null)
                     {
@@ -476,7 +476,7 @@ namespace SAModManager
             Assembly assembly = Assembly.GetExecutingAssembly();
             string fullResourceName = assembly.GetName().Name + ".Resources." + resourceName;
             using Stream resourceStream = assembly.GetManifestResourceStream(fullResourceName) ?? throw new InvalidOperationException($"Resource {resourceName} not found.");
-            using var archive = SevenZipArchive.Open(resourceStream);
+            using var archive = SevenZipArchive.OpenArchive(resourceStream);
             foreach (var entry in archive.Entries)
             {
                 if (!entry.IsDirectory)
