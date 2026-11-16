@@ -1,4 +1,8 @@
-﻿using SAMM.Utilities;
+﻿using SAMM.Configuration.Enumeration;
+using SAMM.Configuration.SA2B;
+using SAMM.Configuration.SADX;
+using SAMM.Configuration.SHDR;
+using SAMM.Utilities;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
@@ -115,6 +119,11 @@ namespace SAMM.Configuration
 
 	public abstract class GameSettings
 	{
+		protected bool hideConfig = false;
+		protected bool hideDebug = false;
+		protected bool hideCodes = false;
+		protected bool hideMods = false;
+
 		public DebugSettings DebugSettings { get; set; } = new DebugSettings();
 
 		public Dictionary<string, bool> Patches { get; set; } = new Dictionary<string, bool>();
@@ -145,6 +154,21 @@ namespace SAMM.Configuration
 		public static T Deserialize<T>(string path) where T : GameSettings
 		{
 			return JSON.Deserialize<T>(path);
+		}
+
+		public static GameSettings? DeserializeSettings(GameIDs gameID, string path)
+		{
+			switch (gameID)
+			{
+				case GameIDs.SADX:
+					return Deserialize<SADXSettings>(path);
+				case GameIDs.SA2B:
+					return Deserialize<SA2BSettings>(path);
+				case GameIDs.SHDR:
+					return Deserialize<ShadowSettings>(path);
+			}
+
+			return null;
 		}
 	}
 }

@@ -6,6 +6,7 @@ using SAMM.Configuration.Enumeration;
 using SAMM.Configuration.Mods;
 using SAMM.Configuration.SA2B;
 using SAMM.Configuration.SADX;
+using SAMM.Configuration.SHDR;
 using SAMM.Utilities;
 using System;
 using System.Collections.Generic;
@@ -191,15 +192,7 @@ namespace SAMM.App.Models
 			Logger.Log($"Loading Game Settings");
 			if (UserProfiles != null)
 			{
-				switch (GameConfig.GameID)
-				{
-					case GameIDs.SADX:
-						GameSettings = GameSettings.Deserialize<SADXSettings>(CurrentUserProfilePath);
-						break;
-					case GameIDs.SA2B:
-						GameSettings = GameSettings.Deserialize<SA2BSettings>(CurrentUserProfilePath);
-						break;
-				}
+				GameSettings = GameSettings.DeserializeSettings(GameConfig.GameID, CurrentUserProfilePath);
 			}
 		}
 
