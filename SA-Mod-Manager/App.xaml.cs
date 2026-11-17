@@ -548,7 +548,7 @@ namespace SAModManager
         //also check for code, patches, lib  etc.
         public static async Task PerformUpdateLoaderCheck()
         {
-            // the loader is built into the game, it updates with the game
+            // The loader is built into the game, thus it updates with the game and does not use regular update check.
             if (App.CurrentGame?.loader?.nativeLoader == true)
                 return;
 

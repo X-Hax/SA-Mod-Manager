@@ -65,6 +65,11 @@ namespace SAModManager
                 categories = SAModInfo.ModCategory.Where(c => c != "Chao").ToList();
                 chaoSaveBox.IsEnabled = false;
                 chaoSaveBox.Visibility = Visibility.Collapsed;
+
+                // Temp disable for SHTHR (to do re enable)
+                mainSaveBox.IsEnabled = false;
+                chaoSaveBox.Visibility = Visibility.Collapsed;
+
             }
             categoryBox.ItemsSource = categories;
 
@@ -661,12 +666,17 @@ namespace SAModManager
             bool isSADX = App.CurrentGame?.id == GameEntry.GameType.SADX;
             bool isSA2 = App.CurrentGame?.id == GameEntry.GameType.SA2;
             bool isSHTHR = App.CurrentGame?.id == GameEntry.GameType.SHTHRecomp;
+
+            if (isSHTHR) // temp for now as we found a bug in shadow with that
+                return;
+
             string save = "SAVEDATA";
 
             if (isSA2)
                 save = Path.Combine("gd_PC", "SAVEDATA");
-            else if (isSHTHR)
-                save = "save";
+            
+            /*else if (isSHTHR)
+                save = "save";*/
 
             var fullSavepath = Path.Combine(modDirectory, save);
             bool saveDirExist = Directory.Exists(fullSavepath);
