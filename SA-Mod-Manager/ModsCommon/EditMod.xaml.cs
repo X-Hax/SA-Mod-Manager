@@ -119,6 +119,8 @@ namespace SAModManager
             EnumsTree.ItemsSource = Schema.Enums;
             CodeListView.ItemsSource = CodeList.Codes;
 
+            tabCodes.Visibility = App.CurrentGame.loader.nativeLoader ? Visibility.Collapsed : Visibility.Visible;
+
             // TODO: Remove when schema builder is fully implemented.
             tabSchema.Visibility = Visibility.Collapsed;
 
