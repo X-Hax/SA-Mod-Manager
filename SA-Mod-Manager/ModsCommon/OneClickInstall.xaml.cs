@@ -233,7 +233,7 @@ namespace SAModManager
             }
             else
             {
-                string error = Lang.GetString("MessageWindow.Errors.URIParseFail0 ") + "\"{uri}\" " + Lang.GetString("MessageWindow.Errors.URIParseFailFields1");
+                string error = Lang.GetString("MessageWindow.Errors.URIParseFail0") + "\"{uri}\" " + Lang.GetString("MessageWindow.Errors.URIParseFailFields1");
                 new MessageWindow(Lang.GetString("MessageWindow.Errors.URIParseFail.Title"), error, MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                 return;
             }
