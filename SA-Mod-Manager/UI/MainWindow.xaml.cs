@@ -1467,10 +1467,10 @@ namespace SAModManager
                     tsPanel.Children.Add(new Controls.SA2.TestSpawn(ref GameProfile));
                     break;
                 case GameEntry.GameType.SHTHRecomp:
-                    // game settings are handled in the game itself, no test spawn yet
+                    tsPanel.Children.Add(new Controls.SHTHR.TestSpawn(ref GameProfile));
                     EnableUI(true, true);
+                    // game settings are handled in the game itself.
                     tabGame.Visibility = Visibility.Collapsed;
-                    tabTestSpawn.Visibility = Visibility.Collapsed;
                     break;
                 case GameEntry.GameType.Unsupported:
                 default:

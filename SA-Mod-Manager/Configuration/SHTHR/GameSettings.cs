@@ -1,14 +1,46 @@
-﻿using System;
+﻿using SAModManager.Configuration.SADX;
+using SAModManager.Ini;
+using SAModManager.Management;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using SAModManager.Ini;
 using System.IO;
 using System.Text.Json;
-using SAModManager.Management;
 
 
 namespace SAModManager.Configuration.SHTHR
 {
+
+    public class TestSpawnSettings // to do maybe add language, android character, 2p, position and rotation.
+    {
+
+        /// <summary>
+        /// Enables Level option when launching.
+        /// </summary>
+        [DefaultValue(false)]
+        public bool UseLevel { get; set; } = false;
+
+        /// <summary>
+        /// Enables the Event options when launching.
+        /// </summary>
+        [DefaultValue(false)]
+        public bool UseEvent { get; set; } = false;
+
+
+        /// <summary>
+        /// Selected index for the level used by test spawn.
+        /// </summary>
+        [DefaultValue(-1)]
+        public int LevelIndex { get; set; } = -1;       // SHTHRLoaderInfo.TestSpawnLevel
+
+        
+        /// <summary>
+        /// Selected index of an event used by test spawn.
+        /// </summary>
+        [DefaultValue(-1)]
+        public int EventIndex { get; set; } = -1;       // SHTHRLoaderInfo.TestSpawnEvent
+
+    }
 
     public class GameSettings
     {
@@ -18,6 +50,7 @@ namespace SAModManager.Configuration.SHTHR
         public enum SHTHRSettingsVersions
         {
             v0,     // Version 0: Original LoaderInfo Version
+            v1, // Version 1: Add Test Spawn
             MAX,    // Do Not Modify, new versions are placed above this.
         }
 
@@ -26,6 +59,12 @@ namespace SAModManager.Configuration.SHTHR
         /// </summary>
         [DefaultValue((int)(SHTHRSettingsVersions.MAX - 1))]
         public int SettingsVersion { get; set; } = (int)(SHTHRSettingsVersions.MAX - 1);
+
+
+        /// <summary>
+        /// TestSpawn Settings for SHTHR.
+        /// </summary>
+        public TestSpawnSettings TestSpawn { get; set; } = new();
 
         /// <summary>
         /// Path to the game install saved with this configuration.
