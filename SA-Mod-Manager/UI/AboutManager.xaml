@@ -74,6 +74,7 @@
                         <Label Content="Semka"/>
                         <Label Content="ProximalElk6186"/>
                         <Label Content="DXer 万能组"/>
+                        <Label Content="Marvj13"/>
 
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="5,0,0,0">
@@ -89,6 +90,7 @@
                         <Label Content="Ukrainian translation"/>
                         <Label Content="Estonian translation"/>
                         <Label Content="Chinese (Mainland China) translation"/>
+                        <Label Content="German translation"/>
 
                     </StackPanel>
                 </Grid>
