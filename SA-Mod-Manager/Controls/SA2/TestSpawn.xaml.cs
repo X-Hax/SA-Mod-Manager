@@ -472,8 +472,7 @@ namespace SAModManager.Controls.SA2
             {
                 // Update the value
                 string updatedValue = pair.Value + " (" + pair.Key + ")";
-                LevelNames.Remove(pair.Key);
-                LevelNames.Add(pair.Key, updatedValue);
+                LevelNames[pair.Key] = updatedValue;
             }
         }
 
@@ -554,8 +553,7 @@ namespace SAModManager.Controls.SA2
             foreach (var pair in EventNames.ToList())
             {
                 string displayName = "EV" + pair.Key.ToString("D4") + ": " + pair.Value;
-                EventNames.Remove(pair.Key);
-                EventNames.Add(pair.Key, displayName);
+                EventNames[pair.Key] = displayName;
             }
         }
 
