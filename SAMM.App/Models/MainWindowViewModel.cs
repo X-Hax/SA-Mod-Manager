@@ -1,12 +1,7 @@
 ﻿using DynamicData;
 using ReactiveUI;
-using SAMM.App.Views;
 using SAMM.Configuration;
-using SAMM.Configuration.Enumeration;
 using SAMM.Configuration.Mods;
-using SAMM.Configuration.SA2B;
-using SAMM.Configuration.SADX;
-using SAMM.Configuration.SHDR;
 using SAMM.Utilities;
 using System;
 using System.Collections.Generic;
@@ -15,7 +10,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SAMM.App.Models
 {
