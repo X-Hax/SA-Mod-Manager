@@ -78,10 +78,10 @@
 														</Grid>
 													</DataTemplate>
 												</DataGridTemplateColumn>
-												<DataGridTextColumn Header="{DynamicResource Common.Name}" Binding="{Binding ModInfo.Name}" FontSize="{DynamicResource ADVTheme.FontSize}" Tag="{DynamicResource MainWindow.Mods.ModList.Name.ToolTip}"/>
-												<DataGridTextColumn Header="{DynamicResource Common.Author}" Binding="{Binding ModInfo.Author}" FontSize="{DynamicResource ADVTheme.FontSize}" />
-												<DataGridTextColumn Header="{DynamicResource Common.Category}" Binding="{Binding ModInfo.Category}" FontSize="{DynamicResource ADVTheme.FontSize}"/>
-												<DataGridTextColumn Header="{DynamicResource Common.Version}" Binding="{Binding ModInfo.Version}" FontSize="{DynamicResource ADVTheme.FontSize}"/>
+												<DataGridTextColumn Header="{DynamicResource Common.Name}" Binding="{Binding ModInfo.Name}" FontSize="{DynamicResource ADVTheme.FontSize}" Tag="{DynamicResource MainWindow.Mods.ModList.Name.ToolTip}" Width="*"/>
+												<DataGridTextColumn Header="{DynamicResource Common.Author}" Binding="{Binding ModInfo.Author}" FontSize="{DynamicResource ADVTheme.FontSize}" Width="*"/>
+												<DataGridTextColumn Header="{DynamicResource Common.Category}" Binding="{Binding ModInfo.Category}" FontSize="{DynamicResource ADVTheme.FontSize}" Width="*"/>
+												<DataGridTextColumn Header="{DynamicResource Common.Version}" Binding="{Binding ModInfo.Version}" FontSize="{DynamicResource ADVTheme.FontSize}" Width="*"/>
 											</DataGrid.Columns>
 										</DataGrid>
 									</Grid>
