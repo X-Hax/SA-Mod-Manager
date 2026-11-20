@@ -176,7 +176,7 @@ namespace SAMM.Configuration
 				GameIDs.SHDR, new GameConfig()
 				{
 					GameID = GameIDs.SHDR,
-					GameExecutable = "shadowrecompiled.exe",
+					GameExecutable = "ShadowRecomp.exe",
 					GameSystemFolder = Path.Combine(""),
 					ModLoaderInfo = new ModLoaderInfo(),
 					OneClickProtocol = "",
