@@ -7,6 +7,7 @@ namespace SAMM.Configuration
 	{
 		#region Variables
 		public GameIDs GameID { get; set; } = GameIDs.Unsupported;
+
 		public string GameDirectory { get; set; } = string.Empty;
 
 		public string GameExecutable { get; set; } = string.Empty;
@@ -46,6 +47,13 @@ namespace SAMM.Configuration
 			}
 		}
 
+		public bool HideMods { get; set; } = false;
+
+		public bool HideCodes { get; set; } = false;
+
+		public bool HideTestSpawn { get; set; } = false;
+
+		public bool HideConfig { get; set; } = false;
 
 		#endregion
 
@@ -162,6 +170,18 @@ namespace SAMM.Configuration
 						VersionFile = "sa2mlver.txt"
 					},
 					OneClickProtocol = "sa2mm:"
+				}
+			},
+			{
+				GameIDs.SHDR, new GameConfig()
+				{
+					GameID = GameIDs.SHDR,
+					GameExecutable = "shadowrecompiled.exe",
+					GameSystemFolder = Path.Combine(""),
+					ModLoaderInfo = new ModLoaderInfo(),
+					OneClickProtocol = "",
+					HideConfig = true,
+					HideTestSpawn = true
 				}
 			}
 		};

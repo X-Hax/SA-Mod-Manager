@@ -119,11 +119,6 @@ namespace SAMM.Configuration
 
 	public abstract class GameSettings
 	{
-		protected bool hideConfig = false;
-		protected bool hideDebug = false;
-		protected bool hideCodes = false;
-		protected bool hideMods = false;
-
 		public DebugSettings DebugSettings { get; set; } = new DebugSettings();
 
 		public Dictionary<string, bool> Patches { get; set; } = new Dictionary<string, bool>();

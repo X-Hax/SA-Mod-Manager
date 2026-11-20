@@ -5,6 +5,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using DynamicData;
+using SAMM.Configuration;
 using SAMM.Configuration.Enumeration;
 using System;
 using System.Globalization;
@@ -17,6 +18,7 @@ namespace SAMM.App.Converters
 		{
 			string resourcekey = string.Empty;
 			GameIDs gameID = (GameIDs)value;
+
 			switch (gameID)
 			{
 				case GameIDs.SADX:
@@ -24,6 +26,9 @@ namespace SAMM.App.Converters
 					break;
 				case GameIDs.SA2B:
 					resourcekey = "GameIcon.SA2B";
+					break;
+				case GameIDs.SHDR:
+					resourcekey = "GameIcon.SHDR";
 					break;
 			}
 
