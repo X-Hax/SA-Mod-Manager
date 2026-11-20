@@ -25,7 +25,7 @@
 		<sammconverters:DictionaryIndexConverter x:Key="LanguageKeyConverter" DefaultKey="en-US"/>
 		<sammconverters:GameIconConverter x:Key="GameIconConverter"/>
 		
-		<Image x:Key="WindowIcon" Source="avares://SAMM.App/Assets/Icons/SADXModManager.ico"/>
+		<Image x:Key="Icon" Source="avares://SAMM.App/Assets/Icons/SADXModManager.ico"/>
 	</Window.Resources>
 
 	<dialogHostAvalonia:DialogHost x:Name="MainWindowDialogHost" Identifier="MainWindowDialogHost" CloseOnClickAway="True" BlurBackground="True" Background="Transparent" DialogMargin="0">
@@ -39,173 +39,197 @@
 		<Grid RowDefinitions="*,Auto">
 			<Grid Margin="7">
 				<TabControl x:Name="ManagerTabs" Theme="{DynamicResource MainWindowTabControl}" Width="{Binding Path=$parent[Window].Bounds.Width}">
-					<TabItem Grid.Column="0" Header="{DynamicResource MainWindow.Mods}" Theme="{DynamicResource WindowTabItem}" TabIndex="0" Tag="{StaticResource ADVTheme.Icon.SonicHead}">
-						<Grid ColumnDefinitions="*,Auto" Margin="10">
-							<Grid RowDefinitions="Auto,8*,*">
-								<Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*" ColumnSpacing="5" Margin="5,2,5,7">
-									<TextBlock Grid.Column="0" Text="{DynamicResource MainWindow.Mods.Profiles}" VerticalAlignment="Center"/>
-									<Button x:Name="ProfileManagerButton" Grid.Column="1" Height="30" Width="30" ToolTip.Tip="{DynamicResource MainWindow.Mods.ProfileManager.ToolTip}" Click="OpenProfileDialog">
-										<Path Data="{StaticResource ADVTheme.Icon.Dictionary}" StrokeThickness="2" Stroke="{DynamicResource ADVTheme.Brush.Border.Light}"/>
-									</Button>
-									<Button x:Name="ProfileQuickAdd" Grid.Column="2" Width="30" Height="30" ToolTip.Tip="{DynamicResource MainWindow.Mods.ProfileQuickAdd.ToolTip}">
-										<Path Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Border.Light}"/>
-									</Button>
-									<ComboBox x:Name="ProfileListBox" Grid.Column="3" ItemsSource="{Binding UserProfiles.Profiles}" SelectedIndex="{Binding UserProfiles.ProfileIndex}"/>
-								</Grid>
-								<DataGrid x:Name="ModList" Grid.Row="1" ItemsSource="{Binding ModEntries}" Margin="2,2,7,2" IsReadOnly="True" GridLinesVisibility="All"
-										  CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserSortColumns="True" CellTheme="{StaticResource ModEntryCell}"
-										  BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}" BorderThickness="2" CornerRadius="{DynamicResource ADVTheme.CornerRadius}"
-										  MinHeight="500">
-									<DataGrid.Columns>
-										<DataGridTemplateColumn HeaderPointerPressed="DataGridTemplateColumn_HeaderPointerPressed">
-											<DataTemplate>
-												<Grid ColumnDefinitions="*,*">
-													<Border Name="PART_DataGridGrabBorder" Background="Transparent" BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}">
-														<Border.Styles>
-															<Style Selector="Border">
-																<Style Selector="^:pointerover">
-																	<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Base}"/>
-																</Style>
-															</Style>
-														</Border.Styles>
-														<Path Grid.Column="0" Data="{StaticResource SAMM.Icons.Grabbable}" Fill="{Binding ElementName=PART_DataGridGrabBorder, Path=BorderBrush}" Width="16" HorizontalAlignment="Center"/>
-													</Border>
+					<TabItem Grid.Column="0" Header="{DynamicResource MainWindow.Mods}" Theme="{DynamicResource WindowTabItem}" TabIndex="0" Tag="{StaticResource ADVTheme.Icon.SonicHead}" IsVisible="{Binding !GameConfig.HideMods}">
+						<Grid RowDefinitions="2,*">
+							<Rectangle Grid.Row="0" Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}" Height="2" VerticalAlignment="Top"/>
+							<Grid ColumnDefinitions="*,Auto" Margin="10" Grid.Row="1">
+								<Grid RowDefinitions="Auto,*,70">
+									<Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,*" ColumnSpacing="5" Margin="5,2,5,7">
+										<TextBlock Grid.Column="0" Text="{DynamicResource MainWindow.Mods.Profiles}" VerticalAlignment="Center"/>
+										<Button x:Name="ProfileManagerButton" Grid.Column="1" Height="30" Width="30" ToolTip.Tip="{DynamicResource MainWindow.Mods.ProfileManager.ToolTip}" Click="OpenProfileDialog">
+											<Path Data="{StaticResource ADVTheme.Icon.Dictionary}" StrokeThickness="2" Stroke="{DynamicResource ADVTheme.Brush.Border.Light}"/>
+										</Button>
+										<Button x:Name="ProfileQuickAdd" Grid.Column="2" Width="30" Height="30" ToolTip.Tip="{DynamicResource MainWindow.Mods.ProfileQuickAdd.ToolTip}">
+											<Path Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Border.Light}"/>
+										</Button>
+										<ComboBox x:Name="ProfileListBox" Grid.Column="3" ItemsSource="{Binding UserProfiles.Profiles}" SelectedIndex="{Binding UserProfiles.ProfileIndex}"/>
+									</Grid>
+									<Grid Grid.Row="1">
+										<DataGrid x:Name="ModList" ItemsSource="{Binding ModEntries}" Margin="2,2,7,2" IsReadOnly="True"
+												  CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserSortColumns="True" CellTheme="{StaticResource ModEntryCell}"
+												  BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}" BorderThickness="2" CornerRadius="{DynamicResource ADVTheme.CornerRadius}"
+												  GridLinesVisibility="Horizontal">
+											<DataGrid.Columns>
+												<DataGridTemplateColumn HeaderPointerPressed="DataGridTemplateColumn_HeaderPointerPressed">
+													<DataTemplate>
+														<Grid ColumnDefinitions="*,*">
+															<Border Name="PART_DataGridGrabBorder" Background="Transparent" BorderBrush="{DynamicResource ADVTheme.Brush.Border.Base}">
+																<Border.Styles>
+																	<Style Selector="Border">
+																		<Style Selector="^:pointerover">
+																			<Setter Property="BorderBrush" Value="{DynamicResource ADVTheme.Brush.Highlight.Base}"/>
+																		</Style>
+																	</Style>
+																</Border.Styles>
+																<Path Grid.Column="0" Data="{StaticResource SAMM.Icons.Grabbable}" Fill="{Binding ElementName=PART_DataGridGrabBorder, Path=BorderBrush}" Width="16" HorizontalAlignment="Center"/>
+															</Border>
 
-													<CheckBox IsChecked="{Binding IsEnabled}" Grid.Column="1" HorizontalAlignment="Right" Margin="0,2,3,2"/>
-												</Grid>
-											</DataTemplate>
-										</DataGridTemplateColumn>
-										<DataGridTextColumn Header="{DynamicResource Common.Name}" Binding="{Binding ModInfo.Name}" FontSize="{DynamicResource ADVTheme.FontSize}" Tag="{DynamicResource MainWindow.Mods.ModList.Name.ToolTip}"/>
-										<DataGridTextColumn Header="{DynamicResource Common.Author}" Binding="{Binding ModInfo.Author}" FontSize="{DynamicResource ADVTheme.FontSize}" />
-										<DataGridTextColumn Header="{DynamicResource Common.Category}" Binding="{Binding ModInfo.Category}" FontSize="{DynamicResource ADVTheme.FontSize}"/>
-										<DataGridTextColumn Header="{DynamicResource Common.Version}" Binding="{Binding ModInfo.Version}" FontSize="{DynamicResource ADVTheme.FontSize}"/>
-									</DataGrid.Columns>
-								</DataGrid>
-								<Grid Grid.Row="2" ColumnDefinitions="Auto,*" Margin="7">
-									<TextBlock Text="Description: "/>
-									<TextBlock Grid.Column="1" Text="{Binding ElementName=ModList, Path=SelectedItem, Converter={StaticResource ModInfoDescriptionConverter}}"
-											   TextWrapping="Wrap"/>
+															<CheckBox IsChecked="{Binding IsEnabled}" Grid.Column="1" HorizontalAlignment="Right" Margin="0,2,3,2"/>
+														</Grid>
+													</DataTemplate>
+												</DataGridTemplateColumn>
+												<DataGridTextColumn Header="{DynamicResource Common.Name}" Binding="{Binding ModInfo.Name}" FontSize="{DynamicResource ADVTheme.FontSize}" Tag="{DynamicResource MainWindow.Mods.ModList.Name.ToolTip}"/>
+												<DataGridTextColumn Header="{DynamicResource Common.Author}" Binding="{Binding ModInfo.Author}" FontSize="{DynamicResource ADVTheme.FontSize}" />
+												<DataGridTextColumn Header="{DynamicResource Common.Category}" Binding="{Binding ModInfo.Category}" FontSize="{DynamicResource ADVTheme.FontSize}"/>
+												<DataGridTextColumn Header="{DynamicResource Common.Version}" Binding="{Binding ModInfo.Version}" FontSize="{DynamicResource ADVTheme.FontSize}"/>
+											</DataGrid.Columns>
+										</DataGrid>
+									</Grid>
+									<Grid Grid.Row="2" ColumnDefinitions="Auto,*" Margin="7">
+										<TextBlock Text="Description: "/>
+										<TextBlock Grid.Column="1" Text="{Binding ElementName=ModList, Path=SelectedItem, Converter={StaticResource ModInfoDescriptionConverter}}"
+												   TextWrapping="Wrap"/>
+									</Grid>
 								</Grid>
+								<StackPanel Grid.Column="1" Margin="2" Orientation="Vertical" Spacing="5">
+									<Button x:Name="Refresh" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
+										<Path Width="24" Data="{StaticResource ADVTheme.Icon.Refresh}" Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}"/>
+									</Button>
+									<Button x:Name="AddMod" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
+										<Path Width="24" Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Green.Base}"/>
+									</Button>
+									<Button x:Name="ConfigMod" IsEnabled="{Binding ElementName=ModList, Path=SelectedItem, Converter={StaticResource ModConfigConverter}}" Click="OpenModConfigDialog">
+										<Path Width="24" Data="{StaticResource ADVTheme.Icon.Settings}" Fill="{DynamicResource ADVTheme.Brush.Gray.Base}"/>
+									</Button>
+								</StackPanel>
 							</Grid>
-							<StackPanel Grid.Column="1" Margin="2" Orientation="Vertical" Spacing="5">
-								<Button x:Name="Refresh" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
-									<Path Width="24" Data="{StaticResource ADVTheme.Icon.Refresh}" Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}"/>
-								</Button>
-								<Button x:Name="AddMod" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
-									<Path Width="24" Data="{StaticResource ADVTheme.Icon.Plus}" Fill="{DynamicResource ADVTheme.Brush.Green.Base}"/>
-								</Button>
-								<Button x:Name="ConfigMod" IsEnabled="{Binding ElementName=ModList, Path=SelectedItem, Converter={StaticResource ModConfigConverter}}" Click="OpenModConfigDialog">
-									<Path Width="24" Data="{StaticResource ADVTheme.Icon.Settings}" Fill="{DynamicResource ADVTheme.Brush.Gray.Base}"/>
-								</Button>
-							</StackPanel>
 						</Grid>
 					</TabItem>
 
-					<TabItem Grid.Column="1" Header="{DynamicResource MainWindow.Codes}" Theme="{StaticResource WindowTabItem}" TabIndex="1" BorderThickness="0" Tag="{StaticResource ADVTheme.Icon.Plus}">
+					<TabItem Grid.Column="1" Header="{DynamicResource MainWindow.Codes}" Theme="{StaticResource WindowTabItem}" TabIndex="1" BorderThickness="0" Tag="{StaticResource ADVTheme.Icon.Plus}" IsVisible="{ Binding !GameConfig.HideCodes }">
 						<ScrollViewer AllowAutoHide="True">
-							
+							<Grid RowDefinitions="2,*">
+								<Rectangle Grid.Row="0" Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}" Height="2" VerticalAlignment="Top"/>
+								<Grid Grid.Row="1" Margin="10">
+									<!-- Place Tab content here. -->
+								</Grid>
+							</Grid>
 						</ScrollViewer>
 					</TabItem>
 
-					<TabItem Grid.Column="2" Header="{DynamicResource MainWindow.GameConfig}" Theme="{StaticResource WindowTabItem}" TabIndex="2" BorderThickness="0" Tag="{StaticResource ADVTheme.Icon.Plus}">
+					<TabItem Grid.Column="2" Header="{DynamicResource MainWindow.GameConfig}" Theme="{StaticResource WindowTabItem}" TabIndex="2" BorderThickness="0" Tag="{StaticResource ADVTheme.Icon.Plus}" IsVisible="{ Binding !GameConfig.HideConfig }">
 						<ScrollViewer AllowAutoHide="True">
-							
+							<Grid RowDefinitions="2,*">
+								<Rectangle Grid.Row="0" Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}" Height="2" VerticalAlignment="Top"/>
+								<Grid Grid.Row="1" Margin="10">
+									<!-- Place Tab content here. -->
+								</Grid>
+							</Grid>
 						</ScrollViewer>
 					</TabItem>
 
-					<TabItem Grid.Column="3" Header="{DynamicResource MainWindow.TestSpawn}" Theme="{StaticResource WindowTabItem}" TabIndex="3" BorderThickness="0" Tag="{StaticResource ADVTheme.Icon.Plus}">
+					<TabItem Grid.Column="3" Header="{DynamicResource MainWindow.TestSpawn}" Theme="{StaticResource WindowTabItem}" TabIndex="3" BorderThickness="0" Tag="{StaticResource ADVTheme.Icon.Plus}" IsVisible="{ Binding !GameConfig.HideTestSpawn }">
 						<ScrollViewer AllowAutoHide="True">
-							
+							<Grid RowDefinitions="2,*">
+								<Rectangle Grid.Row="0" Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}" Height="2" VerticalAlignment="Top"/>
+								<Grid Grid.Row="1" Margin="10">
+									<!-- Place Tab content here. -->
+								</Grid>
+							</Grid>
 						</ScrollViewer>
 					</TabItem>
 
 					<TabItem Grid.Column="4" Header="{DynamicResource MainWindow.Settings}" Theme="{StaticResource WindowTabItem}" TabIndex="4" BorderThickness="0" Tag="{StaticResource SAMM.Icons.Gear}">
 						<ScrollViewer AllowAutoHide="True">
-							<Grid RowDefinitions="Auto,Auto,Auto" Margin="10" RowSpacing="5">
-								<advcontrols:GroupBox Header="{DynamicResource MainWindow.Settings.AppSettingsHeader}">
-									<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="5" Margin="5" Grid.Row="1">
-										<Grid ColumnDefinitions="*,*" Grid.Row="0" HorizontalAlignment="Stretch">
-											<TextBlock Text="{DynamicResource Common.Language}" Grid.Column="0" VerticalAlignment="Center"/>
-											<ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedLanguage}" ItemsSource="{Binding SupportedLanguages}" DisplayMemberBinding="{Binding Value}"
-													  ToolTip.Tip="{DynamicResource MainWindow.Settings.Language.ToolTip}"/>
-										</Grid>
-										<Grid ColumnDefinitions="*,*" Grid.Row="1">
-											<TextBlock Text="{DynamicResource Common.Theme}" Grid.Column="0" VerticalAlignment="Center"/>
-											<ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedTheme}" ItemsSource="{Binding SupportedThemes}" DisplayMemberBinding="{Binding Value}" 
-													  ToolTip.Tip="{DynamicResource MainWindow.Settings.Theme.ToolTip}"/>
-										</Grid>
-										<Grid ColumnDefinitions="*,*" Grid.Row="2">
-											<TextBlock Text="{DynamicResource MainWindow.Settings.UpdateChannel}" Grid.Column="0" VerticalAlignment="Center"/>
-											<ComboBox Grid.Column="1" ToolTip.Tip="{DynamicResource MainWindow.Settings.UpdateChannel.ToolTip}"/>
-										</Grid>
-										<Grid Grid.Row="3" RowDefinitions="*,*" ColumnDefinitions="*,*">
-											<ToggleSwitch Grid.Column="0" Grid.Row="0" IsChecked="{Binding ManagerSettings.UpdateSettings.EnableManagerBootCheck}" 
-														  OnContent="{DynamicResource MainWindow.Settings.ManagerUpdates}" OffContent="{DynamicResource MainWindow.Settings.ManagerUpdates}"
-														  ToolTip.Tip="{DynamicResource MainWindow.Settings.ManageUpdates.ToolTip}"/>
-											<ToggleSwitch Grid.Column="1" Grid.Row="0" IsChecked="{Binding ManagerSettings.KeepManagerOpen}"
-														  OnContent="{DynamicResource MainWindow.Settings.KeepOpen}" OffContent="{DynamicResource MainWindow.Settings.KeepOpen}"
-														  ToolTip.Tip="{DynamicResource MainWindow.Settings.KeepOpen.ToolTip}"/>
-										</Grid>
-										<Button x:Name="AdvancedSettingsButton" Grid.Row="4" Height="30" Content="{DynamicResource MainWindow.Settings.AdvancedSettings}" ToolTip.Tip="{DynamicResource MainWindow.Settings.AdvancedSettings.ToolTip}"/>
+							<Grid RowDefinitions="2,*">
+								<Rectangle Grid.Row="0" Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}" Height="2" VerticalAlignment="Top"/>
+								<Grid Grid.Row="1" Margin="10">
+									<Grid RowDefinitions="Auto,Auto,Auto" Margin="10" RowSpacing="5">
+										<advcontrols:GroupBox Header="{DynamicResource MainWindow.Settings.AppSettingsHeader}">
+											<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="5" Margin="5" Grid.Row="1">
+												<Grid ColumnDefinitions="*,*" Grid.Row="0" HorizontalAlignment="Stretch">
+													<TextBlock Text="{DynamicResource Common.Language}" Grid.Column="0" VerticalAlignment="Center"/>
+													<ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedLanguage}" ItemsSource="{Binding SupportedLanguages}" DisplayMemberBinding="{Binding Value}"
+															  ToolTip.Tip="{DynamicResource MainWindow.Settings.Language.ToolTip}"/>
+												</Grid>
+												<Grid ColumnDefinitions="*,*" Grid.Row="1">
+													<TextBlock Text="{DynamicResource Common.Theme}" Grid.Column="0" VerticalAlignment="Center"/>
+													<ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedTheme}" ItemsSource="{Binding SupportedThemes}" DisplayMemberBinding="{Binding Value}"
+															  ToolTip.Tip="{DynamicResource MainWindow.Settings.Theme.ToolTip}"/>
+												</Grid>
+												<Grid ColumnDefinitions="*,*" Grid.Row="2">
+													<TextBlock Text="{DynamicResource MainWindow.Settings.UpdateChannel}" Grid.Column="0" VerticalAlignment="Center"/>
+													<ComboBox Grid.Column="1" ToolTip.Tip="{DynamicResource MainWindow.Settings.UpdateChannel.ToolTip}"/>
+												</Grid>
+												<Grid Grid.Row="3" RowDefinitions="*,*" ColumnDefinitions="*,*">
+													<ToggleSwitch Grid.Column="0" Grid.Row="0" IsChecked="{Binding ManagerSettings.UpdateSettings.EnableManagerBootCheck}"
+																  OnContent="{DynamicResource MainWindow.Settings.ManagerUpdates}" OffContent="{DynamicResource MainWindow.Settings.ManagerUpdates}"
+																  ToolTip.Tip="{DynamicResource MainWindow.Settings.ManageUpdates.ToolTip}"/>
+													<ToggleSwitch Grid.Column="1" Grid.Row="0" IsChecked="{Binding ManagerSettings.KeepManagerOpen}"
+																  OnContent="{DynamicResource MainWindow.Settings.KeepOpen}" OffContent="{DynamicResource MainWindow.Settings.KeepOpen}"
+																  ToolTip.Tip="{DynamicResource MainWindow.Settings.KeepOpen.ToolTip}"/>
+												</Grid>
+												<Button x:Name="AdvancedSettingsButton" Grid.Row="4" Height="30" Content="{DynamicResource MainWindow.Settings.AdvancedSettings}" ToolTip.Tip="{DynamicResource MainWindow.Settings.AdvancedSettings.ToolTip}"/>
+											</Grid>
+										</advcontrols:GroupBox>
+										<advcontrols:GroupBox Grid.Row="1" Header="{DynamicResource MainWindow.Settings.ModloaderSettingsHeader}">
+											<Grid RowDefinitions="Auto,Auto" RowSpacing="5" Margin="5">
+												<Grid ColumnDefinitions="*,*,*" Margin="5" ColumnSpacing="5">
+													<Button x:Name="LoaderButton" Grid.Column="0" Tag="{Binding GameConfig.IsModLoaderInstalled}" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
+														<Button.Styles>
+															<Style Selector="Button[Tag=false]">
+																<Setter Property="ToolTip.Tip" Value="{DynamicResource MainWindow.Settings.InstallLoader.ToolTip}"/>
+																<Setter Property="Content">
+																	<Template>
+																		<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+																			<Path Width="24" Data="{StaticResource ADVTheme.Icon.Install}" Fill="{DynamicResource ADVTheme.Brush.Green.Base}"/>
+																			<TextBlock Text="{DynamicResource MainWindow.Settings.InstallLoader}" VerticalAlignment="Center"/>
+																		</StackPanel>
+																	</Template>
+																</Setter>
+															</Style>
+															<Style Selector="Button[Tag=true]">
+																<Setter Property="ToolTip.Tip" Value="{DynamicResource MainWindow.Settings.UninstallLoader.ToolTip}"/>
+																<Setter Property="Content">
+																	<Template>
+																		<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+																			<Path Width="24" Data="{StaticResource ADVTheme.Icon.Uninstall}" Fill="{DynamicResource ADVTheme.Brush.Red.Base}"/>
+																			<TextBlock Text="{DynamicResource MainWindow.Settings.UninstallLoader}" VerticalAlignment="Center"/>
+																		</StackPanel>
+																	</Template>
+																</Setter>
+															</Style>
+														</Button.Styles>
+													</Button>
+													<Button x:Name="OpenGameDirectory" Grid.Column="1" ToolTip.Tip="{DynamicResource MainWindow.Settings.OpenGameFolder.ToolTip}" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
+														<StackPanel Orientation="Horizontal" Spacing="10">
+															<Path Width="24" Data="{StaticResource ADVTheme.Icon.Folder}" Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}"/>
+															<TextBlock VerticalAlignment="Center" Text="{DynamicResource MainWindow.Settings.OpenGameFolder}"/>
+														</StackPanel>
+													</Button>
+													<Button x:Name="GameHealthCheckButton" Grid.Column="2" ToolTip.Tip="{DynamicResource MainWindow.Settings.CheckGameHealth.ToolTip}">
+														<StackPanel Orientation="Horizontal" Spacing="10">
+															<Path Width="24"/>
+															<TextBlock VerticalAlignment="Center" Text="{DynamicResource MainWindow.Settings.CheckGameHealth}"/>
+														</StackPanel>
+													</Button>
+												</Grid>
+												<Grid ColumnDefinitions="*,*" Margin="5" Grid.Row="1">
+													<ToggleSwitch Grid.Column="0" IsChecked="{Binding ManagerSettings.UpdateSettings.EnableLoaderBootCheck}"
+																  OnContent="{DynamicResource MainWindow.Settings.UpdateLoader}" OffContent="{DynamicResource MainWindow.Settings.UpdateLoader}"
+																  ToolTip.Tip="{DynamicResource MainWindow.Settings.UpdateLoader.ToolTip}"/>
+													<ToggleSwitch Grid.Column="1" IsChecked="{Binding ManagerSettings.UpdateSettings.EnableModsBootCheck}"
+																  OnContent="{DynamicResource MainWindow.Settings.UpdateMods}" OffContent="{DynamicResource MainWindow.Settings.UpdateMods}"
+																  ToolTip.Tip="{DynamicResource MainWindow.Settings.UpdateMods.ToolTip}"/>
+												</Grid>
+											</Grid>
+										</advcontrols:GroupBox>
 									</Grid>
-								</advcontrols:GroupBox>
-								<advcontrols:GroupBox Grid.Row="1" Header="{DynamicResource MainWindow.Settings.ModloaderSettingsHeader}">
-									<Grid RowDefinitions="Auto,Auto" RowSpacing="5" Margin="5">
-										<Grid ColumnDefinitions="*,*,*" Margin="5" ColumnSpacing="5">
-											<Button x:Name="LoaderButton" Grid.Column="0" Tag="{Binding GameConfig.IsModLoaderInstalled}" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
-												<Button.Styles>
-													<Style Selector="Button[Tag=false]">
-														<Setter Property="ToolTip.Tip" Value="{DynamicResource MainWindow.Settings.InstallLoader.ToolTip}"/>
-														<Setter Property="Content">
-															<Template>
-																<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-																	<Path Width="24" Data="{StaticResource ADVTheme.Icon.Install}" Fill="{DynamicResource ADVTheme.Brush.Green.Base}"/>
-																	<TextBlock Text="{DynamicResource MainWindow.Settings.InstallLoader}" VerticalAlignment="Center"/>
-																</StackPanel>
-															</Template>
-														</Setter>
-													</Style>
-													<Style Selector="Button[Tag=true]">
-														<Setter Property="ToolTip.Tip" Value="{DynamicResource MainWindow.Settings.UninstallLoader.ToolTip}"/>
-														<Setter Property="Content">
-															<Template>
-																<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-																	<Path Width="24" Data="{StaticResource ADVTheme.Icon.Uninstall}" Fill="{DynamicResource ADVTheme.Brush.Red.Base}"/>
-																	<TextBlock Text="{DynamicResource MainWindow.Settings.UninstallLoader}" VerticalAlignment="Center"/>
-																</StackPanel>
-															</Template>
-														</Setter>
-													</Style>
-												</Button.Styles>
-											</Button>
-											<Button x:Name="OpenGameDirectory" Grid.Column="1" ToolTip.Tip="{DynamicResource MainWindow.Settings.OpenGameFolder.ToolTip}" IsEnabled="{Binding Path=GameConfig, Converter={StaticResource ValidateGameConfigConverter}}">
-												<StackPanel Orientation="Horizontal" Spacing="10">
-													<Path Width="24" Data="{StaticResource ADVTheme.Icon.Folder}" Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}"/>
-													<TextBlock VerticalAlignment="Center" Text="{DynamicResource MainWindow.Settings.OpenGameFolder}"/>
-												</StackPanel>
-											</Button>
-											<Button x:Name="GameHealthCheckButton" Grid.Column="2" ToolTip.Tip="{DynamicResource MainWindow.Settings.CheckGameHealth.ToolTip}">
-												<StackPanel Orientation="Horizontal" Spacing="10">
-													<Path Width="24"/>
-													<TextBlock VerticalAlignment="Center" Text="{DynamicResource MainWindow.Settings.CheckGameHealth}"/>
-												</StackPanel>
-											</Button>
-										</Grid>
-										<Grid ColumnDefinitions="*,*" Margin="5" Grid.Row="1">
-											<ToggleSwitch Grid.Column="0" IsChecked="{Binding ManagerSettings.UpdateSettings.EnableLoaderBootCheck}"
-														  OnContent="{DynamicResource MainWindow.Settings.UpdateLoader}" OffContent="{DynamicResource MainWindow.Settings.UpdateLoader}"
-														  ToolTip.Tip="{DynamicResource MainWindow.Settings.UpdateLoader.ToolTip}"/>
-											<ToggleSwitch Grid.Column="1" IsChecked="{Binding ManagerSettings.UpdateSettings.EnableModsBootCheck}"
-														  OnContent="{DynamicResource MainWindow.Settings.UpdateMods}" OffContent="{DynamicResource MainWindow.Settings.UpdateMods}"
-														  ToolTip.Tip="{DynamicResource MainWindow.Settings.UpdateMods.ToolTip}"/>
-										</Grid>
-									</Grid>
-								</advcontrols:GroupBox>
+								</Grid>
 							</Grid>
 						</ScrollViewer>
 					</TabItem>
 				</TabControl>
-				<Rectangle Fill="{DynamicResource ADVTheme.Brush.Highlight.Base}" Height="2" VerticalAlignment="Top" Margin="0,38,0,0"/>
 			</Grid>
 
 			<Grid Grid.Row="1" Margin="10" Height="45" ColumnDefinitions="Auto,*,Auto">
