@@ -112,10 +112,10 @@ namespace SAMM.App.Models
 		/// <param name="clearEntries"></param>
 		private void LoadModEntries(bool clearEntries = true)
 		{
-			if (GameSettings == null) return;
-
 			if (clearEntries && ModEntries.Count > 0)
 				ModEntries.Clear();
+
+			if ((GameSettings == null) || (GameConfig.GameID == Configuration.Enumeration.GameIDs.Unsupported)) return;
 
 			Logger.Log($"Loading Mod Entries");
 			Dictionary<string, ModEntry> modList = ModEntry.GetModDictionary(GameConfig.GameDirectory);
@@ -194,7 +194,10 @@ namespace SAMM.App.Models
 		{
 			Logger.Log($"Loading User Profiles");
 			UserProfiles = UserProfiles.LoadProfiles(GameConfig.ProfilesPath);
-			GameConfig.GameID = UserProfiles.GameID;
+			if (UserProfiles != null)
+				GameConfig.GameID = UserProfiles.GameID;
+			else
+				GameConfig.GameID = Configuration.Enumeration.GameIDs.Unsupported;
 		}
 
 		public void Load()
