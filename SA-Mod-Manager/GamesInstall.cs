@@ -34,6 +34,7 @@ namespace SAModManager
         /// This is the executable expected for launching the game.
         /// </summary>
         public string exeName { get; set; }
+        public string linuxExe { get; set; } // for decompiled / recompiled games that have a separate linux version
 
         /// <summary>
         /// Current game's main directory.
@@ -443,6 +444,7 @@ namespace SAModManager
             gameName = "Shadow Recompiled",
             gameImage = App.GetResourceUri("Games.shthR.png"),
             exeName = "ShadowRecomp.exe",
+            linuxExe = "ShadowRecomp",
             defaultIniProfile = "SHTHRecompModLoader.ini",
             id = GameEntry.GameType.SHTHRecomp,
             gameAbbreviation = "SHTHR",
@@ -532,11 +534,32 @@ namespace SAModManager
         }
 
 
+        public static string GetGameExePath(Game game, string directory)
+        {
+            if (game is null || Util.IsStringValid(directory) == false)
+                return string.Empty;
+
+            string exePath = Path.Combine(directory, game.exeName);
+
+            if (File.Exists(exePath))
+                return exePath;
+
+            if (App.isLinux && Util.IsStringValid(game.linuxExe))
+            {
+                string linuxExePath = Path.Combine(directory, game.linuxExe);
+
+                if (Util.IsLinuxBinary(linuxExePath))
+                    return linuxExePath;
+            }
+
+            return string.Empty;
+        }
+
         public static GameEntry.GameType SetGameInstallManual(string GamePath)
         {
             foreach (var game in GamesInstall.GetSupportedGames())
             {
-                string path = Path.Combine(GamePath, game.exeName);
+                string path = GetGameExePath(game, GamePath);
 
                 if (Steam.isSADXGamePath(GamePath))
                 {
@@ -554,7 +577,7 @@ namespace SAModManager
         public static GameEntry.GameType SetGameInstall(string GamePath, Game game, bool skipMSG = false)
         {
 
-            string path = Path.Combine(GamePath, game.exeName);
+            string path = GetGameExePath(game, GamePath);
 
             if (Steam.isSADXGamePath(GamePath))
             {
@@ -598,8 +621,8 @@ namespace SAModManager
             {
                 foreach (var game in GamesInstall.GetSupportedGames())
                 {
-                    string path = Path.Combine(App.StartDirectory, game.exeName);
-                    Logger.Log("Checking for: " + path);
+                    string path = GamesInstall.GetGameExePath(game, App.StartDirectory);
+                    Logger.Log("Checking for: " + App.StartDirectory);
                     if (File.Exists(path) && !App.GamesList.Contains(game))
                     {
                         Logger.Log("Found Game locally!");
@@ -732,19 +755,19 @@ namespace SAModManager
             {
                 if (newPath == null && (string.IsNullOrEmpty(game.gameDirectory) == false))
                 {
-                    if (File.Exists(Path.Combine(game.gameDirectory, game.exeName)))
+                    if (File.Exists(GamesInstall.GetGameExePath(game, game.gameDirectory)))
                     {
                         return;
                     }
                 }
 
-                string path = Path.Combine(App.StartDirectory, game.exeName);
+                string path = GetGameExePath(game, App.StartDirectory);
 
                 string gameDir = string.Empty;
 
                 if (string.IsNullOrEmpty(newPath) == false)
                 {
-                    string newpath = Path.Combine(newPath, game.exeName);
+                    string newpath = GetGameExePath(game, newPath);
 
                     if (File.Exists(newpath))
                         gameDir = Path.GetFullPath(Path.GetDirectoryName(newpath));

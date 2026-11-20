@@ -771,6 +771,56 @@ namespace SAModManager
             Logger.Log("Linux wasn't detected, the Manager will act like we are on Windows.");
         }
 
+        // Elf check for Loonix
+        public static bool IsLinuxBinary(string path)
+        {
+            try
+            {
+                using FileStream fileStream = new(path, FileMode.Open, FileAccess.Read);
+                byte[] magicNumber = new byte[4];
+                fileStream.ReadExactly(magicNumber, 0, 4);
+
+                // magic number: (0x7F 'E' 'L' 'F')
+                if (magicNumber[0] == 0x7F && magicNumber[1] == (byte)'E' && magicNumber[2] == (byte)'L' && magicNumber[3] == (byte)'F')
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
+        }
+
+
+        public static Process StartGameProcess(string exePath, string workingDirectory, string arguments = "")
+        {
+            bool isLinux = App.isLinux && IsLinuxBinary(exePath);
+
+            var processInfo = new ProcessStartInfo(exePath)
+            {
+                UseShellExecute = !isLinux,
+                WorkingDirectory = workingDirectory,
+                Arguments = arguments
+            };
+
+            try
+            {
+                return Process.Start(processInfo);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Failed to start game process: " + ex.Message);
+                if (isLinux)
+                {
+                    return null;
+                }          
+                throw;
+            }
+        }
+
         public static bool RunningAsAdmin()
         {
             return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);

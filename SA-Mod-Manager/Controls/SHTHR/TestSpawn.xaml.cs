@@ -87,19 +87,13 @@ namespace SAModManager.Controls.SHTHR
             }
             var mainWindow = ((MainWindow)Application.Current.MainWindow);
 
-            string executablePath = mainWindow.EnabledMods?.Select(item => mainWindow.mods[item]?.EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+            string executablePath = mainWindow.EnabledMods?.Select(item => mainWindow.mods[item]?.EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? GamesInstall.GetGameExePath(App.CurrentGame, App.CurrentGame.gameDirectory);
 
             string commandLine = GetTestSpawnCommandLine();
             string folderPath = Path.GetDirectoryName(executablePath);
 
-            ProcessStartInfo startInfo = new(executablePath)
-            {
-                WorkingDirectory = folderPath,
-                Arguments = commandLine,
-                UseShellExecute = true,
-            };
+            var process = Util.StartGameProcess(executablePath, folderPath, commandLine);
 
-            Process process = Process.Start(startInfo);
             try
             {
                 process?.WaitForInputIdle(10000);

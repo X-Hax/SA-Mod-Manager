@@ -1203,7 +1203,7 @@ namespace SAModManager
             if (App.CurrentGame == GamesInstall.Unknown || App.CurrentGame.id == GameEntry.GameType.Unsupported || App.CurrentGame.loader?.nativeLoader == true)
                 return;
 
-            if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) || !File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
+            if (string.IsNullOrEmpty(App.CurrentGame.gameDirectory) || !File.Exists(GamesInstall.GetGameExePath(App.CurrentGame, App.CurrentGame.gameDirectory)))
             {
                 new MessageWindow(Lang.GetString("MessageWindow.Errors.GamePathFailed.Title"), Lang.GetString("MessageWindow.Errors.GamePathFailed"), MessageWindow.WindowType.IconMessage, MessageWindow.Icons.Error, MessageWindow.Buttons.OK).ShowDialog();
                 return;
@@ -1360,7 +1360,7 @@ namespace SAModManager
             }
 
             App.CancelUpdate = true;
-            string executablePath = Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName);
+            string executablePath = GamesInstall.GetGameExePath(App.CurrentGame, App.CurrentGame.gameDirectory);
             foreach (var mod in EnabledMods)
             {
                 SAModInfo checkmod = mods[mod];
@@ -1368,11 +1368,7 @@ namespace SAModManager
                     executablePath = Path.Combine(App.CurrentGame.modDirectory, mod, checkmod.EXEFile);
             }
 
-            Process process = Process.Start((new ProcessStartInfo(executablePath)
-            {
-                WorkingDirectory = App.CurrentGame.gameDirectory,
-                UseShellExecute = true,
-            }));
+           var process = Util.StartGameProcess(executablePath, App.CurrentGame.gameDirectory);
 
             try
             {
@@ -1482,7 +1478,7 @@ namespace SAModManager
         //update all the games information such as loader and mods path
         private void UpdateManagerInfo()
         {
-            if (!string.IsNullOrEmpty(App.CurrentGame.gameDirectory) && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
+            if (!string.IsNullOrEmpty(App.CurrentGame.gameDirectory) && File.Exists(GamesInstall.GetGameExePath(App.CurrentGame, App.CurrentGame.gameDirectory)))
             {
 
                 //App.CurrentGame.modDirectory = Path.Combine(App.CurrentGame.gameDirectory, "mods");
@@ -2274,7 +2270,7 @@ namespace SAModManager
 
         private async Task ExecuteModsUpdateCheck()
         {
-            if (!(Util.IsStringValid(App.CurrentGame.gameDirectory) || File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName))))
+            if (!(Util.IsStringValid(App.CurrentGame.gameDirectory) || File.Exists(GamesInstall.GetGameExePath(App.CurrentGame, App.CurrentGame.gameDirectory))))
                 return;
 
             try
@@ -2982,7 +2978,7 @@ namespace SAModManager
 
         private async Task FirstBootInstallLoader()
         {
-            if (string.IsNullOrWhiteSpace(App.CurrentGame?.gameDirectory) == false && File.Exists(Path.Combine(App.CurrentGame.gameDirectory, App.CurrentGame.exeName)))
+            if (string.IsNullOrWhiteSpace(App.CurrentGame?.gameDirectory) == false && File.Exists(GamesInstall.GetGameExePath(App.CurrentGame, App.CurrentGame.gameDirectory)))
             {
                 await ForceInstallLoader();
                 UpdateButtonsState();
