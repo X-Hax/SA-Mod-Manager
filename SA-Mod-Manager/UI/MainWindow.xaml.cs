@@ -451,27 +451,26 @@ namespace SAModManager
             }
 
 
-            EnabledCodes = new List<string>(EnabledCodes.Where(a => codes.Any(c => c.Id == a)));
+   
 
-            foreach (Code item in codes.Where(a => a.Required && !EnabledCodes.Contains(a.Id)))
-                EnabledCodes.Add(item.Id);
-
-            CodeListView.BeginInit();
-
-            foreach (Code item in codes)
+            foreach (CodeData code in CodeListView.Items)
             {
-                CodeData extraItem = new()
-                {
-                    codes = item,
-                    IsChecked = EnabledCodes.Contains(item.Id),
-                    IsEnabled = !item.Required,
-                };
+                if (code?.codes is null)
+                    continue;
 
-                CodeListView.Items.Add(extraItem);
-                codesSearch.Add(extraItem);
+                if (code.IsChecked)
+                {
+                    if (!EnabledCodes.Contains(code.codes.Id))
+                        EnabledCodes.Add(code.codes.Id);
+                }
+                else
+                {
+                    EnabledCodes.Remove(code.codes.Id);
+                }
             }
 
-            CodeListView.EndInit();
+            LoadCodes();
+
         }
 
         private void EditMod_FormClosing(object sender, EventArgs e)
