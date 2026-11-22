@@ -10,6 +10,7 @@
 		<ResourceDictionary>
 			<Bitmap x:Key="GameIcon.SADX">avares://SAMM.App/Assets/Images/sa1.png</Bitmap>
 			<Bitmap x:Key="GameIcon.SA2B">avares://SAMM.App/Assets/Images/sa2.png</Bitmap>
+			<Bitmap x:Key="GameIcon.SHDR">avares://SAMM.App/Assets/Images/shdr.png</Bitmap>
 		</ResourceDictionary>
 	</Styles.Resources>
 </Styles>
