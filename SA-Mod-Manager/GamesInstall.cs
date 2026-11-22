@@ -671,6 +671,10 @@ namespace SAModManager
                             game.gameDirectory = dataDir;
                             AddGameToList(game);
                         }
+                        else if (Flatpak.IsWineSandboxed())
+                        {
+                            Logger.Log("Flatpak: Sandboxed wine detected...");
+                        }
                     }
                 }
 

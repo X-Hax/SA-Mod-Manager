@@ -8,6 +8,12 @@ namespace SAModManager
     public static class Flatpak
     {
         private static readonly string[] flatpakBinaries = { "/usr/bin/flatpak", "/usr/local/bin/flatpak" };
+        private const string flatpakSpawn = "Z:/usr/bin/flatpak-spawn"; // for flatpak wine
+
+        public static bool IsWineSandboxed()
+        {
+            return App.isLinux && File.Exists("Z:/.flatpak-info");
+        }
 
         public static string GetHostHomeDirectory()
         {
@@ -96,16 +102,24 @@ namespace SAModManager
 
         public static Process Run(Game game, string workingDirectory, string arguments = "")
         {
+            string args = "run " + game.flatpakId;
+            if (Util.IsStringValid(arguments))
+                args += " " + arguments;
+
             string flatpak = flatpakBinaries.Select(path => { Util.AdjustPathForLinux(ref path); return path; }).FirstOrDefault(File.Exists);
+
+            // case when wine is a flatpak
+            if (flatpak is null && IsWineSandboxed() && File.Exists(flatpakSpawn))
+            {
+                flatpak = flatpakSpawn;
+                args = "--host flatpak " + args;
+            }
+
             if (flatpak is null)
             {
                 Logger.Log("Flatpak: support for Flatpak not detected");
                 return null;
             }
-
-            string args = "run " + game.flatpakId;
-            if (Util.IsStringValid(arguments))
-                args += " " + arguments;
 
             Logger.Log("Flatpak: launching " + flatpak + " " + args);
             try
