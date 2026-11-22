@@ -797,6 +797,13 @@ namespace SAModManager
 
         public static Process StartGameProcess(string exePath, string workingDirectory, string arguments = "")
         {
+            if (App.isLinux)
+            {
+                Game flatpakGame = Flatpak.GetGameFromBinary(exePath);
+                if (flatpakGame is not null)
+                    return Flatpak.Run(flatpakGame, workingDirectory, arguments);
+            }
+
             bool isLinux = App.isLinux && IsLinuxBinary(exePath);
 
             var processInfo = new ProcessStartInfo(exePath)
