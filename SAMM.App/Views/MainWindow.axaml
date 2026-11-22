@@ -256,7 +256,7 @@
 									<Image Width="30" Source="{Binding ID, Converter={StaticResource GameIconConverter}}"
 										   RenderOptions.BitmapInterpolationMode="HighQuality">
 										<Image.OpacityMask>
-											<RadialGradientBrush Center="50%,50%" RadiusX="0.1" RadiusY="0.1">
+											<RadialGradientBrush Center="50%,50%" RadiusX="90%" RadiusY="90%">
 												<RadialGradientBrush.GradientStops>
 													<GradientStop Color="White" Offset="0.7"/>
 													<GradientStop Color="Transparent" Offset="0.8"/>
