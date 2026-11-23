@@ -44,7 +44,6 @@ namespace SAModManager
                 TextTrimming = TextTrimming.CharacterEllipsis,
                 TextWrapping = TextWrapping.NoWrap,
                 Padding = new Thickness(2),
-                MaxWidth = 240,
                 VerticalAlignment = VerticalAlignment.Center
             };
 
@@ -83,8 +82,8 @@ namespace SAModManager
             {
                 ColumnDefinitions =
                 {
-                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },
-                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }
+                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }, // we can use Star to take the leftover space
+                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) }
                 },
                 Margin = ElementMargin,
                 Tag = property.HelpText
@@ -137,8 +136,8 @@ namespace SAModManager
             {
                 ColumnDefinitions =
                 {
-                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },
-                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }
+                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) }
                 },
                 Margin = ElementMargin,
                 Tag = property.HelpText
@@ -214,8 +213,8 @@ namespace SAModManager
             {
                 ColumnDefinitions =
                 {
-                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) },
-                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) }
+                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) }
                 },
                 Margin = ElementMargin,
                 Tag = property.HelpText
