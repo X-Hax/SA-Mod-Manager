@@ -35,6 +35,7 @@ namespace SAModManager
         /// </summary>
         public string exeName { get; set; }
         public string linuxExe { get; set; } // for decompiled / recompiled games that have a separate linux version
+        public string flatpakId { get; set; } // same as above, but for users using flatpak
 
         /// <summary>
         /// Current game's main directory.
@@ -445,6 +446,7 @@ namespace SAModManager
             gameImage = App.GetResourceUri("Games.shthR.png"),
             exeName = "ShadowRecomp.exe",
             linuxExe = "ShadowRecomp",
+            flatpakId = "io.github.foxworkshop.shadowrecomp",
             defaultIniProfile = "SHTHRecompModLoader.ini",
             id = GameEntry.GameType.SHTHRecomp,
             gameAbbreviation = "SHTHR",
@@ -552,6 +554,9 @@ namespace SAModManager
                     return linuxExePath;
             }
 
+            if (App.isLinux && Flatpak.IsFlatpakGameDirectory(game, directory))
+                return Flatpak.GetInstalledBinary(game);
+
             return string.Empty;
         }
 
@@ -645,6 +650,30 @@ namespace SAModManager
                             Logger.Log("Found Game through Steam!");
                             game.gameDirectory = gameInstallPath;
                             AddGameToList(game);
+                        }
+                    }
+                }
+
+                if (App.isLinux)
+                {
+                    Logger.Log("Now looking for games installed through Flatpak...");
+
+                    foreach (var game in GamesInstall.GetSupportedGames())
+                    {
+                        if (Util.IsStringValid(game.flatpakId) == false || App.GamesList.Contains(game))
+                            continue;
+
+                        string dataDir = Flatpak.GetDataDirectory(game);
+                        Logger.Log("Checking for: " + dataDir);
+                        if (Flatpak.IsFlatpakGameDirectory(game, dataDir) && Directory.Exists(Path.Combine(dataDir, "game")))
+                        {
+                            Logger.Log("Found Game as a Flatpak!");
+                            game.gameDirectory = dataDir;
+                            AddGameToList(game);
+                        }
+                        else if (Flatpak.IsWineSandboxed())
+                        {
+                            Logger.Log("Flatpak: Sandboxed wine detected...");
                         }
                     }
                 }
