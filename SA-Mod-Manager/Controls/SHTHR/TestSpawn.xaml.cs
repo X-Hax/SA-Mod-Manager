@@ -88,7 +88,7 @@ namespace SAModManager.Controls.SHTHR
             var mainWindow = ((MainWindow)Application.Current.MainWindow);
 
             string executablePath = mainWindow.EnabledMods?.Select(item => mainWindow.mods[item]?.EXEFile).FirstOrDefault(item => !string.IsNullOrEmpty(item)) ?? GamesInstall.GetGameExePath(App.CurrentGame, App.CurrentGame.gameDirectory);
-
+    
             string commandLine = GetTestSpawnCommandLine();
             string folderPath = Path.GetDirectoryName(executablePath);
 
@@ -337,7 +337,8 @@ namespace SAModManager.Controls.SHTHR
             List<string> cmdline = new();
 
 
-            if (GameProfile.TestSpawn.LevelIndex > -1)
+            if (GameProfile.TestSpawn.LevelIndex > -1 && GameProfile.TestSpawn.UseLevel)
+            {
                 if (GameProfile.TestSpawn.UseEvent == false)
                 {
                     int lvl_result = GameProfile.TestSpawn.LevelIndex;
@@ -357,9 +358,10 @@ namespace SAModManager.Controls.SHTHR
 
                     cmdline.Add($"-l {lvl_result}");
                 }
+            }
 
 
-            if (GameProfile.TestSpawn.EventIndex > -1)
+            if (GameProfile.TestSpawn.EventIndex > -1 && GameProfile.TestSpawn.UseEvent)
                 if (GameProfile.TestSpawn.UseEvent)
                     cmdline.Add($"-e {GameProfile.TestSpawn.EventIndex}");
 
