@@ -103,6 +103,54 @@
       "InternalName": "Play As Battle Mode Character",
       "Description": "Story mode uses the character picked for Player 1 in Battle Mode. Skipped on the Devil Doom fight.",
       "IsChecked": false
+    },
+    {
+      "Name": "ShadowAndroidsNoEmbeddedWeapons",
+      "Author": "dreamsyntax",
+      "Category": "Gameplay",
+      "InternalName": "Disable Embedded Weapons For Androids",
+      "Description": "Some Shadow Androids have embedded weapons and cannot pick weapons in-game. This code disables the built in weapon, so other weapons can be used normally.",
+      "IsChecked": false
+    },
+    {
+      "Name": "SelectModeExpertStages",
+      "Author": "dreamsyntax",
+      "Category": "Misc",
+      "InternalName": "Selectable Expert Mode Stages",
+      "Description": "Use 'X' instead of 'A' in Select Mode to play a stage's Expert Mode variant.",
+      "IsChecked": false
+    },
+    {
+      "Name": "SelectModeEnableLastStoryDevilDoomSlots",
+      "Author": "dreamsyntax",
+      "Category": "Misc",
+      "InternalName": "Show Last Way and Devil Doom in Stage Select",
+      "Description": "Puts Last Way below Final Haunt and Devil Doom to the right of that. There is no visual for it, but you'll hear the selection of the stage as normal.",
+      "IsChecked": false
+    },
+    {
+      "Name": "SkipLoadingAnyEvents",
+      "Author": "dreamsyntax",
+      "Category": "Cheat",
+      "InternalName": "Always Skip Events",
+      "Description": "Events will be skipped entirely, bypassing any extra loading screens.",
+      "IsChecked": false
+    },
+    {
+      "Name": "SingleFrameInvulnRecovery",
+      "Author": "dreamsyntax",
+      "Category": "Cheat",
+      "InternalName": "Single Frame Invulnerability Recovery",
+      "Description": "Sort of a \"hard mode\", makes invulnerability only last for 1 frame, but you also recover faster.",
+      "IsChecked": false
+    },
+    {
+      "Name": "AllPartnersCanHomingAttack",
+      "Author": "dreamsyntax",
+      "Category": "Cheat",
+      "InternalName": "All Partners Can Homing Attack",
+      "Description": "Originally only Sonic can Homing Attack. Now everyone else can too!",
+      "IsChecked": false
     }
   ]
 }
