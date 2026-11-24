@@ -47,6 +47,8 @@ namespace SAMM.Configuration
 			}
 		}
 
+		public bool CompileCodes { get; set; } = true;
+
 		public bool HideMods { get; set; } = false;
 
 		public bool HideCodes { get; set; } = false;
@@ -54,6 +56,14 @@ namespace SAMM.Configuration
 		public bool HideTestSpawn { get; set; } = false;
 
 		public bool HideConfig { get; set; } = false;
+
+		public bool HideConfigDisplay { get; set; } = false;
+
+		public bool HideConfigAudio { get; set; } = false;
+
+		public bool HideConfigInput { get; set; } = false;
+
+		public bool HideConfigDebug { get; set; } = false;
 
 		#endregion
 
@@ -177,11 +187,12 @@ namespace SAMM.Configuration
 				{
 					GameID = GameIDs.SHDR,
 					GameExecutable = "ShadowRecomp.exe",
-					GameSystemFolder = Path.Combine(""),
+					GameSystemFolder = Path.Combine("game"),
 					ModLoaderInfo = new ModLoaderInfo(),
 					OneClickProtocol = "",
 					HideConfig = true,
-					HideTestSpawn = true
+					HideTestSpawn = true,
+					CompileCodes = false
 				}
 			}
 		};

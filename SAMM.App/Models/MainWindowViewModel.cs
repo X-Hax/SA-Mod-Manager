@@ -1,6 +1,7 @@
 ﻿using DynamicData;
 using ReactiveUI;
 using SAMM.Configuration;
+using SAMM.Configuration.Codes;
 using SAMM.Configuration.Mods;
 using SAMM.Utilities;
 using System;
@@ -91,6 +92,13 @@ namespace SAMM.App.Models
 			set { this.RaiseAndSetIfChanged(ref modEntries, value); }
 		}
 
+		private GameCodeManager codeManager = null;
+		public GameCodeManager? CodeManager
+		{
+			get => codeManager;
+			set => this.RaiseAndSetIfChanged(ref codeManager, value);
+		}
+
 		private string CurrentUserProfilePath { get { return Path.Combine(GameConfig.ProfilesPath, UserProfiles.CurrentProfile.Filename); } }
 
 		#endregion
@@ -172,6 +180,10 @@ namespace SAMM.App.Models
 			ModEntries = new ObservableCollection<ModEntry>(sortedMods);
 		}
 
+		/// <summary>
+		/// Loads the configuration setup for the selected title.
+		/// </summary>
+		/// <param name="loadEntries"></param>
 		private void LoadGameConfig(bool loadEntries = false)
 		{
 			GameEntry gameEntry = ManagerSettings.GetCurrentGameEntry();
@@ -181,6 +193,9 @@ namespace SAMM.App.Models
 				LoadModEntries();
 		}
 
+		/// <summary>
+		/// Loads the game settings for the selected title.
+		/// </summary>
 		private void LoadGameSettings()
 		{
 			Logger.Log($"Loading Game Settings");
@@ -190,6 +205,9 @@ namespace SAMM.App.Models
 			}
 		}
 
+		/// <summary>
+		/// Loads the user profiles belonging to the selected game install.
+		/// </summary>
 		private void LoadUserProfiles()
 		{
 			Logger.Log($"Loading User Profiles");
@@ -200,12 +218,35 @@ namespace SAMM.App.Models
 				GameConfig.GameID = Configuration.Enumeration.GameIDs.Unsupported;
 		}
 
+		/// <summary>
+		/// Loads the code file for the selected title.
+		/// </summary>
+		private void LoadCodes()
+		{
+			CodeManager = GameCodeManager.LoadAllCodes(GameConfig.ModloaderPath, ModEntries.Where((x) => x.IsEnabled == true).ToList());
+
+			if (GameSettings != null && CodeManager != null)
+			{
+				foreach (var entry in CodeManager.GameCodes)
+				{
+					foreach (GameCode code in entry.Value.Codes)
+					{
+						if (code.Required == true)
+							code.IsChecked = true;
+						else if (GameSettings.EnabledCodes.Contains(code.NameTag))
+							code.IsChecked = true;
+					}
+				}
+			}
+		}
+
 		public void Load()
 		{
 			LoadGameConfig();
 			LoadUserProfiles();
 			LoadGameSettings();
 			LoadModEntries();
+			LoadCodes();
 		}
 		
 		#endregion
@@ -215,6 +256,7 @@ namespace SAMM.App.Models
 		{
 			GameSettings.EnabledMods.Clear();
 			GameSettings.ModsList.Clear();
+			GameSettings.EnabledCodes.Clear();
 
 			foreach (var entry in ModEntries)
 			{
@@ -222,6 +264,12 @@ namespace SAMM.App.Models
 					GameSettings.EnabledMods.Add(entry.Key);
 
 				GameSettings.ModsList.Add(entry.Key);
+			}
+
+			foreach (var entry in CodeManager.GameCodes)
+			{
+				foreach (GameCode code in entry.Value.Codes.Where((x) => x.IsChecked == true).ToList())
+					GameSettings.EnabledCodes.Add(code.NameTag);
 			}
 
 			Logger.Log($"Saving current Game Settings profile: {CurrentUserProfilePath}");
