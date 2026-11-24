@@ -48,7 +48,7 @@
     <system:String x:Key="CommonStrings.Search">Rechercher</system:String>
     <system:String x:Key="CommonStrings.Credits">Crédits</system:String>
     <system:String x:Key="CommonStrings.Download">Télécharger</system:String>
-    <system:String x:Key="CommonStrings.OpenFolder">Ouvrir Dossier</system:String>
+    <system:String x:Key="CommonStrings.OpenFolder">Ouvrir le Dossier</system:String>
     <system:String x:Key="CommonStrings.None">Aucun</system:String>
     <system:String x:Key="CommonStrings.Enabled">Activer</system:String>
     <system:String x:Key="CommonStrings.Disabled">Désactiver</system:String>

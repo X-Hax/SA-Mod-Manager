@@ -80,16 +80,19 @@
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Check.Mods">Vérifier les mises à jour des Mods au démarrage</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Buttons.CheckNow">Vérifier les mises à jour</system:String>
     <!--#endregion-->
+    
     <!--Debug Features-->
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced">Options Avancées</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepOpen">Laisser le Mod Manager Ouvert après démarrage du jeu</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintenir l'ordre des mods</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Developer">Activer les options de Développeur</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.Console">Activer la Fenêtre Console</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.PrintDebug">Afficher le debug dans la fenêtre du jeu</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.LogDebug">Logger les infos de Debug dans un fichier</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.CrashDumps">Créer des Crash Dumps</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.HealthCheck">Bilan de santé du jeu</system:String>
-    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.KeepModOrder">Maintenir l'ordre des mods</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.Options.Group.Updates.Group.Advanced.Check.UseSoftwareRendering">Désactiver l'Accélération Matérielle</system:String>
+
     <!--#endregion-->
 
     <!--About-->
@@ -101,6 +104,7 @@
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SourceLoader">Mod Loader Code Source</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.ReportBug">Signaler un Bug (Anglais uniquement)</system:String>
     <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.SADocs">Ouvrir la SA Docs (Anglais uniquement)</system:String>
+    <system:String x:Key="Manager.Tabs.ManagerConfig.Group.About.Buttons.AdvancedOptions">Options Avancées</system:String>
     <!--#endregion-->
 
     <!--#region Tooltips-->
@@ -182,10 +186,10 @@
 
     <!--#region Sound Settings-->
     <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.UseBASS">Replaces the sound backend with vgmbass. This is recommended for the best experience, and many mods rely on it.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">Enables music in-game.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">Enables the 3D Sound in-game.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">Uses BASS as the backend for sound effect playback.</system:String>
-    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">Enables Sound Effects and Voices in game.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableMusic">Active les musiques.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.Enable3DSound">Active les sons 3D.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableBASSSFX">Utilise BASS comme moteur de lecture des effets sonores.</system:String>
+    <system:String x:Key="MainWindow.Tips.Tab.GameConfig.Tab.Sound.EnableSounds">Active les effets sonores et les voix.</system:String>
     <!--#endregion-->
 
     <!--#region Patches Settings-->
