@@ -548,7 +548,7 @@ namespace SAModManager
                 UIHelper.ToggleImage(ref menuIconConfig, isEnabled);
             }
 
-            ModContextDeveloper.Visibility = (bool)checkDevEnabled.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+            //ModContextDeveloper.Visibility = (bool)checkDevEnabled.IsChecked ? Visibility.Visible : Visibility.Collapsed;
 
             string UpdateStateString = "Manager.Tabs.Mods.ContextMenu.Developer.DisableUpdate";
 
@@ -1406,7 +1406,6 @@ namespace SAModManager
                 tabTestSpawn.Visibility = Visibility.Visible;
                 comboProfile.IsEnabled = true;
 
-                checkDevEnabled.IsEnabled = true;
                 checkManagerOpen.IsEnabled = true;
                 grpManUpdates.IsEnabled = true;
 
@@ -1425,7 +1424,6 @@ namespace SAModManager
                 tabGame.Visibility = Visibility.Collapsed;
                 comboProfile.IsEnabled = false;
 
-                checkDevEnabled.IsEnabled = false;
                 checkManagerOpen.IsEnabled = false;
                 grpManUpdates.IsEnabled = false;
 
@@ -2442,10 +2440,6 @@ namespace SAModManager
             chkUpdatesMods.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableModsBootCheck")
             {
                 Source = App.ManagerSettings.UpdateSettings
-            });
-            checkDevEnabled.SetBinding(CheckBox.IsCheckedProperty, new Binding("EnableDeveloperMode")
-            {
-                Source = App.ManagerSettings
             });
             checkManagerOpen.SetBinding(CheckBox.IsCheckedProperty, new Binding("KeepManagerOpen")
             {
