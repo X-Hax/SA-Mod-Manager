@@ -899,7 +899,7 @@ namespace SAModManager
         {
             if (App.isLinux)
             {
-                string home = Environment.GetEnvironmentVariable("WINEHOMEDIR").Replace("\\??\\", "");
+                string home = Environment.GetEnvironmentVariable("WINEHOMEDIR")?.Replace("\\??\\", "");
                 if (string.IsNullOrEmpty(home) == false)
                 {
                     Logger.Log("Steam Folder using Linux found at: " + home);
