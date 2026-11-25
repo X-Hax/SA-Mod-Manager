@@ -197,3 +197,6 @@ SADXModLoader/git_version.h
 *.ide
 /.vs
 *.svg
+
+# JetBrains IDEs (Rider)
+.idea/
