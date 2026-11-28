@@ -2100,13 +2100,12 @@ namespace SAModManager
 
 
 
+            UpdateMainButtonsState();
+
             //if game path hasn't been set, give up the process of loading mods.
 
             if (GamesInstall.IsGameListEmpty() || App.CurrentGame == GamesInstall.Unknown || Directory.Exists(App.CurrentGame.gameDirectory) == false)
-            {
-                UpdateMainButtonsState();
                 return;
-            }
 
 
             if (File.Exists(Path.Combine(App.CurrentGame.modDirectory, "mod.ini")))
