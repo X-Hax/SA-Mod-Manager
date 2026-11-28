@@ -2001,6 +2001,12 @@ namespace SAModManager
                         ViewModel.SortViewModelCollection(ViewModel, sa2Settings.ModsList);
                     }
                     break;
+                case GameEntry.GameType.SHTHRecomp:
+                    {
+                        Configuration.SHTHR.GameSettings shthrSettings = GameProfile as Configuration.SHTHR.GameSettings;
+                        ViewModel.SortViewModelCollection(ViewModel, shthrSettings.ModsList);
+                    }
+                    break;
             }
 
 
@@ -2117,7 +2123,7 @@ namespace SAModManager
                 Util.CreateSafeDirectory(App.CurrentGame.modDirectory);
 
             //if setting enabled, don't put checked mods on top of the list
-            if (checkKeepModOrder.IsChecked == true)
+            if (App.ManagerSettings.KeepModOrder)
             {
                 LoadConsistentModList();
             }
